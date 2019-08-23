@@ -1,0 +1,8 @@
+.idea/*
+*.iml
+~*
+
+*/target/*
+WordReader/*.classpath
+WordReader/*.project
+WordReader/*.settings
