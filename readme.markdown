@@ -1,1 +1,1 @@
-1. 初始化
+一、先做wordreader，做word到xmind转换用。
