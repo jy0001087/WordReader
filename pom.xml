@@ -49,7 +49,21 @@
             <version>2.12.1</version>
         </dependency>
         <!-- Log4J2配置 end-->
-    </dependencies>
+        <!-- POI java读取word apache 项目 start-->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>4.1.0</version>
+        </dependency>
+        <!--POI java读取word apache 项目end -->
+        <!--google guava 改善文本操作 start -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>28.0-jre</version>
+        </dependency>
+        <!--google guava 改善文本操作 end-->
+</dependencies>
     <!-- ... -->
 
 </project>
