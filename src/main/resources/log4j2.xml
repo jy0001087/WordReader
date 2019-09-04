@@ -16,7 +16,7 @@
     </Appenders>
 
     <Loggers>
-        <Logger name="com.leathersheer.tools.WordWorker" level="trace" additivity="true">
+        <Logger name="com.leathersheer.tools.WordWorker" level="trace" additivity="false">
             <AppenderRef ref="File"/>
         </Logger>
 
