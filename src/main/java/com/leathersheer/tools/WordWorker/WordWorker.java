@@ -40,8 +40,8 @@ public class WordWorker implements Workers {
         workerLogger.trace("logger start");
         WordWorker worker= new WordWorker();
         //worker.getTitles();
-        ArrayList<String> modlist = worker.readMod();
-        worker.creatDocx(modlist);
+        worker.readMod();
+        //worker.creatDocx(modlist);
         //worker.readMod();
     }
 
@@ -105,24 +105,45 @@ public class WordWorker implements Workers {
         }
     }
 
-    public void creatDocx( ArrayList<String> modlist) throws Exception{
-        XWPFDocument docx = new XWPFDocument();
-        XWPFStyles styles = docx.createStyles();
-        styles.setStyles(wordStyles);
-
-        XWPFParagraph para = docx.createParagraph();
-        para.setStyle("1");
-        XWPFRun run = para.createRun();
-        run.setText("大标题");
-
+    public void creatDocx( String style,String text,XWPFDocument docx) throws Exception{
+     //
         FileOutputStream docxout = new FileOutputStream("D:/2.docx");
+
+        //写文件核心，先设置格式，再设置内容
+        int intstyle=Integer.parseInt(style)+1;
+        XWPFParagraph para = docx.createParagraph();
+        para.setStyle(intstyle+"");
+        XWPFRun run = para.createRun();
+        run.setText(text);
+
+     /**   //写文件核心，先设置格式，再设置内容
+        XWPFParagraph para1 = docx.createParagraph();
+        para1.setStyle("2");
+        XWPFRun run1 = para1.createRun();
+        run1.setText("2标题");
+
+        XWPFParagraph para2 = docx.createParagraph();
+        para2.setStyle("2");
+        XWPFRun run2 = para2.createRun();
+        run2.setText("2标题");
+
+        XWPFParagraph para3 = docx.createParagraph();
+        para3.setStyle("1");
+        XWPFRun run3 = para3.createRun();
+        run3.setText("大标题");
+      **/
+        //写文件
         docx.write(docxout);
+
         docxout.close();
     }
 
     public ArrayList<String> readMod() throws Exception {
 
         ArrayList<String> modlist = new ArrayList<String>();
+        XWPFDocument docx = new XWPFDocument();
+        XWPFStyles styles = docx.createStyles();
+        styles.setStyles(wordStyles);
 
         InputStream mod = new FileInputStream("D:/1.txt");
         BufferedReader reader = new BufferedReader(
@@ -147,8 +168,15 @@ public class WordWorker implements Workers {
         workerLogger.trace("----------------------------------modlist------------------------------start");
         for(String tmp:modlist){
             workerLogger.trace(tmp);
+            String array[] = tmp.split(",");
+            String levell=array[0];
+            String text=array[1];
+            creatDocx(levell,text,docx);
+            Thread.sleep(5000);
         }
         workerLogger.trace("----------------------------------modlist------------------------------end");
+
+
         return modlist;
     }
 
