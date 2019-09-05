@@ -10,6 +10,7 @@ import org.apache.xmlbeans.XmlException;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTStyles;
 
 import java.io.*;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -19,12 +20,13 @@ public class WordWorker implements Workers {
 
     public static final Logger workerLogger = LogManager.getLogger();
     public static CTStyles wordStyles = null;
-
+    public static String docxPath = "C:\\兴业材料\\医保\\青海省医保局\\编辑保存\\青海省医疗保障信息平台可行性研究报告-20190902-peng-gai.docx";
     static {
         XWPFDocument template;
         try {
             // 读取模板文档
-            template = new XWPFDocument(new FileInputStream("D:/format.docx"));
+            final URL formatResource = Workers.class.getClassLoader().getResource("format.docx");
+            template = new XWPFDocument(new FileInputStream(formatResource.getFile()));
             // 获得模板文档的整体样式
             wordStyles = template.getStyle();
         } catch (FileNotFoundException e) {
@@ -39,15 +41,15 @@ public class WordWorker implements Workers {
     public static void main(String[] args) throws Exception{
         workerLogger.trace("logger start");
         WordWorker worker= new WordWorker();
-        //worker.getTitles();
-        worker.readMod();
+        worker.getTitles(docxPath);
+        //worker.readMod();
         //worker.creatDocx(modlist);
         //worker.readMod();
     }
 
 
-    public void getTitles() throws Exception {
-        File binFile = new File("E:/1.docx");
+    public void getTitles(String filepath) throws Exception {
+        File binFile = new File(filepath);
         FileInputStream inputstream = new FileInputStream(binFile);
         workerLogger.trace("docx status ： " + inputstream.available());
         XWPFDocument doc = new XWPFDocument(inputstream);
@@ -61,24 +63,23 @@ public class WordWorker implements Workers {
                 //判断该段落是否设置了大纲级别
                 if (para.getCTP().getPPr().getOutlineLvl() != null) {
                     // System.out.println("getCTP()");
+                    System.out.print(para.getCTP().getPPr().getOutlineLvl().getVal()+",");
                     System.out.println(para.getParagraphText());
-                    System.out.println(para.getCTP().getPPr().getOutlineLvl().getVal());
-
                     //判断该段落的样式是否设置了大纲级别
                 } else if (styles.getStyle(para.getStyle()).getCTStyle().getPPr().getOutlineLvl() != null) {
                     // System.out.println("getStyle");
+                    System.out.print(
+                            styles.getStyle(para.getStyle()).getCTStyle().getPPr().getOutlineLvl().getVal()+",");
                     System.out.println(para.getParagraphText());
-                    System.out.println(
-                            styles.getStyle(para.getStyle()).getCTStyle().getPPr().getOutlineLvl().getVal());
 
                     //判断该段落的样式的基础样式是否设置了大纲级别
                 } else if (styles.getStyle(styles.getStyle(para.getStyle()).getCTStyle().getBasedOn().getVal())
                         .getCTStyle().getPPr().getOutlineLvl() != null) {
                     // System.out.println("getBasedOn");
-                    System.out.println(para.getParagraphText());
                     String styleName = styles.getStyle(para.getStyle()).getCTStyle().getBasedOn().getVal();
                     System.out
-                            .println(styles.getStyle(styleName).getCTStyle().getPPr().getOutlineLvl().getVal());
+                            .print(styles.getStyle(styleName).getCTStyle().getPPr().getOutlineLvl().getVal()+",");
+                    System.out.println(para.getParagraphText());
 
                     //没有设置大纲级别
                 } else {
