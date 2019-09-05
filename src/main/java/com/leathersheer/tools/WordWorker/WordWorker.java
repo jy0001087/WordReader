@@ -10,11 +10,9 @@ import org.apache.xmlbeans.XmlException;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTStyles;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class WordWorker implements Workers {
 
@@ -42,9 +40,7 @@ public class WordWorker implements Workers {
         workerLogger.trace("logger start");
         WordWorker worker= new WordWorker();
         worker.getTitles(docxPath);
-        //worker.readMod();
-        //worker.creatDocx(modlist);
-        //worker.readMod();
+        //worker.modworker();  //读取demo.txt生成word文档。
     }
 
 
@@ -106,9 +102,11 @@ public class WordWorker implements Workers {
         }
     }
 
-    public void creatDocx( String style,String text,XWPFDocument docx) throws Exception{
+
+     public void creatDocx( String style,String text,XWPFDocument docx) throws Exception{
      //
-        FileOutputStream docxout = new FileOutputStream("D:/2.docx");
+
+         FileOutputStream docxout = new FileOutputStream("target.docx");
 
         //写文件核心，先设置格式，再设置内容
         int intstyle=Integer.parseInt(style)+1;
@@ -116,8 +114,8 @@ public class WordWorker implements Workers {
         para.setStyle(intstyle+"");
         XWPFRun run = para.createRun();
         run.setText(text);
-
-     /**   //写文件核心，先设置格式，再设置内容
+/**
+       //写文件核心，先设置格式，再设置内容
         XWPFParagraph para1 = docx.createParagraph();
         para1.setStyle("2");
         XWPFRun run1 = para1.createRun();
@@ -132,39 +130,65 @@ public class WordWorker implements Workers {
         para3.setStyle("1");
         XWPFRun run3 = para3.createRun();
         run3.setText("大标题");
-      **/
+ **/
         //写文件
         docx.write(docxout);
 
         docxout.close();
     }
 
-    public ArrayList<String> readMod() throws Exception {
+    public void modworker() throws Exception {
 
         ArrayList<String> modlist = new ArrayList<String>();
         XWPFDocument docx = new XWPFDocument();
         XWPFStyles styles = docx.createStyles();
         styles.setStyles(wordStyles);
 
-        InputStream mod = new FileInputStream("D:/1.txt");
+        URL demofileurl = this.getClass().getClassLoader().getResource("demo.txt");
+        InputStream mod = new FileInputStream(demofileurl.getFile());
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(mod));
         String content = new String("");
         int i = 1;
-        String context=null;
-        String level;
-        while((content = reader.readLine())!=null) {
-            workerLogger.trace("read file get content is i=" + i +"：" + content);
-            if(i%2==0){
-                level = content;
-                workerLogger.trace("level now is "+level);
-                modlist.add(level+","+context);
-            }else {
-                context = content;
-                workerLogger.trace("content now is "+ content);
+        workerLogger.trace("----------------------------------modlist------------------------------start");
+        while ((content = reader.readLine()) != null) {
+            //数据清洗同时录入modlist
+            workerLogger.trace("read file get content is i=" + i + "：" + content);
+            String contentarray[] = content.split(",");
+
+            //数据处理，1.标题题级+1给中心主题留空间。
+            //        2.标题内容为空的直接退出循环。
+
+            try {
+                if (contentarray[1].length() <= 0) {
+                    //判断是否为空
+                }
+            }catch (NullPointerException e) {
+                continue;
+            }catch (ArrayIndexOutOfBoundsException e){
+                workerLogger.error("第"+i+"行发生异常,标题内容为空");
+                continue;
             }
+            int levelint = Integer.parseInt(contentarray[0]) + 1;
+            String levelstring = levelint+"";
+            String text = contentarray[1];
+            creatDocx(levelstring,text,docx);
+            Thread.sleep(2000);
             i++;
         }
+        workerLogger.trace("----------------------------------modlist------------------------------end");
+        /**
+         if(i%2==0){
+         level = content;
+         workerLogger.trace("level now is "+level);
+         if(content.length()>0){
+         modlist.add(level+","+context);
+         }
+         }else {
+         context = content;
+         workerLogger.trace("content now is "+ content);
+         }
+
 
         workerLogger.trace("----------------------------------modlist------------------------------start");
         for(String tmp:modlist){
@@ -173,12 +197,11 @@ public class WordWorker implements Workers {
             String levell=array[0];
             String text=array[1];
             creatDocx(levell,text,docx);
-            Thread.sleep(5000);
+            Thread.sleep(2000);
         }
         workerLogger.trace("----------------------------------modlist------------------------------end");
 
-
-        return modlist;
-    }
+         **/
+        }
 
 }

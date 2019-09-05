@@ -8,3 +8,5 @@ WordReader/*.classpath
 WordReader/*.project
 WordReader/*.settings
 target/
+title-result.docx
+target.docx
