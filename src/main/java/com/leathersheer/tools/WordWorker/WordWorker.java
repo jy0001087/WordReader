@@ -39,7 +39,7 @@ public class WordWorker implements Workers {
     public static void main(String[] args) throws Exception{
         workerLogger.trace("logger start");
         WordWorker worker= new WordWorker();
-        worker.getTitles(docxPath);
+        //worker.getTitles(docxPath);
         //worker.modworker();  //读取demo.txt生成word文档。
     }
 
@@ -53,7 +53,6 @@ public class WordWorker implements Workers {
         //获取doc样式
         XWPFStyles styles = doc.getStyles();
 
-        int j = 0;
         for (XWPFParagraph para : plist) {
             try {
                 //判断该段落是否设置了大纲级别
@@ -203,5 +202,84 @@ public class WordWorker implements Workers {
 
          **/
         }
+
+    /**
+     * 获取标题编号
+     * @param titleLvl
+     * @return
+     */
+    private Map<String,Map<String,Object>> orderMap =new HashMap<String, Map<String,Object>>();
+
+    private String getOrderCode(String titleLvl) {
+        String order = "";
+
+        if("0".equals(titleLvl)||Integer.parseInt(titleLvl)==8){//文档标题||正文
+            return "";
+        }else if(Integer.parseInt(titleLvl)>0&&Integer.parseInt(titleLvl)<8){//段落标题
+
+            //设置最高级别标题
+            Map<String,Object> maxTitleMap = orderMap.get("maxTitleLvlMap");
+            if(null==maxTitleMap){//没有，表示第一次进来
+                //最高级别标题赋值
+                maxTitleMap = new HashMap<String, Object>();
+                maxTitleMap.put("lvl", titleLvl);
+                orderMap.put("maxTitleLvlMap", maxTitleMap);
+            }else{
+                String maxTitleLvl = maxTitleMap.get("lvl")+"";//最上层标题级别(0,1,2,3)
+                if(Integer.parseInt(titleLvl)<Integer.parseInt(maxTitleLvl)){//当前标题级别更高
+                    maxTitleMap.put("lvl", titleLvl);//设置最高级别标题
+                    orderMap.put("maxTitleLvlMap", maxTitleMap);
+                }
+            }
+
+            //查父节点标题
+            int parentTitleLvl = Integer.parseInt(titleLvl)-1;//父节点标题级别
+            Map<String,Object> cMap = orderMap.get(titleLvl);//当前节点信息
+            Map<String,Object> pMap = orderMap.get(parentTitleLvl+"");//父节点信息
+
+            if(0==parentTitleLvl){//父节点为文档标题，表明当前节点为1级标题
+                int count= 0;
+                //最上层标题，没有父节点信息
+                if(null==cMap){//没有当前节点信息
+                    cMap = new HashMap<String, Object>();
+                }else{
+                    count = Integer.parseInt(String.valueOf(cMap.get("cCount")));//当前序个数
+                }
+                count++;
+                order = count+"";
+                cMap.put("cOrder", order);//当前序
+                cMap.put("cCount", count);//当前序个数
+                orderMap.put(titleLvl, cMap);
+
+            }else{//父节点为非文档标题
+                int count= 0;
+                //如果没有相邻的父节点信息，当前标题级别自动升级
+                if(null==pMap){
+                    return getOrderCode(String.valueOf(parentTitleLvl));
+                }else{
+                    String pOrder = String.valueOf(pMap.get("cOrder"));//父节点序
+                    if(null==cMap){//没有当前节点信息
+                        cMap = new HashMap<String, Object>();
+                    }else{
+                        count = Integer.parseInt(String.valueOf(cMap.get("cCount")));//当前序个数
+                    }
+                    count++;
+                    order = pOrder+"."+count;//当前序编号
+                    cMap.put("cOrder", order);//当前序
+                    cMap.put("cCount", count);//当前序个数
+                    orderMap.put(titleLvl, cMap);
+                }
+            }
+
+            //字节点标题计数清零
+            int childTitleLvl = Integer.parseInt(titleLvl)+1;//子节点标题级别
+            Map<String,Object> cdMap = orderMap.get(childTitleLvl+"");//
+            if(null!=cdMap){
+                cdMap.put("cCount", 0);//子节点序个数
+                orderMap.get(childTitleLvl+"").put("cCount", 0);
+            }
+        }
+        return order;
+    }
 
 }
