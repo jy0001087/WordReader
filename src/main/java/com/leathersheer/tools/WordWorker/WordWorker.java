@@ -18,7 +18,7 @@ public class WordWorker implements Workers {
 
     public static final Logger workerLogger = LogManager.getLogger();
     public static CTStyles wordStyles = null;
-    public static String docxPath = "C:\\兴业材料\\医保\\青海省医保局\\编辑保存\\青海省医疗保障信息平台可行性研究报告-20190902-peng-gai.docx";
+    public static String docxPath = "C:\\兴业材料\\医保\\青海省医保局\\编辑保存\\青海省医疗保障信息平台可行性研究报告-20190906-peng.docx";
     static {
         XWPFDocument template;
         try {
@@ -39,7 +39,7 @@ public class WordWorker implements Workers {
     public static void main(String[] args) throws Exception{
         workerLogger.trace("logger start");
         WordWorker worker= new WordWorker();
-        //worker.getTitles(docxPath);
+        worker.getTitles(docxPath);
         //worker.modworker();  //读取demo.txt生成word文档。
     }
 
@@ -52,37 +52,51 @@ public class WordWorker implements Workers {
         List<XWPFParagraph> plist = doc.getParagraphs();
         //获取doc样式
         XWPFStyles styles = doc.getStyles();
-
+        workerLogger.info("-------------demo start----------------");
+        //初始化脑图中心主题
+        getOrderCode("0");
+        workerLogger.info("0,青海省XX可研");
         for (XWPFParagraph para : plist) {
-            try {
-                //判断该段落是否设置了大纲级别
-                if (para.getCTP().getPPr().getOutlineLvl() != null) {
-                    // System.out.println("getCTP()");
-                    System.out.print(para.getCTP().getPPr().getOutlineLvl().getVal()+",");
-                    System.out.println(para.getParagraphText());
-                    //判断该段落的样式是否设置了大纲级别
-                } else if (styles.getStyle(para.getStyle()).getCTStyle().getPPr().getOutlineLvl() != null) {
-                    // System.out.println("getStyle");
-                    System.out.print(
-                            styles.getStyle(para.getStyle()).getCTStyle().getPPr().getOutlineLvl().getVal()+",");
-                    System.out.println(para.getParagraphText());
+            int levint = 0;
+            String text = "";
+            //写文件内容
+                try {
+                    //判断该段落是否设置了大纲级别
+                    if (para.getCTP().getPPr().getOutlineLvl() != null) {
+                        // System.out.println("getCTP()");
+                        levint = Integer.parseInt(para.getCTP().getPPr().getOutlineLvl().getVal().toString()) + 1;
+                        text = getOrderCode(levint+"") + "  " + para.getParagraphText().toString();
+                        // System.out.print(para.getCTP().getPPr().getOutlineLvl().getVal()+",");
+                        //System.out.println(para.getParagraphText());
+                        //判断该段落的样式是否设置了大纲级别
+                    } else if (styles.getStyle(para.getStyle()).getCTStyle().getPPr().getOutlineLvl() != null) {
+                        // System.out.println("getStyle");
+                        levint = Integer.parseInt(styles.getStyle(para.getStyle()).getCTStyle().getPPr().getOutlineLvl().getVal().toString())+1;
+                        text = getOrderCode(levint+"") + "  " + para.getParagraphText();
+                        //System.out.print(
+                        //        styles.getStyle(para.getStyle()).getCTStyle().getPPr().getOutlineLvl().getVal()+",");
+                        //System.out.println(para.getParagraphText());
+                        //判断该段落的样式的基础样式是否设置了大纲级别
+                    } else if (styles.getStyle(styles.getStyle(para.getStyle()).getCTStyle().getBasedOn().getVal())
+                            .getCTStyle().getPPr().getOutlineLvl() != null) {
+                        // System.out.println("getBasedOn");
+                        String styleName = styles.getStyle(para.getStyle()).getCTStyle().getBasedOn().getVal();
+                        levint = Integer.parseInt(styles.getStyle(styleName).getCTStyle().getPPr().getOutlineLvl().getVal().toString())+1;
+                        text = getOrderCode(levint+"") + "  " + para.getParagraphText();
+                        //System.out
+                        //        .print(styles.getStyle(styleName).getCTStyle().getPPr().getOutlineLvl().getVal()+",");
+                        //System.out.println(para.getParagraphText());
 
-                    //判断该段落的样式的基础样式是否设置了大纲级别
-                } else if (styles.getStyle(styles.getStyle(para.getStyle()).getCTStyle().getBasedOn().getVal())
-                        .getCTStyle().getPPr().getOutlineLvl() != null) {
-                    // System.out.println("getBasedOn");
-                    String styleName = styles.getStyle(para.getStyle()).getCTStyle().getBasedOn().getVal();
-                    System.out
-                            .print(styles.getStyle(styleName).getCTStyle().getPPr().getOutlineLvl().getVal()+",");
-                    System.out.println(para.getParagraphText());
-
-                    //没有设置大纲级别
-                } else {
-                    // System.out.println("null");
+                        //没有设置大纲级别
+                    } else {
+                        // System.out.println("null");
+                    }
+                } catch (Exception e) {
+                    // TODO: handle exception
                 }
-            }catch (Exception e) {
-                // TODO: handle exception
-            }
+                if(levint>0){
+                    workerLogger.info(levint + "," + text);
+                }
             /**
             ArrayList<String> al = new ArrayList<String>();
             try {
@@ -99,6 +113,7 @@ public class WordWorker implements Workers {
             }
             **/
         }
+        workerLogger.info("-------------demo end----------------");
     }
 
 
