@@ -1,1 +1,2 @@
-一、先做wordreader，做word到xmind转换用。
+一、这个项目用来做java爬虫用。
+- [ ] 能爬再说。
