@@ -7,3 +7,4 @@
 WordReader/*.classpath
 WordReader/*.project
 WordReader/*.settings
+target/*

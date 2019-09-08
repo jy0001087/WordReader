@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
             http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-<modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
     <groupId>com.leathersheer.tools</groupId>
     <artifactId>Spider</artifactId>
     <version>0.1-SNAPSHOT</version>
@@ -22,7 +22,7 @@
     </build>
     <!-- Junit5插件修正end -->
 
-        <dependencies>
+    <dependencies>
         <!-- Junit5配置 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -49,7 +49,20 @@
             <version>2.12.1</version>
         </dependency>
         <!-- Log4J2配置 end-->
+        <!-- Jsoup 配置 start-->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.12.1</version>
+        </dependency>
+        <!-- Jsoup 配置 start-->
+        <!-- HttpClient 配置 start-->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.9</version>
+        </dependency>
+        <!-- HttpClient 配置 end-->
     </dependencies>
     <!-- ... -->
-
 </project>
