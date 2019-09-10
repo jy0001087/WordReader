@@ -8,7 +8,7 @@
         <Appender type="Console" name="STDOUT">
             <Layout type="PatternLayout" pattern="%m MDC%X%n"/>
         </Appender>
-        <Appender type="File" name="File" fileName="${filename}">
+        <Appender type="File" name="File" fileName="${filename}" append = "false">
             <Layout type="PatternLayout">
                 <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
             </Layout>
