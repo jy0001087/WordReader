@@ -23,6 +23,7 @@ public class WeiboSpider extends Spider {
 
     @Override
     public Document getContent() {
+
         CloseableHttpClient httpclient = HttpClients.createDefault();
         CloseableHttpResponse response = null;
         Document doc = new Document("empty element");
@@ -31,18 +32,22 @@ public class WeiboSpider extends Spider {
         try {
             httpGet.setHeader("User-Agent","spider");
             response = httpclient.execute(httpGet);
+
             workerLogger.trace("----------head 信息如下----------");
             Header[] heads = response.getAllHeaders();
             for(int i=0;i<heads.length;i++) {
                 workerLogger.trace(heads[i]);
             }
             workerLogger.trace("----------head 信息结束----------");
+
             String html=EntityUtils.toString(response.getEntity());
             workerLogger.info("页面编码为 ： "+ super.getEncoding(html)+"  "+response.getStatusLine());
             doc = Jsoup.parse(html);
+
             workerLogger.trace("----------原始页面信息如下----------");
             workerLogger.trace(new String(html.getBytes("UTF-8"),"UTF-8"));
             workerLogger.trace("----------原始页面信息结束----------");
+
         }catch(Exception e){
             e.printStackTrace();
         }finally {
