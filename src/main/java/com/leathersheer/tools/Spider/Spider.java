@@ -24,6 +24,8 @@ public class Spider {
             httpGet.setHeader("User-Agent","spider");
             response = httpclient.execute(httpGet);
 
+            spiderLogger.trace("----------访问URL信息------- ：  "+url);
+
             spiderLogger.trace("----------head 信息如下----------");
             Header[] heads = response.getAllHeaders();
             for(int i=0;i<heads.length;i++) {

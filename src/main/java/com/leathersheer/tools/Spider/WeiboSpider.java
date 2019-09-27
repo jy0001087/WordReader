@@ -6,7 +6,7 @@ import org.jsoup.nodes.Document;
 
 public class WeiboSpider extends Spider {
     public static final Logger workerLogger = LogManager.getLogger();
-/**
+    
     public static void main(String[] args){
         System.out.println("WeiboSpider test  ok!");
         workerLogger.trace("WeiboSpider logger start!");
@@ -14,5 +14,4 @@ public class WeiboSpider extends Spider {
         Document doc = spider.getContent("https://weibo.com");
         workerLogger.info(doc.getElementsByClass("movie-list list").toString());
     }
-    */
 }
