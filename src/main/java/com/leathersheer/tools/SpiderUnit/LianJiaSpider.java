@@ -1,4 +1,4 @@
-package com.leathersheer.tools.Spider;
+package com.leathersheer.tools.SpiderUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,7 +12,7 @@ public class LianJiaSpider extends Spider {
     public static void main(String[] args){
         LianjiaLogger.trace("-----------LianjiaSpider start!!");
         LianJiaSpider spider= new LianJiaSpider();
-        spider.docFilter(spider.getContent("https://bj.lianjia.com/zufang/rt200600000001/"));//北京房源搜索-整租
+        spider.docFilter(spider.getContent("https://bj.lianjia.com/zufang/rt200600000001/",Document.class));//北京房源搜索-整租
     }
    
 /**
