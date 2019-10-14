@@ -13,13 +13,23 @@ public class GaoDeUnit {
 
     public static void main(String[] args) {
         GaoDeLogger.trace("-----进入GaoDeUnit------");
-        new GaoDeUnit().getLocate("北京", "朝阳门兴业银行大厦");
+        new GaoDeUnit().getLocate("北京", "丰台-看丹桥-新华街七里");
     }
 
+    /**
+     * city 城市中文名 address 具体到门牌号
+     */
     public void getLocate(String city, String address) {
         String requestUrl = GaoDeLocateUrl + "address=" + address + "&key=" + GaoDeKey + "&city=" + city;
         Spider spider = new Spider();
-        JSONObject doc = spider.getContent(requestUrl,JSONObject.class);
+        JSONObject doc = spider.getContent(requestUrl, JSONObject.class);
+        try {
+            for (int i = 0; i < Integer.parseInt((String)doc.get("count")); i++) {
+                
+            }
+        } catch (Exception e) {
+            GaoDeLogger.error("非数字输入");
+        }
         GaoDeLogger.trace(doc);
     }
 }

@@ -16,8 +16,9 @@ public class Spider {
     public String responseType = "";
 
     /**
-     * 使用泛型，在调用时确定返回数据类型，
-     * url为要访问的目标，T为要返回的数据类型
+     * HttpGet模块
+     * 使用泛型，在调用时确定需要返回数据类型，
+     * url为要访问的目标地址，T为要返回的数据类型
      */
     public <T> T getContent(String url, Class<T> type) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
