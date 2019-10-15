@@ -1,6 +1,8 @@
 package com.leathersheer.tools.SpiderUnit;
 
 import java.util.LinkedList;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import com.leathersheer.tools.SpiderUnit.SpiderBeans.HouseBean;
 
@@ -28,22 +30,45 @@ public class LianJiaSpider extends Spider {
         HouseBean house = new HouseBean();
         LinkedList<HouseBean> houselist = new LinkedList<>();
         if (elements.isEmpty()) {
-            LianjiaLogger.error("未找到目标class内容");
+            LianjiaLogger.error("未找到目标class内容:content__list--item");
         } else {
             for (Element element : elements) {
                 addresselements = element.getElementsByClass("content__list--item--des");// 筛选房源信息中的具体信息字符串
                 if (addresselements.size() == 1) {
-                    LianjiaLogger.trace("整体房屋情况："+addresselements.text());
+                    LianjiaLogger.trace("整体房屋情况字串：" + addresselements.text());
                     String[] addressArray = addresselements.text().split("/");
+                    // 地址
                     house.address = addressArray[0];
+                    // 面积(面积格式为  XX平方米，转为数字面积)
+                    house.area = this.getDigit(addressArray[1]);
+                    house.oriented = addressArray[2];
+                    house.housetype = addressArray[3];
+                    house.floor = addressArray[4];
                 } else {
                     LianjiaLogger.error("单条content__list--item中存在两个地址信息，查看网页源代码搂错误");
                     return houselist;
                 }
+
+                //寻找价格部分
+                house.price = this.getDigit(element.getElementsByClass("content__list--item-price").text());
                 houselist.add(house);
-                LianjiaLogger.info("本页地址信息：" + house.address);
+                LianjiaLogger.info("房源地址：" + house.address+"  面积 ："+house.area +" 价格："+house.price);
             }
         }
+        LianjiaLogger.info("本页共找到房源----"+houselist.size()+"个");
         return houselist;
+    }
+
+    public Integer getDigit(String text){
+        Integer result = null;
+        Pattern  p = Pattern.compile("[0-9]+");
+        Matcher m = p.matcher(text);
+        if(m.find()){
+        result = Integer.parseInt(m.group());
+        }else{
+            LianjiaLogger.error("正则表达式匹配错误---匹配原字串为："+text);
+            return null;
+        }
+        return result;
     }
 }
