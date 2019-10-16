@@ -8,6 +8,7 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFStyles;
 import org.apache.xmlbeans.XmlException;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTStyles;
+import org.apache.poi.openxml4j.util.ZipSecureFile;
 
 import java.io.*;
 import java.lang.reflect.Array;
@@ -15,10 +16,9 @@ import java.net.URL;
 import java.util.*;
 
 public class WordWorker implements Workers {
-
     public static final Logger workerLogger = LogManager.getLogger();
     public static CTStyles wordStyles = null;
-    public static String docxPath = "C:\\兴业材料\\医保\\青海省医保局\\编辑保存\\青海省医疗保障信息平台可行性研究报告-20190906-peng.docx";
+    public static String docxPath = "D:\\V新-青海省医疗保障信息平台可研-20191015.docx";
 
     static {
         XWPFDocument template;
@@ -40,13 +40,15 @@ public class WordWorker implements Workers {
     public static void main(String[] args) throws Exception {
         workerLogger.trace("logger start");
         WordWorker worker = new WordWorker();
-        //worker.getTitles(docxPath); //读docx写demo.txt
-        worker.modworker();  //读取demo.txt生成word文档。
+        worker.getTitles(docxPath); //读docx写demo.txt
+        //worker.modworker();  //读取demo.txt生成word文档。
     }
 
 
     public void getTitles(String filepath) throws Exception {
+
         File binFile = new File(filepath);
+        ZipSecureFile.setMinInflateRatio(-1.0d);
         FileInputStream inputstream = new FileInputStream(binFile);
         workerLogger.trace("docx status ： " + inputstream.available());
         XWPFDocument doc = new XWPFDocument(inputstream);
