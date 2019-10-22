@@ -17,3 +17,5 @@ target/*
 .vscode/
 target.docx
 
+target - 副本.docx
+src/main/resources/demo.txt
