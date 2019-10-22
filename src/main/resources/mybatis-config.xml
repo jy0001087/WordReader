@@ -7,14 +7,16 @@
     <environment id="development">
       <transactionManager type="JDBC"/>
       <dataSource type="POOLED">
-        <property name="driver" value="${driver}"/>
-        <property name="url" value="${url}"/>
-        <property name="username" value="${username}"/>
-        <property name="password" value="${password}"/>
+        <property name="driver" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://ssh.wind4us.com/tools?charSet=utf-8"/>
+        <property name="username" value="tools"/>
+        <property name="password" value="5816@RubberSheer"/>
       </dataSource>
     </environment>
   </environments>
+  <!--链家Mapper-->
   <mappers>
-    <mapper resource="com/leathersheer/tools/mybatis/spider/LianjiaMapper.xml"/>
+    <mapper resource="com/leathersheer/tools/SpiderUnit/LianjiaUnits/LianjiaMapper.xml"/>
+    <mapper resource="com/leathersheer/tools/SpiderUnit/DBUnits/DBUnitsMapper.xml"/>
   </mappers>
 </configuration>

@@ -16,3 +16,5 @@ target/*
 .settings/org.eclipse.m2e.core.prefs
 .vscode/
 target.docx
+src/main/resources/demo.txt
+target - 副本.docx
