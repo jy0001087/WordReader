@@ -6,4 +6,21 @@
     <select id="conntest" resultType="String">
     select 'conn is ok!' as txt;
     </select>
+
+    <insert id ="insertHouseinfo" parameterType="java.util.LinkedList" >
+                 insert into HouseInfo
+                  (Address, Area, Gdlocation, Floor,Price,HouseType,Oriented)
+                  values
+                  <foreach collection ="list" item="houseinfo" separator =",">
+                      (
+                      #{houseinfo.address}, 
+                      #{houseinfo.area},
+                      #{houseinfo.gdlocation},
+                      #{houseinfo.floor},
+                      #{houseinfo.price},
+                      #{houseinfo.housetype},
+                      #{houseinfo.oriented}
+                      )
+                  </foreach >
+     </insert >
 </mapper>

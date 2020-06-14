@@ -3,6 +3,11 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+
+  <settings>
+    <setting name="logImpl" value="LOG4J2"/>
+  </settings>
+
   <environments default="development">
     <environment id="development">
       <transactionManager type="JDBC"/>
@@ -14,6 +19,7 @@
       </dataSource>
     </environment>
   </environments>
+
   <!--链家Mapper-->
   <mappers>
     <mapper resource="com/leathersheer/tools/SpiderUnit/LianjiaUnits/LianjiaMapper.xml"/>

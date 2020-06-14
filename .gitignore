@@ -18,3 +18,4 @@ target/*
 target.docx
 src/main/resources/demo.txt
 target - 副本.docx
+.dbeaver/project-metadata.json

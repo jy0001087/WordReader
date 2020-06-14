@@ -112,4 +112,38 @@ public class Spider {
         }
         return "";
     }
+
+    public static void main(String[] args){
+        String addresselements = "大兴-大兴其它-南海家园三里 / 66㎡ /南 北 / 1室1厅1卫 / 高楼层 （15层）";
+        String[] addressArray = addresselements.split("/");
+
+        for (String text:addressArray){
+            //spiderLogger.trace("现在处理："+text);
+            int house_element_order = 0;
+            house_element_order = text.matches(".+-+.+")?1:house_element_order;
+            house_element_order = text.matches(".+㎡+.+")?2:house_element_order;
+            house_element_order = text.matches(".+室+.+")?3:house_element_order;
+            house_element_order = text.matches("东?南?西?北?")?4:house_element_order;
+            house_element_order = text.matches(".+层+.+")?5:house_element_order;
+            switch(house_element_order){
+                case 1:
+                    spiderLogger.trace("地址："+text);
+                    break;
+                case 2:
+                    spiderLogger.trace("面积："+text);   // 面积(面积格式为 XX平方米，转为数字面积)
+                    break;
+                case 3:
+                spiderLogger.trace("户型："+text); //户型
+                    break;
+                case 4:
+                spiderLogger.trace("朝向："+text);//朝向
+                    break;
+                case 5:
+                spiderLogger.trace("楼层："+text);//楼层
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 }
