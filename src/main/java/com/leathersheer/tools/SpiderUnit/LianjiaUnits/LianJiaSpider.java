@@ -12,6 +12,8 @@ import com.leathersheer.tools.SpiderUnit.SpiderBeans.HouseBean;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jsoup.nodes.Attribute;
+import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -31,7 +33,6 @@ public class LianJiaSpider extends Spider {
     public LinkedList<HouseBean> getHouse(Document doc) {
         Elements elements = doc.getElementsByClass("content__list--item");// 筛选页面中包含的房源信息块
         Elements addresselements = new Elements();
-
         GaoDeUnit gaode = new GaoDeUnit();
 
         LinkedList<HouseBean> houselist = new LinkedList<>();
@@ -40,6 +41,8 @@ public class LianJiaSpider extends Spider {
         } else {
             for (Element element : elements) {
                 HouseBean house = new HouseBean();
+                // 获取房源编码
+                house.house_code = element.attr("data-house_code");
                 addresselements = element.getElementsByClass("content__list--item--des");// 筛选房源信息中的具体信息字符串
                 if (addresselements.size() == 1) {
                     LianjiaLogger.debug("原页面房屋情况字串：" + addresselements.text());
@@ -81,7 +84,7 @@ public class LianJiaSpider extends Spider {
                 //获取高德location信息
                 house.gdlocation = gaode.getLocate("北京", house.address);
                 houselist.add(house);
-                LianjiaLogger.debug("加入houselist的房源地址：" + house.address + "  面积 ：" + house.area + " 价格：" + house.price + " 楼层：" + house.floor + "  GDlocation :"+house.gdlocation);
+                LianjiaLogger.debug("加入houselist的房源地址：" +house.address + "  面积 ：" + house.area + " 价格：" + house.price + " 楼层：" + house.floor + "  GDlocation :"+house.gdlocation + "房源编码 ： " + house.house_code);
             }
         }
         LianjiaLogger.info("本页共找到房源----" + houselist.size() + "个,具体信息如下：");
@@ -111,6 +114,7 @@ public class LianJiaSpider extends Spider {
         try (SqlSession sqlsession = db.getSqlSession().openSession()) {
             LianjiaMapper mapper = sqlsession.getMapper(LianjiaMapper.class);
             db.dblogger.debug("开始插入数据："+mapper.insertHouseinfo(houseinfo));
+            sqlsession.commit();
         } catch (Exception e) {
             db.dblogger.error("数据库操作异常！！");
             db.dblogger.error(e.toString(),e);

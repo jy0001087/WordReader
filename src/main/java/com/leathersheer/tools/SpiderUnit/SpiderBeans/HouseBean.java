@@ -8,6 +8,7 @@ public class HouseBean {
     public Integer price;  //价格
     public String housetype;  //户型
     public String oriented;  //朝向
+    public String house_code; //房源编号 唯一
 
     public HouseBean(){
     }

@@ -9,9 +9,9 @@
 
     <insert id ="insertHouseinfo" parameterType="java.util.LinkedList" >
                  insert into HouseInfo
-                  (Address, Area, Gdlocation, Floor,Price,HouseType,Oriented)
+                  (Address, Area, Gdlocation, Floor,Price,HouseType,Oriented,house_code)
                   values
-                  <foreach collection ="list" item="houseinfo" separator =",">
+                  <foreach collection ="list" item="houseinfo" index="index" separator =",">
                       (
                       #{houseinfo.address}, 
                       #{houseinfo.area},
@@ -19,7 +19,8 @@
                       #{houseinfo.floor},
                       #{houseinfo.price},
                       #{houseinfo.housetype},
-                      #{houseinfo.oriented}
+                      #{houseinfo.oriented},
+                      #{houseinfo.house_code}
                       )
                   </foreach >
      </insert >
