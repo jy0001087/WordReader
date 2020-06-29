@@ -58,10 +58,10 @@ public class LianJiaSpider extends Spider {
                 Integer targetPageInt = this.getDigit(pageCur) + 1; // 当前页pageCur页面会自动刷新
                 targetPage = pagePatten.replace("{page}", "" + targetPageInt);
 
-                LianjiaLogger.trace("下一页是：" + targetPage);
                 if (targetPageInt > this.getDigit(pageTotal)) {
                     targetPage = "Finished";
                 }
+                LianjiaLogger.trace("下一页是：" + targetPage);
             }
         }
         return "Success";
