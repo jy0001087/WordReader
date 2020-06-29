@@ -21,17 +21,28 @@ public class LianJiaSpider extends Spider {
 
     public static void main(String[] args) {
         LianJiaSpider lj = new LianJiaSpider();
-        lj.engine("https://bj.lianjia.com/ditiezufang/li46107350/rt200600000001/");
+        lj.engine("/ditiezufang/li46107350/rt200600000001/");
     }
 
+    /**
+     * 从源地址自动寻找下一页地址，完成所有“下一页”数据提取。
+     * 
+     * @param starturl
+     * @return
+     */
     public String engine(String starturl) {
         LianjiaLogger.trace("-----------LianjiaSpider start!!");
         LianJiaSpider spider = new LianJiaSpider();
 
         String targetPage = starturl;
         while (!targetPage.equals("Finished")) {
-
-            Document doc = spider.getContent(targetPage, Document.class);
+            try{
+                LianjiaLogger.info("休眠中，即将进入："+targetPage);
+                Thread.sleep(5000);
+            }catch(Exception e) {
+                LianjiaLogger.error("[9999]休眠时发生错误");
+            }
+            Document doc = spider.getContent("https://bj.lianjia.com"+targetPage, Document.class);
             spider.saveHouse(spider.getHouse(doc));// 北京房源搜索-整租
 
             Elements pageEles = doc.getElementsByClass("content__pg"); // 页面分析得来“下一页”元素
@@ -39,15 +50,16 @@ public class LianJiaSpider extends Spider {
                 LianjiaLogger.error("未找到目标class内容:content__pg");
                 targetPage = "Finished";
             } else {
-                LianjiaLogger.trace("找到元素：" + pageEles);
                 String pagePatten = pageEles.attr("data-url");
                 String pageTotal = pageEles.attr("data-totalPage");
                 String pageCur = pageEles.attr("data-curPage");
-                LianjiaLogger.trace("操作参数为"+pagePatten+pageTotal+pageCur);
-                Integer targetPageInt = getDigit(pageCur) + 1;
-                pagePatten.replace("{page}", "pg" + targetPageInt);
-                LianjiaLogger.trace("下一页是："+pagePatten);
-                if (targetPageInt == Integer.getInteger(pageTotal)) {
+                LianjiaLogger.trace("操作参数为:" + pagePatten + pageTotal + pageCur);
+
+                Integer targetPageInt = this.getDigit(pageCur) + 1; // 当前页pageCur页面会自动刷新
+                targetPage = pagePatten.replace("{page}", "" + targetPageInt);
+
+                LianjiaLogger.trace("下一页是：" + targetPage);
+                if (targetPageInt > this.getDigit(pageTotal)) {
                     targetPage = "Finished";
                 }
             }
