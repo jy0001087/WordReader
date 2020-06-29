@@ -10,7 +10,7 @@ import org.json.JSONArray;
 public class GaoDeUnit {
     public static final Logger GaoDeLogger = LogManager.getLogger();
     public static String GaoDeLocateUrl = "https://restapi.amap.com/v3/geocode/geo?";
-    public static String GaoDeKey = "a962cf357d200d7c0735d90426a7b8b3";
+    public static String GaoDeKey = "a962cf357d200d7c0735d90426a7b8b3"; //从高德处获取该参数
 
     public static void main(String[] args) {
         GaoDeLogger.trace("-----进入GaoDeUnit------");
@@ -33,7 +33,7 @@ public class GaoDeUnit {
             }
         } catch (Exception e) {
             GaoDeLogger.error("[9999]获取高德返回异常" + json);
-            return "地址异常";
+            return "地址数据获取异常";
         }
         GaoDeLogger.trace(json);
         return location;
