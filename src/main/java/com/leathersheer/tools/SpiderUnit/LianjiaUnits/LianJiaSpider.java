@@ -158,11 +158,18 @@ public class LianJiaSpider extends Spider {
             LianjiaMapper mapper = sqlsession.getMapper(LianjiaMapper.class);
 
             for (HouseBean houseinfo : houselist) {
-                db.dblogger.debug("开始插入数据：" + mapper.insertHouseinfo(houseinfo));
+                try {
+                    db.dblogger.debug("开始插入数据：" + mapper.insertHouseinfo(houseinfo));
+                } catch (Exception e) {
+                    db.dblogger.error("本条数据插入异常：" + houseinfo.house_code);
+                    db.dblogger.error(e.toString(), e);
+                    sqlsession.commit();
+                } finally {
+                    sqlsession.commit();
+                }
             }
-            sqlsession.commit();
         } catch (Exception e) {
-            db.dblogger.error("数据库操作异常！！");
+            db.dblogger.error("数据库操作连接异常！！");
             db.dblogger.error(e.toString(), e);
         }
     }
