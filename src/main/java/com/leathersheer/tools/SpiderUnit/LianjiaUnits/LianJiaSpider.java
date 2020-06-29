@@ -36,13 +36,13 @@ public class LianJiaSpider extends Spider {
 
         String targetPage = starturl;
         while (!targetPage.equals("Finished")) {
-            try{
-                LianjiaLogger.info("休眠中，即将进入："+targetPage);
+            try {
+                LianjiaLogger.info("休眠中，即将进入：" + targetPage);
                 Thread.sleep(5000);
-            }catch(Exception e) {
+            } catch (Exception e) {
                 LianjiaLogger.error("[9999]休眠时发生错误");
             }
-            Document doc = spider.getContent("https://bj.lianjia.com"+targetPage, Document.class);
+            Document doc = spider.getContent("https://bj.lianjia.com" + targetPage, Document.class);
             spider.saveHouse(spider.getHouse(doc));// 北京房源搜索-整租
 
             Elements pageEles = doc.getElementsByClass("content__pg"); // 页面分析得来“下一页”元素
@@ -130,11 +130,6 @@ public class LianJiaSpider extends Spider {
             }
         }
         LianjiaLogger.info("本页共找到房源----" + houselist.size() + "个,具体信息如下：");
-        int i = 0;
-        for (HouseBean houseinfo : houselist) {
-            LianjiaLogger.debug("第" + i + "套：" + houseinfo.address + "/" + houseinfo.floor);
-            i++;
-        }
         return houselist;
     }
 
@@ -157,11 +152,14 @@ public class LianJiaSpider extends Spider {
         return result;
     }
 
-    public void saveHouse(List<HouseBean> houseinfo) {
+    public void saveHouse(List<HouseBean> houselist) {
         DBTools db = new DBTools();
         try (SqlSession sqlsession = db.getSqlSession().openSession()) {
             LianjiaMapper mapper = sqlsession.getMapper(LianjiaMapper.class);
-            db.dblogger.debug("开始插入数据：" + mapper.insertHouseinfo(houseinfo));
+
+            for (HouseBean houseinfo : houselist) {
+                db.dblogger.debug("开始插入数据：" + mapper.insertHouseinfo(houseinfo));
+            }
             sqlsession.commit();
         } catch (Exception e) {
             db.dblogger.error("数据库操作异常！！");

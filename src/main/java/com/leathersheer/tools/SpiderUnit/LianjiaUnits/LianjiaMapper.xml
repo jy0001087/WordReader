@@ -11,17 +11,15 @@
                  insert into HouseInfo
                   (Address, Area, Gdlocation, Floor,Price,HouseType,Oriented,house_code)
                   values
-                  <foreach collection ="list" item="houseinfo" index="index" separator =",">
                       (
-                      #{houseinfo.address}, 
-                      #{houseinfo.area},
-                      #{houseinfo.gdlocation},
-                      #{houseinfo.floor},
-                      #{houseinfo.price},
-                      #{houseinfo.housetype},
-                      #{houseinfo.oriented},
-                      #{houseinfo.house_code}
+                      #{address}, 
+                      #{area},
+                      #{gdlocation},
+                      #{floor},
+                      #{price},
+                      #{housetype},
+                      #{oriented},
+                      #{house_code}
                       )
-                  </foreach >
      </insert >
 </mapper>
