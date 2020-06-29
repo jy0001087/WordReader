@@ -91,4 +91,7 @@
         </dependency>
     </dependencies>
     <!-- ... -->
+
+    <packaging>war</packaging>
+    
 </project>

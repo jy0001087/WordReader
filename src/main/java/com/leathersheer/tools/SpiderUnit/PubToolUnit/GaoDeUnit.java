@@ -18,7 +18,7 @@ public class GaoDeUnit {
     }
 
     /**
-     * city 城市中文名 address 具体到门牌号
+     * city 城市中文名 address 具体到门牌号，转换为经纬度信息
      */
     public String getLocate(String city, String address) {
         String requestUrl = GaoDeLocateUrl + "address=" + address + "&key=" + GaoDeKey + "&city=" + city;
