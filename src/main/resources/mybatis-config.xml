@@ -20,9 +20,9 @@
     </environment>
   </environments>
 
-  <!--链家Mapper-->
   <mappers>
     <mapper resource="com/leathersheer/tools/SpiderUnit/LianjiaUnits/LianjiaMapper.xml"/>
     <mapper resource="com/leathersheer/tools/SpiderUnit/DBUnits/DBUnitsMapper.xml"/>
+    <mapper resource="com/leathersheer/tools/SpiderUnit/Servlets/HouseMapper.xml"/>
   </mappers>
 </configuration>

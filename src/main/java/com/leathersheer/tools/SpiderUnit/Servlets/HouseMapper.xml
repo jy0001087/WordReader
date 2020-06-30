@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leathersheer.tools.SpiderUnit.Servlets.HouseMapper">
+
+    <resultMap id="houseinfo" type="com.leathersheer.tools.SpiderUnit.SpiderBeans.HouseBean">
+        <id column="id" property="id" />
+        <result column="address" property="address" />
+        <result column="area" property="area" />
+        <result column="gdlocation" property="gdlocation" />
+        <result column="floor" property="floor" />
+        <result column="price" property="price" />
+        <result column="housetype" property="housetype" />
+        <result column="oriented" property="oriented" />
+        <result column="house_code" property="house_code" />
+    </resultMap>
+
+    <select id="getAllHouseInfo" resultMap="houseinfo">
+    select * from houseinfo
+    </select>
+</mapper>
