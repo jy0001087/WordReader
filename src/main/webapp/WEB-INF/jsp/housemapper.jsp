@@ -16,6 +16,11 @@
 </head>
 
 <body>
+<%
+    out.println((request.getAttribute("houseinfolist")).getClass());
+    ArrayList houseinfo = (ArrayList) request.getAttribute("houseinfolist");
+    out.println(houseinfo.size());
+%>
 <script src="https://webapi.amap.com/loader.js"></script>
 <script type="text/javascript">
     AMapLoader.load({
@@ -31,6 +36,10 @@
             position: [116.617944, 39.926346]//位置
         });
         map.add(marker);//增加地图瞄点
+
+        var houseinfo = "<%=houseinfo%>";
+        document.getElementById("houseinfo").innerText=houseinfo.constructor;
+
     }).catch((e) => {
         console.error(e);  //加载错误提示
     });
@@ -39,11 +48,7 @@
 
 <div id="container">
 </div>
-<%
-    out.println((request.getAttribute("houseinfolist")).getClass());
-    ArrayList houseinfo = (ArrayList) request.getAttribute("houseinfolist");
-    out.println(houseinfo.size());
-%>
+<dif id="houseinfo"></dif>
 </body>
 
 </html>
