@@ -6,6 +6,8 @@
  </head>
 
  <body>
-  <h>第一个jsp</h>
+  <form action="HouseMapper">
+	<input type="submit" value="看地图">
+</form>
  </body>
 </html> 

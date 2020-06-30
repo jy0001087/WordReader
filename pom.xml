@@ -89,9 +89,19 @@
             <artifactId>postgresql</artifactId>
             <version>42.2.8</version>
         </dependency>
+
+        <!-- web 依赖配置start-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- web 依赖配置end-->
     </dependencies>
     <!-- ... -->
 
     <packaging>war</packaging>
-    
+
 </project>
