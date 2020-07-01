@@ -17,9 +17,9 @@
 
 <body>
 <%
-    out.println((request.getAttribute("houseinfolist")).getClass());
-    ArrayList houseinfo = (ArrayList) request.getAttribute("houseinfolist");
-    out.println(houseinfo.size());
+    out.println((request.getAttribute("HouseInfoJson")).getClass());
+    String houseinfo =  (String)request.getAttribute("HouseInfoJson");
+ //   out.println(houseinfo);
 %>
 <script src="https://webapi.amap.com/loader.js"></script>
 <script type="text/javascript">
@@ -36,9 +36,6 @@
             position: [116.617944, 39.926346]//位置
         });
         map.add(marker);//增加地图瞄点
-
-        var houseinfo = "<%=houseinfo%>";
-        document.getElementById("houseinfo").innerText=houseinfo.constructor;
 
     }).catch((e) => {
         console.error(e);  //加载错误提示

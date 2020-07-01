@@ -1,7 +1,7 @@
 package com.leathersheer.tools.SpiderUnit.Servlets;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public interface HouseMapper {
-    List getAllHouseInfo();
+    ArrayList getAllHouseInfo();
 }

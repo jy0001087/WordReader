@@ -21,7 +21,7 @@ public class LianJiaSpider extends Spider {
 
     public static void main(String[] args) {
         LianJiaSpider lj = new LianJiaSpider();
-        lj.engine("/ditiezufang/li46107350/rt200600000001/");
+        //lj.engine("/ditiezufang/li46107350/rt200600000001/");
     }
 
     /**
