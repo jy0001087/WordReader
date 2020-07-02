@@ -32,10 +32,24 @@
             center: [116.397428, 39.90923]
         });
         map.addControl(new AMap.Scale());
-        var marker = new AMap.Marker({
-            position: [116.617944, 39.926346]//位置
-        });
-        map.add(marker);//增加地图瞄点
+
+
+      var houseinfoArray = <%= houseinfo%>;
+        console.log(houseinfoArray.constructor);
+        for(const house of houseinfoArray){
+          var pointString = house.gdlocation;
+           var ponitArray = pointString.split(",");
+           console.log(ponitArray);
+           console.log(ponitArray.constructor);
+/*
+            var ponitArray = [116.397428, 39.90923];
+*/
+            var marker = new AMap.Marker({
+                position: ponitArray//位置
+            });
+            map.add(marker);//增加地图瞄点
+
+        };
 
     }).catch((e) => {
         console.error(e);  //加载错误提示
