@@ -62,10 +62,12 @@
                 "地址：" + house.address + "<br>" +
                 "房型：" + house.housetype +
                 "</div>";
-            marker.setLabel({
-                direction: 'left',
-                content: labelContent, //设置文本标注内容
-            });
+            if (house.price < 4500 && house.area >50 ) {
+                marker.setLabel({
+                    direction: 'left',
+                    content: labelContent, //设置文本标注内容
+                });
+            }
             /*
                         function markerClick(e) {
                             e.target.setLabel({
@@ -76,7 +78,8 @@
 
                         marker.on('click', markerClick);  //绑定单击事件
         */
-        };
+        }
+        ;
 
     }).catch((e) => {
         console.error(e);  //加载错误提示

@@ -16,7 +16,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class LianJiaSpider extends Spider {
+public class LianJiaSpider extends Spider implements Runnable {
     public static final Logger LianjiaLogger = LogManager.getLogger();
 
     public static void main(String[] args) {
@@ -172,5 +172,11 @@ public class LianJiaSpider extends Spider {
             db.dblogger.error("数据库操作连接异常！！");
             db.dblogger.error(e.toString(), e);
         }
+    }
+
+    @Override
+    public void run() {
+        LianJiaSpider lj = new LianJiaSpider();
+        lj.engine("/ditiezufang/li46107350/rt200600000001/");
     }
 }
