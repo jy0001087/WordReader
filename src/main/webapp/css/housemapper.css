@@ -1,0 +1,21 @@
+/*地图控件样式*/
+#container {
+    width: 1800px;
+    height: 1360px;
+}
+
+/*mark的lable样式*/
+.amap-marker-label {
+    border: 0;
+    background: rgba(247, 247, 247, 0.5);
+    box-shadow: 1px 1px 1px #888888;
+    border-radius: 10px;
+}
+/*mark的lable内文字样式*/
+.labelcontent {
+    position: relative;
+    margin: 0;
+    top: 0;
+    right: 0;
+    min-width: 0;
+}

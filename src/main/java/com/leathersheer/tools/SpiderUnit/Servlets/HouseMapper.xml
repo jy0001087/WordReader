@@ -14,6 +14,9 @@
         <result column="housetype" property="housetype" />
         <result column="oriented" property="oriented" />
         <result column="house_code" property="house_code" />
+        <result column="update_timestamp" property="update_timestamp" />
+        <result column="houseurl" property="houseurl" />
+        <result column="house_status" property="house_status" />
     </resultMap>
 
     <select id="getAllHouseInfo" resultMap="houseinfo">

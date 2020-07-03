@@ -64,7 +64,7 @@ public class HouseMap extends HttpServlet {
             HouseMapper mapper = sqlsession.getMapper(HouseMapper.class);
 
             try {
-                db.dblogger.debug("开始查询数据");
+                db.dblogger.info("开始查询数据");
                 houselist = mapper.getAllHouseInfo();
             } catch (Exception e) {
                 db.dblogger.error("数据查询异常：");

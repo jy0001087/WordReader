@@ -4,8 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+
 import com.leathersheer.tools.SpiderUnit.*;
 import com.leathersheer.tools.SpiderUnit.DBUnits.DBTools;
+import com.leathersheer.tools.SpiderUnit.PubToolUnit.DataConversion;
 import com.leathersheer.tools.SpiderUnit.PubToolUnit.GaoDeUnit;
 import com.leathersheer.tools.SpiderUnit.SpiderBeans.HouseBean;
 
@@ -21,16 +23,16 @@ public class LianJiaSpider extends Spider implements Runnable {
 
     public static void main(String[] args) {
         LianJiaSpider lj = new LianJiaSpider();
-        //lj.engine("/ditiezufang/li46107350/rt200600000001/");
+        lj.engine("/ditiezufang/li46107350/rt200600000001/",true);  //false：不翻页；true：自动翻页爬数据
     }
 
     /**
      * 从源地址自动寻找下一页地址，完成所有“下一页”数据提取。
-     * 
+     *
      * @param starturl
      * @return
      */
-    public String engine(String starturl) {
+    public String engine(String starturl,boolean pageTurnFlag) {
         LianjiaLogger.trace("-----------LianjiaSpider start!!");
         LianJiaSpider spider = new LianJiaSpider();
 
@@ -38,7 +40,7 @@ public class LianJiaSpider extends Spider implements Runnable {
         while (!targetPage.equals("Finished")) {
             try {
                 LianjiaLogger.info("休眠中，即将进入：" + targetPage);
-                Thread.sleep(5000);
+                Thread.sleep(20000);
             } catch (Exception e) {
                 LianjiaLogger.error("[9999]休眠时发生错误");
             }
@@ -58,7 +60,7 @@ public class LianJiaSpider extends Spider implements Runnable {
                 Integer targetPageInt = this.getDigit(pageCur) + 1; // 当前页pageCur页面会自动刷新
                 targetPage = pagePatten.replace("{page}", "" + targetPageInt);
 
-                if (targetPageInt > this.getDigit(pageTotal)) {
+                if (targetPageInt > this.getDigit(pageTotal) || !pageTurnFlag) {
                     targetPage = "Finished";
                 }
                 LianjiaLogger.trace("下一页是：" + targetPage);
@@ -74,6 +76,7 @@ public class LianJiaSpider extends Spider implements Runnable {
     public LinkedList<HouseBean> getHouse(Document doc) {
         Elements elements = doc.getElementsByClass("content__list--item");// 筛选页面中包含的房源信息块
         Elements addresselements = new Elements();
+        Elements detailelements = new Elements();
         GaoDeUnit gaode = new GaoDeUnit();
 
         LinkedList<HouseBean> houselist = new LinkedList<>();
@@ -84,6 +87,10 @@ public class LianJiaSpider extends Spider implements Runnable {
                 HouseBean house = new HouseBean();
                 // 获取房源编码
                 house.house_code = element.attr("data-house_code");
+                detailelements = element.getElementsByClass("content__list--item--aside"); //房源详情页面链接地址
+                if (detailelements.size() == 1) {
+                    house.houseurl = "https://bj.lianjia.com" +detailelements.attr("href");
+                }
                 addresselements = element.getElementsByClass("content__list--item--des");// 筛选房源信息中的具体信息字符串
                 if (addresselements.size() == 1) {
                     LianjiaLogger.debug("原页面房屋情况字串：" + addresselements.text());
@@ -124,18 +131,20 @@ public class LianJiaSpider extends Spider implements Runnable {
                 house.price = this.getDigit(element.getElementsByClass("content__list--item-price").text());
                 // 获取高德location信息
                 house.gdlocation = gaode.getLocate("北京", house.address);
+                house.update_timestamp = DataConversion.getCurrentTimeStamp();
+                house.house_status = 0;   //新增数据加入状态：初始
                 houselist.add(house);
                 LianjiaLogger.debug("加入houselist的房源地址：" + house.address + "  面积 ：" + house.area + " 价格：" + house.price
                         + " 楼层：" + house.floor + "  GDlocation :" + house.gdlocation + "房源编码 ： " + house.house_code);
             }
         }
-        LianjiaLogger.info("本页共找到房源----" + houselist.size() + "个,具体信息如下：");
+        LianjiaLogger.info("本页共找到房源----" + houselist.size() + "个.");
         return houselist;
     }
 
     /**
      * 从字符串获取整数
-     * 
+     *
      * @param text
      * @return
      */
@@ -159,7 +168,7 @@ public class LianJiaSpider extends Spider implements Runnable {
 
             for (HouseBean houseinfo : houselist) {
                 try {
-                    db.dblogger.debug("开始插入数据：" + mapper.insertHouseinfo(houseinfo));
+                    db.dblogger.info("开始插入数据：" + mapper.insertHouseinfo(houseinfo));
                 } catch (Exception e) {
                     db.dblogger.error("本条数据插入异常：" + houseinfo.house_code);
                     db.dblogger.error(e.toString(), e);
@@ -177,6 +186,6 @@ public class LianJiaSpider extends Spider implements Runnable {
     @Override
     public void run() {
         LianJiaSpider lj = new LianJiaSpider();
-        lj.engine("/ditiezufang/li46107350/rt200600000001/");
+        lj.engine("/ditiezufang/li46107350/rt200600000001/",true);
     }
 }

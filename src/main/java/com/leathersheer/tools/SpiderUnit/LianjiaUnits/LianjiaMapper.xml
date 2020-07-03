@@ -9,7 +9,7 @@
 
     <insert id ="insertHouseinfo" parameterType="java.util.LinkedList" >
                  insert into HouseInfo
-                  (Address, Area, Gdlocation, Floor,Price,HouseType,Oriented,house_code)
+                  (Address, Area, Gdlocation, Floor,Price,HouseType,Oriented,house_code,update_timestamp,houseurl,house_status)
                   values
                       (
                       #{address}, 
@@ -19,7 +19,10 @@
                       #{price},
                       #{housetype},
                       #{oriented},
-                      #{house_code}
+                      #{house_code},
+                      #{update_timestamp},
+                      #{houseurl},
+                      #{house_status}
                       )
      </insert >
 </mapper>
