@@ -10,8 +10,9 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <link href="<%=request.getContextPath()%>/css/housemapper.css" rel="stylesheet" type="text/css"/>
     <script type="text/javascript"
-            src="https://webapi.amap.com/maps?v=2.0&key=6dbd0a8a4bc84f8aa52ddb5827c00ea7&plugin=AMap.Scale,AMap.Transfer,AMap.ToolBar"></script>
+            src="https://webapi.amap.com/maps?v=2.0&key=6dbd0a8a4bc84f8aa52ddb5827c00ea7&plugin=AMap.Scale,AMap.Transfer,AMap.ToolBar,AMap.Adaptor"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/housemapper.js"></script>
+    <script type="text/javascript" src="https://cache.amap.com/lbs/static/TransferRender1230.js"></script>
 </head>
 
 <body>
@@ -45,15 +46,14 @@
             // result即是对应的公交路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_TransferResult
             if (status === 'complete') {
                 console.log('绘制公交路线完成')
-                /*
-        (new Lib.AMap.TransferRender()).autoRender({
-            data:result,
-            map:map,
-            panel:"panel"
-        });
+                drawRoute(result.plans[0]);
 
-                 */
-                drawRoute(result.plans[0])
+                (new Lib.AMap.TransferRender()).autoRender({
+                    data: result,
+                    map: map,
+                    panel: "panel"
+                });
+
             } else {
                 console.log('公交路线数据查询失败')
             }
@@ -113,12 +113,13 @@
                 // 其它transit_mode的情况如RAILWAY、TAXI等，该示例中不做处理
             }
         }
+        map.setFitView([ startMarker, endMarker ].concat(routeLines))
     }
 
     var map = new AMap.Map('container', {
         center: [116.397428, 39.90923]
     });
-   // map.addControl(new AMap.Scale());
+    // map.addControl(new AMap.Scale());
 
 
     var houseinfoArray = <%= houseinfo%>;
