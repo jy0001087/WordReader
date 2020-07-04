@@ -12,3 +12,17 @@
     border-radius: 10px;
 }
 /*mark的lable内文字样式*/
+#panel {
+    z-index: 999;
+    position: absolute;
+    background-color: white;
+    max-height: 100%;
+    overflow-y: auto;
+    right: 10px;
+    top: 10px;
+    width: 280px;
+}
+#panel .amap-lib-transfer {
+    border-radius: 4px;
+    overflow: hidden;
+}
