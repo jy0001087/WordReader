@@ -16,7 +16,7 @@
     </Appenders>
 
     <Loggers>
-        <Logger name="com.leathersheer.tools.SpiderUnit" level="trace" additivity="true">
+        <Logger name="com.leathersheer.tools.SpiderUnit" level="info" additivity="true">
             <AppenderRef ref="File"/>
         </Logger>
         <Root level="trace">

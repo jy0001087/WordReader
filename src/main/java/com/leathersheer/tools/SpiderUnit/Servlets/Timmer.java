@@ -34,6 +34,6 @@ public class Timmer extends HttpServlet {
 
     public static void main(String[] args) throws Exception{
         ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
-        service.scheduleAtFixedRate(new LianJiaSpider(),0,24, TimeUnit.DAYS);
+        service.scheduleAtFixedRate(new LianJiaSpider(),0,12, TimeUnit.HOURS);
     }
 }
