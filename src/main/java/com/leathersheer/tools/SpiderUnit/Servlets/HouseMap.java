@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.leathersheer.tools.SpiderUnit.DBUnits.DBTools;
+import com.leathersheer.tools.SpiderUnit.PubToolUnit.GaoDeUnit;
 import com.leathersheer.tools.SpiderUnit.SpiderBeans.HouseBean;
 
 import org.apache.ibatis.session.SqlSession;
@@ -40,12 +41,19 @@ public class HouseMap extends HttpServlet {
         list.add(house1);
         String json = mapper.writeValueAsString(list);
         HouseMapperLogger.trace(json);
+
+        HouseMapperLogger.info(hm.getTargetGdlocation());
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
         ArrayList houselist = this.getHouse();
         ObjectMapper mapper = new ObjectMapper();
+
         try {
+            String[] targetDdlocation = getTargetGdlocation();
+            String targetGdLocation = mapper.writeValueAsString(targetDdlocation);
+            request.setAttribute("targetGdLocation",targetGdLocation);
+
             String HouseInfoJson = mapper.writeValueAsString(houselist);
             request.setAttribute("HouseInfoJson", HouseInfoJson);
             request.getRequestDispatcher("/WEB-INF/jsp/housemapper.jsp").forward(request, response);
@@ -72,6 +80,25 @@ public class HouseMap extends HttpServlet {
             }
         }
         return houselist;
+    }
+
+    public String[] getTargetGdlocation(){
+        ArrayList<String[]> targetLocation = new ArrayList<>();
+        String[] targetDdLocation = new String[2];
+        String[] targetLocation1 = {"北京","海淀-四季青路7号"};
+        String[] targetLocation2 = {"北京","朝阳-朝阳门北大街20号"};
+
+        targetLocation.add(targetLocation1);
+        targetLocation.add(targetLocation2);
+
+        GaoDeUnit gd = new GaoDeUnit();
+
+        for(int i=0;i<targetLocation.size();i++){
+            String[] address = targetLocation.get(i);
+            targetDdLocation[i]=gd.getLocate(address[0],address[1]);
+        }
+
+        return targetDdLocation;
     }
 
 }

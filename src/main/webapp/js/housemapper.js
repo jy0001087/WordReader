@@ -5,9 +5,9 @@ function labelOnclick(houseinfoArray) {
                 window.open(house.houseurl, "_blank");
             }
             //移动端触屏设备支持
-            document.getElementById(house.houseurl).touchend = function () {
-                window.open(house.houseurl, "_blank");
-            }
+        //    document.getElementById(house.houseurl).touchend = function () {
+        //        window.open(house.houseurl, "_blank");
+           // }
         }
     }
 }
