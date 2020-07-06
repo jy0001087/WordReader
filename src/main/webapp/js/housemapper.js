@@ -1,3 +1,15 @@
+window.onload = function () {
+    for (const house of houseinfoArray) {
+        if (house.price < maxprice && house.area > minimumarea) {
+            var label = document.getElementById(house.houseurl);
+            label.addEventListener("click", function (e) {
+                window.open(house.houseurl, "_blank");
+                console.log(e.target.className);
+            });
+        }
+    }
+}
+
 function drawPoint(maxprice, minimumarea) {
     for (const house of houseinfoArray) {
         if (house.price < maxprice && house.area > minimumarea) {
@@ -19,11 +31,6 @@ function drawPoint(maxprice, minimumarea) {
             marker.setLabel({
                 direction: 'left',
                 content: labelContent, //设置文本标注内容
-            });
-            var label = document.getElementById(house.houseurl);
-            label.addEventListener("click", function (e) {
-                window.open(house.houseurl, "_blank");
-                console.log(e.target.className);
             });
             marker.on('dblclick', showInfoM);
         }
