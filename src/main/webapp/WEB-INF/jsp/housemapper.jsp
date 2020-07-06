@@ -10,7 +10,7 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <link href="<%=request.getContextPath()%>/css/housemapper.css" rel="stylesheet" type="text/css"/>
     <script type="text/javascript"
-            src="https://webapi.amap.com/maps?v=1.4.15&key=6dbd0a8a4bc84f8aa52ddb5827c00ea7&plugin=AMap.Transfer,Amap.Adaptor"></script>
+            src="https://webapi.amap.com/maps?v=1.4.15&key=6dbd0a8a4bc84f8aa52ddb5827c00ea7&plugin=AMap.Transfer,Amap.Adaptor,AMap.AdvancedInfoWindow"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/housemapper.js"></script>
     <script type="text/javascript" src="https://cache.amap.com/lbs/static/TransferRender1230.js"></script>
 </head>

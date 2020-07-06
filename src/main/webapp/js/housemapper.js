@@ -133,4 +133,13 @@ function drawRoute(route) {
 
 function showWindow() {
  console.log("展示窗体");
+    var content = '<div class="info-title">搜附近啊</div>';
+    var lnglat = [116.473188, 39.993253];
+    var infowindow = new AMap.AdvancedInfoWindow({
+        content: content,
+        asOrigin: false,
+        asDestination: false,
+        offset: new AMap.Pixel(0, -30)
+    });
+    infowindow.open(map,lnglat);
 }
