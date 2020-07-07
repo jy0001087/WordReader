@@ -20,6 +20,7 @@ function drawPoint(maxprice, minimumarea) {
                 position: ponitArray//位置
             });
             map.add(marker);//增加地图瞄点
+            markers.push(marker); //增加地图点对象记录，用于批量删除
 
             var labelContent = "<div class=\"labelcontent\" id = " + house.houseurl + ">" +
                 "租金：" + house.price + "<br>" +
@@ -32,21 +33,27 @@ function drawPoint(maxprice, minimumarea) {
                 direction: 'left',
                 content: labelContent, //设置文本标注内容
             });
-            marker.on('dblclick', showInfoM);
+            //marker.on('dblclick', showInfoM);
+            marker.on('click', showWindow);
         }
     }
 }
 
 
-function showInfoM(e) {
-    map.clearMap();
+function showInfoM(event) {
+    map.remove(markers);
     //数据预处理，格式。
-    console.log("showInfoM中的target ： " + e.target.getPosition());
-    var frompoint = e.target.getPosition().toString();
+    //console.log("showInfoM中的target ： " + event.target.getPosition());
+    console.log("showInfoM中的target-id ： " + event.target.getAttribute("lnglat"));
+    var frompoint = event.target.getAttribute("lnglat");
 
     var fromArray = frompoint.split(",");
-    var toArray = target[0].split(",");
-
+    var targetid = event.target.id;
+    if (targetid == 'target-yz') { //去四季青路线
+        var toArray = target[0].split(",");
+    }else{
+        var toArray = target[1].split(",");
+    }
     //处理公交线路
     transOptions = {
         map: map,
@@ -131,10 +138,13 @@ function drawRoute(route) {
     map.setFitView([startMarker, endMarker].concat(routeLines))
 }
 
-function showWindow() {
- console.log("展示窗体");
-    var content = '<div class="info-title">搜附近啊</div>';
-    var lnglat = [116.473188, 39.993253];
+function showWindow(e) {
+ console.log("展示窗体"+e.target.getPosition());
+ var lnglatString = e.target.getPosition().toString();
+    var content =   '<input id="target-yz" lnglat='+lnglatString+' type="button" class="btn" value="去东冉村路径" onclick="showInfoM(event)"/>' +
+        '<br>' +
+        '<input id="target-rf" lnglat='+lnglatString+' type="button" class="btn" value="去朝阳门" onclick="showInfoM(event)"/>'
+    var lnglat = e.target.getPosition();
     var infowindow = new AMap.AdvancedInfoWindow({
         content: content,
         asOrigin: false,

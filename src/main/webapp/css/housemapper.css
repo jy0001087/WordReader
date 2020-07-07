@@ -28,18 +28,6 @@
 }
 
 /*自定义信息窗体样式*/
-.custom-input-card {
-    width: 22rem;
-}
-
-.custom-input-card .btn {
-    margin-right: 1rem;
-}
-
-.custom-input-card .btn:last-child {
-    margin-right: 0;
-}
-
 .info-title {
     color: white;
     font-size: 14px;
@@ -50,18 +38,7 @@
     letter-spacing: 1px
 }
 
-.info-content {
-    font: 12px Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial;
-    padding: 4px;
-    color: #666666;
-    line-height: 23px;
-}
-
-.info-content img {
-    float: left;
-    margin: 3px;
-}
-
+/*搜索框样式*/
 .amap-info-combo .keyword-input{
     height: 25px;
     border-radius: 2px 0 0 2px;

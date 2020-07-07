@@ -19,12 +19,6 @@
 <form action="HouseMapper">
     <input type="submit" value="返回点列表">
 </form>
-<div class="input-card custom-input-card">
-    <h4>切换信息窗体</h4>
-    <div class="input-item">
-        <input type="button" class="btn" value="信息窗体" onClick="showWindow()"/>
-    </div>
-</div>
 <div id="container"></div>
 <div id="panel"></div>
 <%
@@ -43,6 +37,8 @@
     var map = new AMap.Map('container', {
         center: [116.397428, 39.90923]
     });
+
+    var markers = [];
 
     var houseinfoArray = <%= houseinfo%>;
     var target =<%=targetGdLocation%>;
