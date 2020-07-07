@@ -38,7 +38,8 @@
         center: [116.397428, 39.90923]
     });
 
-    var markers = [];
+    var markers = []; //点标记集合
+    var routeLines = [];  //绘制路线集合
 
     var houseinfoArray = <%= houseinfo%>;
     var target =<%=targetGdLocation%>;

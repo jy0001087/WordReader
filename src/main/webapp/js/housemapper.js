@@ -83,6 +83,8 @@ function showInfoM(event) {
 }
 
 function drawRoute(route) {
+    map.remove(routeLines);
+
     var startMarker = new AMap.Marker({
         position: route.segments[0].transit.origin,
         icon: 'https://webapi.amap.com/theme/v1.3/markers/n/start.png',
@@ -94,8 +96,6 @@ function drawRoute(route) {
         icon: 'https://webapi.amap.com/theme/v1.3/markers/n/end.png',
         map: map
     })
-
-    var routeLines = []
 
     for (var i = 0, l = route.segments.length; i < l; i++) {
         var segment = route.segments[i]
