@@ -1,4 +1,8 @@
-window.onload = function () {
+window.onload = function() {
+    addclickToLabel();
+}
+
+function addclickToLabel(){
     for (const house of houseinfoArray) {
         if (house.price < maxprice && house.area > minimumarea) {
             var label = document.getElementById(house.houseurl);
@@ -41,12 +45,8 @@ function drawPoint(maxprice, minimumarea) {
 
 
 function showInfoM(event) {
-    //地图清理部分
-    map.clearMap();
+
     showWindow(event);
-    var panel = document.getElementById("panel");
-    panel.innerHTML = "";
-    //地图清理部分结束
     //数据预处理，格式。
     //console.log("showInfoM中的target ： " + event.target.getPosition());
     console.log("showInfoM中的target-id ： " + event.target.getAttribute("lnglat"));
@@ -91,12 +91,19 @@ function showInfoM(event) {
 
 
 function showWindow(e) {
+    //地图清理部分
+    map.clearMap();
+    var panel = document.getElementById("panel");
+    panel.innerHTML = "";
+    //地图清理部分结束
     if (windowlnglatString == "init") {   //如果是第一次点击，则记录位置。否则不再重新记录位置
         windowlnglatString = e.target.getPosition().toString();
     }
     var content = '<input id="target-yz" lnglat=' + windowlnglatString + ' type="button" class="btn" value="去东冉村路径" onclick="showInfoM(event)"/>' +
         '<br>' +
-        '<input id="target-rf" lnglat=' + windowlnglatString + ' type="button" class="btn" value="去朝阳门" onclick="showInfoM(event)"/>'
+        '<input id="target-rf" lnglat=' + windowlnglatString + ' type="button" class="btn" value="去朝阳门" onclick="showInfoM(event)"/>'+
+        '<br>' +
+        '<input id="return-to-map"  type="button" class="btn" value="返回房源信息大图" onclick="showInfoClose()"/>'
     var windowInglatArray = windowlnglatString.split(",");
     var lnglat = new AMap.LngLat(windowInglatArray[0], windowInglatArray[1])
     var infowindow = new AMap.AdvancedInfoWindow({
@@ -105,10 +112,13 @@ function showWindow(e) {
         asDestination: false,
         offset: new AMap.Pixel(0, -30)
     });
-    //infowindow.on('close',showInfoClose);
     infowindow.open(map, lnglat);
 }
 
 function showInfoClose() {
+    console.log("触发关闭窗口事件");
+    map.clearMap();
     drawPoint(maxprice, minimumarea);
+    addclickToLabel();
+    windowlnglatString = "init";  // 关闭搜索页后，重置windowlnglatString为初始状态
 }

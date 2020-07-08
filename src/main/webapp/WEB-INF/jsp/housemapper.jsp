@@ -19,6 +19,7 @@
 <form action="HouseMapper">
     <input type="submit" value="返回点列表">
 </form>
+<input id="return-to-map"  type="button" class="btn" value="返走遍搜索页" onclick="showWindow(event)"/>
 <div id="container"></div>
 <div id="panel"></div>
 <%
