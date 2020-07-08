@@ -41,7 +41,12 @@ function drawPoint(maxprice, minimumarea) {
 
 
 function showInfoM(event) {
-    map.remove(markers);
+    //地图清理部分
+    map.clearMap();
+    showWindow(event);
+    var panel = document.getElementById("panel");
+    panel.innerHTML = "";
+    //地图清理部分结束
     //数据预处理，格式。
     //console.log("showInfoM中的target ： " + event.target.getPosition());
     console.log("showInfoM中的target-id ： " + event.target.getAttribute("lnglat"));
@@ -51,7 +56,7 @@ function showInfoM(event) {
     var targetid = event.target.id;
     if (targetid == 'target-yz') { //去四季青路线
         var toArray = target[0].split(",");
-    }else{
+    } else {
         var toArray = target[1].split(",");
     }
     //处理公交线路
@@ -67,89 +72,43 @@ function showInfoM(event) {
     transfer.search(new AMap.LngLat(fromArray[0], fromArray[1]), new AMap.LngLat(toArray[0], toArray[1]), function (status, result) {
         // result即是对应的公交路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_TransferResult
         if (status === 'complete') {
-            console.log('绘制公交路线完成')
-            drawRoute(result.plans[0]);
+            console.log('绘制公交路线完成');
+            /*
+             drawRoute(result.plans[0]);
 
-            (new Lib.AMap.TransferRender()).autoRender({
-                data: result,
-                map: map,
-                panel: "panel"
-            });
 
+             (new Lib.AMap.TransferRender()).autoRender({
+                 data: result,
+                 map: map,
+                 panel: "panel"
+             });
+ */
         } else {
             console.log('公交路线数据查询失败')
         }
     });
 }
 
-function drawRoute(route) {
-    map.remove(routeLines);
-
-    var startMarker = new AMap.Marker({
-        position: route.segments[0].transit.origin,
-        icon: 'https://webapi.amap.com/theme/v1.3/markers/n/start.png',
-        map: map
-    })
-
-    var endMarker = new AMap.Marker({
-        position: route.segments[route.segments.length - 1].transit.destination,
-        icon: 'https://webapi.amap.com/theme/v1.3/markers/n/end.png',
-        map: map
-    })
-
-    for (var i = 0, l = route.segments.length; i < l; i++) {
-        var segment = route.segments[i]
-        var line = null
-
-        // 绘制步行路线
-        if (segment.transit_mode === 'WALK') {
-            line = new AMap.Polyline({
-                path: segment.transit.path,
-                isOutline: true,
-                outlineColor: '#ffeeee',
-                borderWeight: 2,
-                strokeWeight: 5,
-                strokeColor: 'grey',
-                lineJoin: 'round',
-                strokeStyle: 'dashed'
-            })
-
-
-            line.setMap(map)
-            routeLines.push(line)
-        } else if (segment.transit_mode === 'SUBWAY' || segment.transit_mode === 'BUS') {
-            line = new AMap.Polyline({
-                path: segment.transit.path,
-                isOutline: true,
-                outlineColor: '#ffeeee',
-                borderWeight: 2,
-                strokeWeight: 5,
-                strokeColor: '#0091ff',
-                lineJoin: 'round',
-                strokeStyle: 'solid'
-            })
-
-            line.setMap(map)
-            routeLines.push(line)
-        } else {
-            // 其它transit_mode的情况如RAILWAY、TAXI等，该示例中不做处理
-        }
-    }
-    map.setFitView([startMarker, endMarker].concat(routeLines))
-}
 
 function showWindow(e) {
- console.log("展示窗体"+e.target.getPosition());
- var lnglatString = e.target.getPosition().toString();
-    var content =   '<input id="target-yz" lnglat='+lnglatString+' type="button" class="btn" value="去东冉村路径" onclick="showInfoM(event)"/>' +
+    if (windowlnglatString == "init") {   //如果是第一次点击，则记录位置。否则不再重新记录位置
+        windowlnglatString = e.target.getPosition().toString();
+    }
+    var content = '<input id="target-yz" lnglat=' + windowlnglatString + ' type="button" class="btn" value="去东冉村路径" onclick="showInfoM(event)"/>' +
         '<br>' +
-        '<input id="target-rf" lnglat='+lnglatString+' type="button" class="btn" value="去朝阳门" onclick="showInfoM(event)"/>'
-    var lnglat = e.target.getPosition();
+        '<input id="target-rf" lnglat=' + windowlnglatString + ' type="button" class="btn" value="去朝阳门" onclick="showInfoM(event)"/>'
+    var windowInglatArray = windowlnglatString.split(",");
+    var lnglat = new AMap.LngLat(windowInglatArray[0], windowInglatArray[1])
     var infowindow = new AMap.AdvancedInfoWindow({
         content: content,
         asOrigin: false,
         asDestination: false,
         offset: new AMap.Pixel(0, -30)
     });
-    infowindow.open(map,lnglat);
+    //infowindow.on('close',showInfoClose);
+    infowindow.open(map, lnglat);
+}
+
+function showInfoClose() {
+    drawPoint(maxprice, minimumarea);
 }

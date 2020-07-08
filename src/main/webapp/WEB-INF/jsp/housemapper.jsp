@@ -40,6 +40,7 @@
 
     var markers = []; //点标记集合
     var routeLines = [];  //绘制路线集合
+    var windowlnglatString = "init";  //点位置
 
     var houseinfoArray = <%= houseinfo%>;
     var target =<%=targetGdLocation%>;
