@@ -16,14 +16,12 @@ import java.util.concurrent.TimeUnit;
 public class Timmer extends HttpServlet {
 
     public static final Logger TimmerLogger = LogManager.getLogger();
+    public static final ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
 
         try {
-            ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
-
-            service.scheduleAtFixedRate(new LianJiaSpider(),0,24, TimeUnit.DAYS);
-
+            service.scheduleWithFixedDelay(new LianJiaSpider(),0,10, TimeUnit.HOURS);
             request.setAttribute("TimmerMessage","定时任务启动！");
             request.getRequestDispatcher("/WEB-INF/jsp/index.jsp").forward(request, response);
         } catch (Exception e) {
@@ -32,8 +30,14 @@ public class Timmer extends HttpServlet {
         }
     }
 
+    /**
+     * 测试用main，修改不会影响web应用内时间
+     * @param args
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception{
         ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
         service.scheduleAtFixedRate(new LianJiaSpider(),0,12, TimeUnit.HOURS);
+        System.out.println(Timmer.service);
     }
 }
