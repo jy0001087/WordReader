@@ -12,11 +12,22 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-@WebServlet("/Timmer")
+@WebServlet(urlPatterns="/Timmer",
+        loadOnStartup=1)
 public class Timmer extends HttpServlet {
 
     public static final Logger TimmerLogger = LogManager.getLogger();
     public static final ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
+
+    public void init(){
+        try {
+            service.scheduleWithFixedDelay(new LianJiaSpider(),0,10, TimeUnit.HOURS);
+            TimmerLogger.info("[0000]定时任务启动！！！");
+        } catch (Exception e) {
+            TimmerLogger.error("[9999]定时任务启动异常！！");
+            TimmerLogger.error(e.toString(), e);
+        }
+    }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
 
