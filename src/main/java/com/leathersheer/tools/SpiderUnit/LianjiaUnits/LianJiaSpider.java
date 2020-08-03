@@ -175,6 +175,7 @@ public class LianJiaSpider extends Spider implements Runnable {
                     sqlsession.commit();
                 } finally {
                     sqlsession.commit();
+                    sqlsession.close();
                 }
             }
         } catch (Exception e) {
