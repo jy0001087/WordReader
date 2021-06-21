@@ -23,7 +23,7 @@ public class LianJiaSpider extends Spider implements Runnable {
 
     public static void main(String[] args) {
         LianJiaSpider lj = new LianJiaSpider();
-        lj.engine("/ditiezufang/li46107350/rt200600000001/",true);  //false：不翻页；true：自动翻页爬数据
+        lj.engine("https://bj.lianjia.com/ditiezufang/li46107350s1120037311678106/",true);  //false：不翻页；true：自动翻页爬数据
     }
 
     /**
@@ -63,7 +63,7 @@ public class LianJiaSpider extends Spider implements Runnable {
                 if (targetPageInt > this.getDigit(pageTotal) || !pageTurnFlag) {
                     targetPage = "Finished";
                 }
-                LianjiaLogger.trace("下一页是：" + targetPage);
+                LianjiaLogger.info("下一页是：" + targetPage);
             }
         }
         return "Success";
@@ -89,7 +89,7 @@ public class LianJiaSpider extends Spider implements Runnable {
                 house.house_code = element.attr("data-house_code");
                 detailelements = element.getElementsByClass("content__list--item--aside"); //房源详情页面链接地址
                 if (detailelements.size() == 1) {
-                    house.houseurl = "https://bj.lianjia.com" +detailelements.attr("href");
+                    house.houseurl = "https://bj.lianjia.com" + detailelements.attr("href");
                 }
                 addresselements = element.getElementsByClass("content__list--item--des");// 筛选房源信息中的具体信息字符串
                 if (addresselements.size() == 1) {
@@ -133,9 +133,11 @@ public class LianJiaSpider extends Spider implements Runnable {
                 house.gdlocation = gaode.getLocate("北京", house.address);
                 house.update_timestamp = DataConversion.getCurrentTimeStamp();
                 house.house_status = 0;   //新增数据加入状态：初始
-                houselist.add(house);
-                LianjiaLogger.debug("加入houselist的房源地址：" + house.address + "  面积 ：" + house.area + " 价格：" + house.price
-                        + " 楼层：" + house.floor + "  GDlocation :" + house.gdlocation + "房源编码 ： " + house.house_code);
+                if (house.price <= 5000) {
+                    houselist.add(house);
+                    LianjiaLogger.debug("加入houselist的房源地址：" + house.address + "  面积 ：" + house.area + " 价格：" + house.price
+                            + " 楼层：" + house.floor + "  GDlocation :" + house.gdlocation + "房源编码 ： " + house.house_code);
+                }
             }
         }
         LianjiaLogger.info("本页共找到房源----" + houselist.size() + "个.");
@@ -163,7 +165,8 @@ public class LianJiaSpider extends Spider implements Runnable {
 
     public void saveHouse(List<HouseBean> houselist) {
         DBTools db = new DBTools();
-        try (SqlSession sqlsession = db.getSqlSession().openSession()) {
+        SqlSession sqlsession = db.getSqlSession().openSession();
+        try {
             LianjiaMapper mapper = sqlsession.getMapper(LianjiaMapper.class);
 
             for (HouseBean houseinfo : houselist) {
@@ -171,16 +174,21 @@ public class LianJiaSpider extends Spider implements Runnable {
                     db.dblogger.info("开始插入数据：" + mapper.insertHouseinfo(houseinfo));
                 } catch (Exception e) {
                     db.dblogger.error("本条数据插入异常：" + houseinfo.house_code);
+                    if(e.getMessage().contains("duplicate key value violates unique constraint \"houseinfo_house_code_idx\"")){
+                        db.dblogger.info("当前房屋信息已存在");
+                    }else{
                     db.dblogger.error(e.toString(), e);
+                    }
                     sqlsession.commit();
                 } finally {
                     sqlsession.commit();
-                    sqlsession.close();
                 }
             }
         } catch (Exception e) {
             db.dblogger.error("数据库操作连接异常！！");
             db.dblogger.error(e.toString(), e);
+        }finally {
+        sqlsession.close();
         }
     }
 
