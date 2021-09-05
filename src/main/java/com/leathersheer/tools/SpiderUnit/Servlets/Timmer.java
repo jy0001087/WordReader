@@ -12,8 +12,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-@WebServlet(urlPatterns="/Timmer",
-        loadOnStartup=1)
+@WebServlet(urlPatterns="/Timmer")
 public class Timmer extends HttpServlet {
 
     public static final Logger TimmerLogger = LogManager.getLogger();
