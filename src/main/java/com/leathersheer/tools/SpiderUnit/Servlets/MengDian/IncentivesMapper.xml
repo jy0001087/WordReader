@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leathersheer.tools.SpiderUnit.Servlets.MengDian.IncentivesMapper">
+
+    <resultMap id="incentives" type="com.leathersheer.tools.SpiderUnit.Servlets.MengDian.IncentivesBean">
+        <id column="id" property="id" />
+        <result column="payment_days" property="payment_days" />
+        <result column="CP_code" property="CP_code" />
+        <result column="CP_name" property="CP_name" />
+        <result column="settle_rate" property="settle_rate" />
+        <result column="settle_amount" property="settle_amount" />
+    </resultMap>
+
+    <select id="getIncentives" resultMap="incentives">
+        select * from incentives
+    </select>
+</mapper>

@@ -55,17 +55,18 @@
 <div class="container">
 <div class="left" style="height:100%">
     <ul>
-        <li data-src="roadlist.html">朝阳</li>
-        <li data-src="roleList.action">海淀</li>
-        <li data-src="userVip.action">丰台</li>
+        <li data-src="roadlist.html">合作管理平台</li>
+        <li data-src="roleList.action">综合业务查询</li>
     </ul>
 </div>
 <div class="right">
     <table id="customers">
         <tr>
-            <th>Company</th>
-            <th>Contact</th>
-            <th>Country</th>
+            <th>账期</th>
+            <th>CP代码</th>
+            <th>CP名称</th>
+            <th>结算比例</th>
+            <th>>不含税结算费(元)</th>
         </tr>
         <tr>
             <td>Alfreds Futterkiste</td>
