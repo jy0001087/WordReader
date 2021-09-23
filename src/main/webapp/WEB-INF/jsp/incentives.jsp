@@ -17,6 +17,21 @@
             width:100%;
             border-collapse:collapse;
         }
+        #optionpanel
+        {
+            width:100%;
+            height: 15%;
+            padding:10px;
+        }
+        #buttonpanel
+        {
+            width:100%;
+            height:5%;
+        }
+        #righttop
+        {
+            background: #F7FCFF;
+        }
         #customers td, #customers th
         {
             font-size:1em;
@@ -61,7 +76,32 @@
         <li data-src="roleList.action">综合业务查询</li>
     </ul>
 </div>
-<div class="right">
+<div class="right" id="rightpanel">
+    <div class="right-top" id="righttop">
+        <form>
+            <table id="optionpanel">
+                <tr>
+                    <th>  </th>
+                    <th>  </th>
+                    <th>  </th>
+                </tr>
+                <tr>
+                    <td>时间： <input type="text" name="querydata" id="querydata">请输入6位数字，如“202001”</td>
+                    <td>   </td>
+                    <td>业务类型：<select><option>订阅服务</option></select></td>
+                </tr>
+            </table>
+            <table style="text-align: center" id="buttonpanel">
+                <tr>
+                    <td>                </td>
+                    <td> <button type="button">查询</button> </td>
+                    <td> <button type="button" onclick="clearTable();">重置</button> </td>
+                    <td>                </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div class="right-botton">
     <table id="customers">
         <tr>
             <th>账期</th>
@@ -71,6 +111,7 @@
             <th>不含税结算费(元)</th>
         </tr>
     </table>
+    </div>
 </div>
 </div>
 <%

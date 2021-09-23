@@ -33,3 +33,8 @@ function FillInForm(){
 function insertStr(soure, start, newStr){
     return soure.slice(0,start) + newStr + soure.slice(start) ;
 }
+
+function clearTable(){
+    var clearTarget = document.getElementById("querydata");
+    clearTarget.value="";
+}
