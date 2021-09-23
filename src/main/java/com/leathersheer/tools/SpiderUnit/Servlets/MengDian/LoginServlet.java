@@ -1,7 +1,7 @@
 package com.leathersheer.tools.SpiderUnit.Servlets.MengDian;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.leathersheer.tools.SpiderUnit.DBUnits.DBTools;
-import com.leathersheer.tools.SpiderUnit.Servlets.HouseMapper;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 @WebServlet(name = "LoginServlet", urlPatterns="/Login")
 public class LoginServlet extends HttpServlet {
-    public static final Logger LoginLogger = LogManager.getLogger();
+    public static final Logger MengdianLogger = LogManager.getLogger();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -25,14 +25,13 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         String passwd = request.getParameter("password");
-        LoginLogger.debug("The login mumber is : "+username);
+        MengdianLogger.debug("The login mumber is : "+username);
 
         //业务查询逻辑
         ArrayList incentives = this.getIncentives();
-
-        for(int i=0;i<incentives.size();i++) {
-            LoginLogger.debug("This is result of Incentives :" + incentives.get(i));
-        }
+        ObjectMapper mapper = new ObjectMapper();
+        String incentivesforArray = mapper.writeValueAsString(incentives);
+        request.setAttribute("incentivesforArray", incentivesforArray);
         request.getRequestDispatcher("/WEB-INF/jsp/incentives.jsp").forward(request,response);
     }
 

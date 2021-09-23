@@ -9,6 +9,7 @@
 <html>
 <head>
     <title>业绩查询</title>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/js/incentives.js"></script>
     <style>
         #customers
         {
@@ -19,7 +20,7 @@
         #customers td, #customers th
         {
             font-size:1em;
-            border:1px solid #98bf21;
+            border:1px solid #CCECFF;
             padding:3px 7px 2px 7px;
         }
         #customers th
@@ -28,15 +29,16 @@
             text-align:left;
             padding-top:5px;
             padding-bottom:4px;
-            background-color:#A7C942;
-            color:#ffffff;
+            background-color:#CCECFF;
+            color:#000000;
         }
         #customers tr.alt td
         {
             color:#000000;
-            background-color:#EAF2D3;
+            background-color:#E5F6FF;
         }
 
+<%-- 左右分版 --%>
         .left{
             width: 12%;
             height: 100%;
@@ -66,60 +68,16 @@
             <th>CP代码</th>
             <th>CP名称</th>
             <th>结算比例</th>
-            <th>>不含税结算费(元)</th>
-        </tr>
-        <tr>
-            <td>Alfreds Futterkiste</td>
-            <td>Maria Anders</td>
-            <td>Germany</td>
-        </tr>
-        <tr class="alt">
-            <td>Berglunds snabbköp</td>
-            <td>Christina Berglund</td>
-            <td>Sweden</td>
-        </tr>
-        <tr>
-            <td>Centro comercial Moctezuma</td>
-            <td>Francisco Chang</td>
-            <td>Mexico</td>
-        </tr>
-        <tr class="alt">
-            <td>Ernst Handel</td>
-            <td>Roland Mendel</td>
-            <td>Austria</td>
-        </tr>
-        <tr>
-            <td>Island Trading</td>
-            <td>Helen Bennett</td>
-            <td>UK</td>
-        </tr>
-        <tr class="alt">
-            <td>Königlich Essen</td>
-            <td>Philip Cramer</td>
-            <td>Germany</td>
-        </tr>
-        <tr>
-            <td>Laughing Bacchus Winecellars</td>
-            <td>Yoshi Tannamuri</td>
-            <td>Canada</td>
-        </tr>
-        <tr class="alt">
-            <td>Magazzini Alimentari Riuniti</td>
-            <td>Giovanni Rovelli</td>
-            <td>Italy</td>
-        </tr>
-        <tr>
-            <td>North/South</td>
-            <td>Simon Crowther</td>
-            <td>UK</td>
-        </tr>
-        <tr class="alt">
-            <td>Paris spécialités</td>
-            <td>Marie Bertrand</td>
-            <td>France</td>
+            <th>不含税结算费(元)</th>
         </tr>
     </table>
 </div>
 </div>
+<%
+    String incentivesforArray = (String) request.getAttribute("incentivesforArray");
+%>
+<script type="text/javascript">
+    var incentivesformArray = <%= incentivesforArray %>
+</script>
 </body>
 </html>
