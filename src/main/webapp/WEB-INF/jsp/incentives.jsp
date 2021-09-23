@@ -91,7 +91,7 @@
         </tr>
     </table>
     <div class="right-top" id="righttop">
-        <form>
+        <form action="Login" method="post">
             <table id="optionpanel">
                 <tr>
                     <td>时间： <input type="text" name="querydata" id="querydata">请输入6位数字，如“202001”</td>
@@ -102,7 +102,7 @@
             <table style="text-align: center" id="buttonpanel">
                 <tr>
                     <td>                </td>
-                    <td> <button type="button">查询</button> </td>
+                    <td> <button type="button" onclick="this.form.submit()">查询</button> </td>
                     <td> <button type="button" onclick="clearTable();">重置</button> </td>
                     <td>                </td>
                 </tr>

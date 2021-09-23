@@ -25,8 +25,11 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         String passwd = request.getParameter("password");
+        String querydata = request.getParameter("querydata");
         MengdianLogger.debug("The login mumber is : "+username);
-
+        if(querydata!=null){
+            MengdianLogger.debug("querydata is not null it's :" +querydata);
+        }
         //业务查询逻辑
         ArrayList incentives = this.getIncentives();
         ObjectMapper mapper = new ObjectMapper();
