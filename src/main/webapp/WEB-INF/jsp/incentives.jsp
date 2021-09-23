@@ -66,6 +66,14 @@
             width: 85%;
             float: right;
         }
+        th{
+            background-image: linear-gradient(#FFFFFF, #BDE6FF);
+        }
+        #titletable{
+            width:100%;
+            height:30px;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
@@ -77,14 +85,14 @@
     </ul>
 </div>
 <div class="right" id="rightpanel">
+    <table id="titletable">
+        <tr>
+            <th>合作管理平台>>结算管理>>结算单管理</th>
+        </tr>
+    </table>
     <div class="right-top" id="righttop">
         <form>
             <table id="optionpanel">
-                <tr>
-                    <th>  </th>
-                    <th>  </th>
-                    <th>  </th>
-                </tr>
                 <tr>
                     <td>时间： <input type="text" name="querydata" id="querydata">请输入6位数字，如“202001”</td>
                     <td>   </td>
