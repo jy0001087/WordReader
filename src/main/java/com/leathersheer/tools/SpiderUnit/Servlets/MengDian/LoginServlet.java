@@ -26,12 +26,15 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String passwd = request.getParameter("password");
         String querydata = request.getParameter("querydata");
+        ArrayList incentives = new ArrayList();
         MengdianLogger.debug("The login mumber is : "+username);
         if(querydata!=null){
             MengdianLogger.debug("querydata is not null it's :" +querydata);
-        }
+
+        }else{
         //业务查询逻辑
-        ArrayList incentives = this.getIncentives();
+        incentives = this.getIncentives();
+        }
         ObjectMapper mapper = new ObjectMapper();
         String incentivesforArray = mapper.writeValueAsString(incentives);
         request.setAttribute("incentivesforArray", incentivesforArray);
