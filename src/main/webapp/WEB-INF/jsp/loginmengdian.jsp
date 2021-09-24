@@ -62,9 +62,16 @@
 
         }
     </script>
+    <script type="text/javascript">
+        function $(id){
+            return document.getElementById(id);
+        }
+        function changeCode(){
+            $("vcode").src = "ValidateCode";
+        }
+    </script>
 
-
-    <title>网站后台管理系统</title>
+    <title>中央音乐平台内容管理系统</title>
 </head>
 <body>
 <table width="100%" height="100%" border="0" align="center" cellpadding="0" cellspacing="0">
@@ -127,9 +134,14 @@
                                             </tr>
                                             <tr>
                                                 <td>验证:</td>
-                                                <td><input name="validatecode" type="text" id="validatecode" size="7">
-                                                    <img src="img/validatecode.bmp" align="absmiddle" border="0">
+                                                <td><input name="validatecode" type="text" id="validatecode" size="5">
+                                                    <img src="ValidateCode" align="absmiddle" border="0" id="vcode">
                                                 </td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td align="right"><a href="javascript:changeCode();">换一张</a></td>
                                                 <td></td>
                                             </tr>
                                             <tr>
@@ -207,6 +219,5 @@
     </tr>
     </tbody>
 </table>
-
 </body>
 </html>
