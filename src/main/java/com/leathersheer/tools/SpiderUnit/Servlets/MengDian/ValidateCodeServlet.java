@@ -60,7 +60,7 @@ public class ValidateCodeServlet extends HttpServlet {
             vCode = vCode + c;
         }
 
-        // 保存生成的5位验证码
+        // 保存生成的验证码
         request.getSession().setAttribute("vCode", vCode);
 
         // 验证码图片的生成

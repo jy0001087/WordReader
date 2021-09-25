@@ -23,8 +23,21 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String passwd = request.getParameter("password");
+        String username = request.getParameter("username");  //MDKJ
+        String passwd = request.getParameter("password");   //Nmwc666888
+        String veryfiledcode= request.getParameter("validatecode");
+
+        MengdianLogger.debug("username = "+username+"|| password = "+passwd+"|| vcode = "+veryfiledcode);
+        if(!username.equals("MDKJ")||!passwd.equals("Nmwc666888")){
+            MengdianLogger.debug("username error!!");
+            request.getSession().setAttribute("Alert","用户名或密码无效，请重新输入！");
+            request.getRequestDispatcher("/WEB-INF/jsp/loginmengdian.jsp").forward(request,response);
+        }
+        if(!veryfiledcode.equals(request.getSession().getAttribute("vCode").toString())){
+            request.getSession().setAttribute("Alert","验证码错误，请重新输入");
+            request.getRequestDispatcher("/WEB-INF/jsp/loginmengdian.jsp").forward(request,response);
+        }
+
         String querydata = request.getParameter("querydata");
         ArrayList incentives = new ArrayList();
         MengdianLogger.debug("The login mumber is : "+username);

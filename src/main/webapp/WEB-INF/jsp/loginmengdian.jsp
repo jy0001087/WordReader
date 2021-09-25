@@ -34,6 +34,9 @@
             text-decoration: none;
             color: #FF0000;
         }
+        #alert{
+            color: #FF0000;
+        }
     </style>
     <script language="javascript">
         function textLimitCheck(maxLength, asdf) {
@@ -67,8 +70,11 @@
             return document.getElementById(id);
         }
         function changeCode(){
-            $("vcode").src = "ValidateCode";
+            $("vcode").src = "ValidateCode?date="+new Date().getTime()
         }
+function denglusubmit(){
+            document.getElementById("dengluform").submit();
+}
     </script>
 
     <title>中央音乐平台内容管理系统</title>
@@ -119,7 +125,7 @@
                                                                                       width="210" height="138"></td>
                                 <td width="1" bgcolor="#99CCFF"></td>
                                 <td width="200" align="center" bgcolor="#DDEFFB">
-                                    <form action="Login" method="post">
+                                    <form action="Login" method="post" id="dengluform">
                                         <table height="110" border="0" cellpadding="0" cellspacing="0">
                                             <tbody>
                                             <tr>
@@ -171,7 +177,7 @@
                                     <table width="100%" border="0" cellpadding="0" cellspacing="0">
                                         <tbody>
                                         <tr>
-                                            <td align="right">&nbsp;</td>
+                                            <td align="right" id="alert" >&nbsp;<%=session.getAttribute("Alert")%></td>
                                             <td width="210" align="center">
                                                 <table border="0" cellpadding="0" cellspacing="0">
                                                     <tbody>
@@ -183,7 +189,7 @@
                                                     </tbody>
                                                 </table>
                                             </td>
-                                            <td width="37" align="right">&nbsp;</td>
+                                            <td width="37" align="right"> </td>
                                         </tr>
                                         </tbody>
                                     </table>
