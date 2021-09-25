@@ -29,29 +29,27 @@ public class LoginServlet extends HttpServlet {
 
         MengdianLogger.debug("username = "+username+"|| password = "+passwd+"|| vcode = "+veryfiledcode);
         if(!username.equals("MDKJ")||!passwd.equals("Nmwc666888")){
-            MengdianLogger.debug("username error!!");
             request.getSession().setAttribute("Alert","用户名或密码无效，请重新输入！");
             request.getRequestDispatcher("/WEB-INF/jsp/loginmengdian.jsp").forward(request,response);
-        }
-        if(!veryfiledcode.equals(request.getSession().getAttribute("vCode").toString())){
+        }else if(!veryfiledcode.equals(request.getSession().getAttribute("vCode").toString())){
             request.getSession().setAttribute("Alert","验证码错误，请重新输入");
             request.getRequestDispatcher("/WEB-INF/jsp/loginmengdian.jsp").forward(request,response);
-        }
+        }else {
+            String querydata = request.getParameter("querydata");
+            ArrayList incentives = new ArrayList();
+            MengdianLogger.debug("The login mumber is : " + username);
+            if (querydata != null) {
+                MengdianLogger.debug("querydata is not null it's :" + querydata);
 
-        String querydata = request.getParameter("querydata");
-        ArrayList incentives = new ArrayList();
-        MengdianLogger.debug("The login mumber is : "+username);
-        if(querydata!=null){
-            MengdianLogger.debug("querydata is not null it's :" +querydata);
-
-        }else{
-        //业务查询逻辑
-        incentives = this.getIncentives();
+            } else {
+                //业务查询逻辑
+                incentives = this.getIncentives();
+            }
+            ObjectMapper mapper = new ObjectMapper();
+            String incentivesforArray = mapper.writeValueAsString(incentives);
+            request.setAttribute("incentivesforArray", incentivesforArray);
+            request.getRequestDispatcher("/WEB-INF/jsp/incentives.jsp").forward(request, response);
         }
-        ObjectMapper mapper = new ObjectMapper();
-        String incentivesforArray = mapper.writeValueAsString(incentives);
-        request.setAttribute("incentivesforArray", incentivesforArray);
-        request.getRequestDispatcher("/WEB-INF/jsp/incentives.jsp").forward(request,response);
     }
 
     public ArrayList getIncentives() {
