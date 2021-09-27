@@ -177,7 +177,14 @@ function denglusubmit(){
                                     <table width="100%" border="0" cellpadding="0" cellspacing="0">
                                         <tbody>
                                         <tr>
-                                            <td align="right" id="alert" >&nbsp;<%=session.getAttribute("Alert")%></td>
+                                            <td align="right" id="alert" >&nbsp;
+                                                <%
+                                                    try {
+                                                        String alert = session.getAttribute("Alert").toString();
+                                                        out.print(alert);
+                                                    }catch(Exception e){
+                                                    }
+                                                %></td>
                                             <td width="210" align="center">
                                                 <table border="0" cellpadding="0" cellspacing="0">
                                                     <tbody>
