@@ -11,9 +11,11 @@
     <title>业绩查询</title>
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/incentives.js"></script>
     <style>
+        div{
+            font-family: SimSun-ExtB;
+        }
         #customers
         {
-            font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
             width:100%;
             border-collapse:collapse;
         }
@@ -91,7 +93,7 @@
         </tr>
     </table>
     <div class="right-top" id="righttop">
-        <form action="Login" method="post">
+        <form action="IncentivesProcess" method="post">
             <table id="optionpanel">
                 <tr>
                     <td>时间： <input type="text" name="querydata" id="querydata">请输入6位数字，如“202001”</td>

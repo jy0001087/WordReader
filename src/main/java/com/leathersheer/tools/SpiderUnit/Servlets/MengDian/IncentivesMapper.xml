@@ -16,4 +16,8 @@
     <select id="getIncentives" resultMap="incentives">
         select * from incentives
     </select>
+
+    <select id="getIncentivesWithData" resultMap="incentives" parameterType="java.lang.String">
+        select * from incentives where payment_days like CONCAT(#{data},'%')
+    </select>
 </mapper>
