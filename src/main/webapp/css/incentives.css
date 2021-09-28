@@ -1,0 +1,164 @@
+div {
+    font-family: SimSun-ExtB;
+}
+
+#customers {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#optionpanel {
+    width: 100%;
+    height: 15%;
+    padding: 10px;
+}
+
+#buttonpanel {
+    width: 100%;
+    height: 5%;
+}
+
+#righttop {
+    background: #F7FCFF;
+}
+
+/* 顶部div */
+#toppanel{
+    width:100%;
+    height: 50px;
+    background-image: linear-gradient(#FFFFFF, #BDE6FF);
+}
+
+#customers td, #customers th {
+    font-size: 1em;
+    border: 1px solid #CCECFF;
+    padding: 3px 7px 2px 7px;
+}
+
+#customers th {
+    font-size: 1.1em;
+    text-align: left;
+    padding-top: 5px;
+    padding-bottom: 4px;
+    background-color: #CCECFF;
+    color: #000000;
+}
+
+#customers tr.alt td {
+    color: #000000;
+    background-color: #E5F6FF;
+}
+
+#leftpanel {
+    width: 20%;
+    height: 100%;
+    float: left;
+    background: #c0c0c0;
+    cursor: pointer;
+}
+
+#left-negivation{
+    widhth:100%;
+    height: 65%;
+}
+
+#functionselection{
+    width:100%;
+    height:34%;
+    background-image: linear-gradient(#FFFFFF, #BDE6FF);
+}
+
+.right {
+    height: 100%;
+    width: 79%;
+    float: right;
+}
+
+th {
+    background-image: linear-gradient(#FFFFFF, #BDE6FF);
+    font-family: SimSun-ExtB;
+}
+
+#titletable {
+    width: 100%;
+    height: 30px;
+    text-align: left;
+}
+
+/*动态树*/
+.tree-container {
+    width: 100%;
+    background-color: #ccc;
+    font-size: 16px;
+    font-family: "Microsoft YaHei", sans-serif;
+}
+.tree-container ol {
+    margin-top: .2em;
+    margin-bottom: .2em;
+}
+.tree-container li {
+    margin-top: .2em;
+    margin-bottom: .2em;
+    list-style: none;
+
+}
+.node-container {
+    /*position: relative;*/
+    width: 200px;
+    height: auto;
+    max-height: 300px;
+    overflow: hidden;
+    /*border: 1px solid #ccc;*/
+
+}
+.node-container label {
+    display: inline-block;
+    width: 100%;
+    height: 1.4em;
+    line-height: 1.4em;
+    padding-left: 1em;
+    cursor: pointer;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -o-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+}
+.node-container label:before {
+    margin-right: 5px;
+}
+.node-container input {
+    display: none;
+    opacity: 0;
+    z-index: 2;
+}
+.node-container ol {
+    display: none;
+    height: auto;
+    max-height:300px;
+    overflow: hidden;
+    padding-left: 1em;
+}
+.node-container li {
+    width: 80px;
+    height: 1.4em;
+    padding-left: 1em;
+}
+.node-container li a {
+    padding-left: 1em;
+    text-decoration: none;
+    color: #666;
+}
+.node-container input:checked ~ ol {
+    display: block;
+    height: auto;
+    /*background: url(bottom-arrow.png) no-repeat 0 calc(.7em - 6px);*/
+}
+.node-container input:checked ~ ol > li {
+    height: auto;
+}
+.node-container input:checked ~ label {
+    color: #fff;
+}
+.node-container input:checked ~ label:before {
+}

@@ -10,82 +10,38 @@
 <head>
     <title>业绩查询</title>
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/incentives.js"></script>
-    <style>
-        div{
-            font-family: SimSun-ExtB;
-        }
-        #customers
-        {
-            width:100%;
-            border-collapse:collapse;
-        }
-        #optionpanel
-        {
-            width:100%;
-            height: 15%;
-            padding:10px;
-        }
-        #buttonpanel
-        {
-            width:100%;
-            height:5%;
-        }
-        #righttop
-        {
-            background: #F7FCFF;
-        }
-        #customers td, #customers th
-        {
-            font-size:1em;
-            border:1px solid #CCECFF;
-            padding:3px 7px 2px 7px;
-        }
-        #customers th
-        {
-            font-size:1.1em;
-            text-align:left;
-            padding-top:5px;
-            padding-bottom:4px;
-            background-color:#CCECFF;
-            color:#000000;
-        }
-        #customers tr.alt td
-        {
-            color:#000000;
-            background-color:#E5F6FF;
-        }
-
-<%-- 左右分版 --%>
-        .left{
-            width: 12%;
-            height: 100%;
-            float:left;
-            background:#c0c0c0;
-            cursor: pointer;
-        }
-        .right{
-            height: 100%;
-            width: 85%;
-            float: right;
-        }
-        th{
-            background-image: linear-gradient(#FFFFFF, #BDE6FF);
-        }
-        #titletable{
-            width:100%;
-            height:30px;
-            text-align: left;
-        }
-    </style>
+    <link href="<%=request.getContextPath()%>/css/incentives.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<div class="container">
-<div class="left" style="height:100%">
-    <ul>
-        <li data-src="roadlist.html">合作管理平台</li>
-        <li data-src="roleList.action">综合业务查询</li>
-    </ul>
+<div id="toppanel">
+    <li>标题占位符</li>
 </div>
+<div class="container">
+    <div id="leftpanel">
+        <div id="functionselection">
+
+        </div>
+<div id="left-negivation">
+        <li>
+            <div class="node-container">
+                <input type="checkbox" id="tree-node1" name="">
+                <label for="tree-node1">合作管理平台</label>
+                <ol>
+                    <li>
+                        <div class="node-container">
+                            <input type="checkbox" id="tree-node3" name="">
+                            <label for="tree-node3">结算管理</label>
+                            <ol>
+                                <li><a href="#">结算单管理</a></li>
+                            </ol>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </li>
+    </ol>
+</div>
+    </div>
 <div class="right" id="rightpanel">
     <table id="titletable">
         <tr>
