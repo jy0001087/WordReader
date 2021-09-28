@@ -22,16 +22,16 @@ div {
     background: #F7FCFF;
 }
 
-/* 顶部div */
+/* 顶部图片div */
 #toppanel{
     width:100%;
-    height: 50px;
-    background-image: linear-gradient(#FFFFFF, #BDE6FF);
+    height: 60px;
+    background-image: linear-gradient(#FFFFFF 50%, #D6E7FF 50%);
 }
 
 #customers td, #customers th {
     font-size: 1em;
-    border: 1px solid #CCECFF;
+    border: 1px solid rgba(191, 191, 191, 0.88);
     padding: 3px 7px 2px 7px;
 }
 
@@ -40,32 +40,44 @@ div {
     text-align: left;
     padding-top: 5px;
     padding-bottom: 4px;
-    background-color: #CCECFF;
+    background-color:#D6E7FF;
     color: #000000;
 }
 
 #customers tr.alt td {
     color: #000000;
-    background-color: #E5F6FF;
+    background-color: #D6E7FF;
 }
 
 #leftpanel {
     width: 20%;
     height: 100%;
     float: left;
-    background: #c0c0c0;
 }
 
 #left-negivation{
     widhth:100%;
     height: 65%;
     cursor: pointer;
+    border:3px solid rgba(191, 191, 191, 0.88);
 }
+
+#negivation-title{
+    width:100%;
+    height:30px;
+    background-image: linear-gradient(#FFFFFF, #D6E7FF);
+}
+
+#negivation-content{
+    padding: 10px;
+}
+
+
 
 #functionselection{
     width:100%;
     height:34%;
-    background-image: linear-gradient(#FFFFFF, #BDE6FF);
+    background-image: linear-gradient(#FFFFFF, #D6E7FF);
 }
 
 .right {
@@ -75,14 +87,16 @@ div {
 }
 
 th {
-    background-image: linear-gradient(#FFFFFF, #BDE6FF);
-    font-family: SimSun-ExtB;
+    background-image: linear-gradient(#FCFCFF 60%, #D6E7FF 40%);
 }
 
 #titletable {
     width: 100%;
-    height: 30px;
+    height: 40px;
     text-align: left;
+    padding-top: 5px;
+    padding-bottom: 4px;
+    border: #EBF3FF;
 }
 
 /*动态树*/

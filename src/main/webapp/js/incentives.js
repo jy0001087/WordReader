@@ -1,5 +1,6 @@
 window.onload = function() {
     FillInForm();
+    document.getElementById("rightpanel").style.display="none";
 }
 
 function FillInForm(){
@@ -37,4 +38,10 @@ function insertStr(soure, start, newStr){
 function clearTable(){
     var clearTarget = document.getElementById("querydata");
     clearTarget.value="";
+}
+
+function rightpaneljiazai(){
+
+    setTimeout("document.getElementById('rightpanel').style.display='block'",3000);
+
 }

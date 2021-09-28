@@ -22,6 +22,8 @@
 
         </div>
 <div id="left-negivation">
+    <div id="negivation-title">导航栏</div>
+    <div id="negivation-content">
     <ul class="domtree">
         <li>
             <input type="checkbox" id="check"/>
@@ -31,7 +33,7 @@
                     <input type="checkbox" id="check1"/>
                     <label for="check1">结算管理</label>
                     <ul class="column">
-                        <li>结算单管理</li>
+                        <li onclick="rightpaneljiazai();">结算单管理</li>
                     </ul>
                 </li>
             </ul>
@@ -43,6 +45,7 @@
             </ul>
         </li>
     </ul>
+    </div>
 </div>
     </div>
 <div class="right" id="rightpanel">
@@ -52,7 +55,7 @@
         </tr>
     </table>
     <div class="right-top" id="righttop">
-        <form action="IncentivesProcess" method="post">
+        <form action="IncentivesProcess" method="post" id="queryform">
             <table id="optionpanel">
                 <tr>
                     <td>时间： <input type="text" name="querydata" id="querydata">请输入6位数字，如“202001”</td>
