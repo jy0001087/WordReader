@@ -24,11 +24,13 @@
 <div id="left-negivation">
     <ul class="domtree">
         <li>
-            合作管理平台
-            <ul>
+            <input type="checkbox" id="check"/>
+            <label for="check">合作管理平台</label>
+            <ul class="column">
                 <li>
-                    结算管理
-                    <ul>
+                    <input type="checkbox" id="check1"/>
+                    <label for="check1">结算管理</label>
+                    <ul class="column">
                         <li>结算单管理</li>
                     </ul>
                 </li>
@@ -36,7 +38,7 @@
         </li>
         <li>
             综合信息管理
-            <ul>
+            <ul class="column">
                 <li>2级菜单</li>
             </ul>
         </li>

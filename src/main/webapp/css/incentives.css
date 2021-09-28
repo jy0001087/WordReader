@@ -54,12 +54,12 @@ div {
     height: 100%;
     float: left;
     background: #c0c0c0;
-    cursor: pointer;
 }
 
 #left-negivation{
     widhth:100%;
     height: 65%;
+    cursor: pointer;
 }
 
 #functionselection{
@@ -122,4 +122,13 @@ ul.domtree li:not(:last-child):after {
     border-style: none none none solid;
     border-width: 0.05em;
     border-color: #aaa;
+}
+.column{
+    display: none;
+}
+input[type='checkbox']{
+    display: none;
+}
+input[type="checkbox"]:checked ~ ul{
+    display: block;
 }
