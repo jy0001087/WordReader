@@ -24,22 +24,19 @@
 <div id="left-negivation">
     <ul class="domtree">
         <li>
-            1级菜单
+            合作管理平台
             <ul>
-                <li>2级菜单</li>
                 <li>
-                    2级菜单
+                    结算管理
                     <ul>
-                        <li>3级菜单</li>
-                        <li>3级菜单</li>
+                        <li>结算单管理</li>
                     </ul>
                 </li>
             </ul>
         </li>
         <li>
-            1级菜单
+            综合信息管理
             <ul>
-                <li>2级菜单</li>
                 <li>2级菜单</li>
             </ul>
         </li>
