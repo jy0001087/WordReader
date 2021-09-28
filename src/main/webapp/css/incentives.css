@@ -86,79 +86,40 @@ th {
 }
 
 /*动态树*/
-.tree-container {
-    width: 100%;
-    background-color: #ccc;
-    font-size: 16px;
-    font-family: "Microsoft YaHei", sans-serif;
+ul.domtree,
+ul.domtree ul {
+    margin: 0;
+    padding: 0 0 0 2em;
 }
-.tree-container ol {
-    margin-top: .2em;
-    margin-bottom: .2em;
-}
-.tree-container li {
-    margin-top: .2em;
-    margin-bottom: .2em;
+
+ul.domtree li {
     list-style: none;
+    position: relative;
+}
 
+ul.domtree>li:first-child:before {
+    border-style: none none solid none;
 }
-.node-container {
-    /*position: relative;*/
-    width: 200px;
-    height: auto;
-    max-height: 300px;
-    overflow: hidden;
-    /*border: 1px solid #ccc;*/
 
+ul.domtree li:before {
+    position: absolute;
+    content: '';
+    top: -0.01em;
+    left: -0.7em;
+    width: 0.5em;
+    height: 0.615em;
+    border-style: none none solid solid;
+    border-width: 0.05em;
+    border-color: #aaa;
 }
-.node-container label {
-    display: inline-block;
-    width: 100%;
-    height: 1.4em;
-    line-height: 1.4em;
-    padding-left: 1em;
-    cursor: pointer;
-    -webkit-user-select:none;
-    -moz-user-select:none;
-    -o-user-select:none;
-    -ms-user-select:none;
-    user-select:none;
-}
-.node-container label:before {
-    margin-right: 5px;
-}
-.node-container input {
-    display: none;
-    opacity: 0;
-    z-index: 2;
-}
-.node-container ol {
-    display: none;
-    height: auto;
-    max-height:300px;
-    overflow: hidden;
-    padding-left: 1em;
-}
-.node-container li {
-    width: 80px;
-    height: 1.4em;
-    padding-left: 1em;
-}
-.node-container li a {
-    padding-left: 1em;
-    text-decoration: none;
-    color: #666;
-}
-.node-container input:checked ~ ol {
-    display: block;
-    height: auto;
-    /*background: url(bottom-arrow.png) no-repeat 0 calc(.7em - 6px);*/
-}
-.node-container input:checked ~ ol > li {
-    height: auto;
-}
-.node-container input:checked ~ label {
-    color: #fff;
-}
-.node-container input:checked ~ label:before {
+
+ul.domtree li:not(:last-child):after {
+    position: absolute;
+    content: '';
+    top: 0.7em;
+    left: -0.7em;
+    bottom: 0;
+    border-style: none none none solid;
+    border-width: 0.05em;
+    border-color: #aaa;
 }

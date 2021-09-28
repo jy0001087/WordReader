@@ -22,24 +22,28 @@
 
         </div>
 <div id="left-negivation">
+    <ul class="domtree">
         <li>
-            <div class="node-container">
-                <input type="checkbox" id="tree-node1" name="">
-                <label for="tree-node1">合作管理平台</label>
-                <ol>
-                    <li>
-                        <div class="node-container">
-                            <input type="checkbox" id="tree-node3" name="">
-                            <label for="tree-node3">结算管理</label>
-                            <ol>
-                                <li><a href="#">结算单管理</a></li>
-                            </ol>
-                        </div>
-                    </li>
-                </ol>
-            </div>
+            1级菜单
+            <ul>
+                <li>2级菜单</li>
+                <li>
+                    2级菜单
+                    <ul>
+                        <li>3级菜单</li>
+                        <li>3级菜单</li>
+                    </ul>
+                </li>
+            </ul>
         </li>
-    </ol>
+        <li>
+            1级菜单
+            <ul>
+                <li>2级菜单</li>
+                <li>2级菜单</li>
+            </ul>
+        </li>
+    </ul>
 </div>
     </div>
 <div class="right" id="rightpanel">
