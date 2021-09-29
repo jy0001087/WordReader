@@ -1,5 +1,5 @@
 div {
-    font-family: SimSun-ExtB;
+    font-family: SimSun;
 }
 
 #customers {
@@ -40,15 +40,23 @@ div {
     text-align: left;
     padding-top: 5px;
     padding-bottom: 4px;
-    background-color:#D6E7FF;
-    color: #000000;
+    background-image: linear-gradient(#fbffff,#eff6ff 55%,#d4e5fd,#daebfd 45%);
 }
 
+#customers-bottom {
+    width:100%;
+    font-size: 1.1em;
+    color: rgba(255,255,255,0);
+    border: 1px solid rgba(191, 191, 191, 0.88);
+    background-image: linear-gradient(#fbffff,#eff6ff 55%,#d4e5fd,#daebfd 45%);
+}
+
+/*
 #customers tr.alt td {
     color: #000000;
     background-color: #D6E7FF;
 }
-
+*/
 #leftpanel {
     width: 20%;
     height: 100%;
@@ -65,14 +73,13 @@ div {
 #negivation-title{
     width:100%;
     height:30px;
-    background-image: linear-gradient(#FFFFFF, #D6E7FF);
+    border: 1px solid #e2effe;
+    background-image: linear-gradient(#fbffff,#eff6ff 55%,#d4e5fd,#daebfd 45%);
 }
 
 #negivation-content{
     padding: 10px;
 }
-
-
 
 #functionselection{
     width:100%;
@@ -86,17 +93,14 @@ div {
     float: right;
 }
 
-th {
-    background-image: linear-gradient(#FCFCFF 60%, #D6E7FF 40%);
-}
-
 #titletable {
     width: 100%;
     height: 40px;
     text-align: left;
     padding-top: 5px;
     padding-bottom: 4px;
-    border: #EBF3FF;
+    border: 1px solid #e2effe;
+    background-image: linear-gradient(#fbffff,#eff6ff 55%,#d4e5fd,#daebfd 45%);
 }
 
 /*动态树*/

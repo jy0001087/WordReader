@@ -83,6 +83,11 @@
             <th>不含税结算费(元)</th>
         </tr>
     </table>
+        <table id="customers-bottom">
+            <tr>
+                <th>1 </th>
+            </tr>
+        </table>
     </div>
 </div>
 </div>
