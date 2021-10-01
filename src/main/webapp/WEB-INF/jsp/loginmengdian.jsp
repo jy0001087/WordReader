@@ -37,6 +37,17 @@
         #alert{
             color: #FF0000;
         }
+        #title{
+            font-family: "楷体","楷体_GB2312";
+            font-size: 20px;
+            font-weight: 700;
+            color: #fffffe;
+        }
+        #titlediv{
+            background-image: linear-gradient(#295a99,#59a2ff);
+            border-radius: 4px;
+            text-align: center;
+        }
     </style>
     <script language="javascript">
         function textLimitCheck(maxLength, asdf) {
@@ -99,13 +110,14 @@ function denglusubmit(){
                             <tr>
                                 <td width="15"><img src="img/login_01.jpeg" width="15" height="69"></td>
                                 <td align="center">
-                                    <table width="95%" height="55" border="0" cellpadding="0" cellspacing="0">
+                                    <table width="99%" height="55" border="0" cellpadding="0" cellspacing="0">
                                         <tbody>
                                         <tr>
-                                            <td valign="bottom"><img src="img/login_14.jpeg"></td>
-                                            <td align="right" valign="bottom"><img src="img/login_15.jpeg"></td>
+                                            <td valign="bottom" width="10%"><img src="img/login_14-logo.jpg"></td>
+                                            <td id="title">
+                                                <div id="titlediv">中央音乐平台内容管理系统</div></td>
+                                            <td align="right" valign="bottom" width="20%"><img src="img/login_15.jpeg"></td>
                                         </tr>
-
                                         </tbody>
                                     </table>
                                 </td>
