@@ -9,17 +9,17 @@ div {
 
 #optionpanel {
     width: 100%;
-    height: 15%;
+    height: 10%;
     padding: 10px;
 }
 
 #buttonpanel {
     width: 100%;
-    height: 5%;
+    height: 4%;
 }
 
 #righttop {
-    background: #F7FCFF;
+    background: linear-gradient(45deg,#88B8DC,#ADD9FE,#88B8DC,#ADD9FE,#88B8DC,#ADD9FE,#88B8DC);
 }
 
 /* 顶部图片div */
@@ -149,4 +149,38 @@ input[type='checkbox']{
 }
 input[type="checkbox"]:checked ~ ul{
     display: block;
+}
+
+.butt{
+    background-image: linear-gradient(#fbffff,#eff6ff 55%,#d4e5fd,#daebfd 45%);
+    color: #698E97;
+    border-color: #698E97;
+    font-weight: bold;
+}
+
+#queryform{
+    margin: 5px;
+    margin-bottom: 10px;
+}
+
+#extractele{
+    color: #19547B;
+}
+
+.extractinput{
+    width:40px;
+    height: 20px;
+}
+
+html{
+    background-color: #E1EFFC;
+}
+
+#right-botton{
+    background-color: #F4F8FC;
+}
+
+#title-form{
+    height: 17px;
+    margin-right: 10px;
 }

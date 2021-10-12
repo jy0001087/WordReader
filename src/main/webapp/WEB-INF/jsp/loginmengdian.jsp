@@ -48,6 +48,12 @@
             border-radius: 4px;
             text-align: center;
         }
+        .butt{
+            background-image: linear-gradient(#fbffff,#eff6ff 55%,#d4e5fd,#daebfd 45%);
+            color: #698E97;
+            border-color: #698E97;
+            font-weight: bold;
+        }
     </style>
     <script language="javascript">
         function textLimitCheck(maxLength, asdf) {
@@ -164,7 +170,7 @@ function denglusubmit(){
                                             </tr>
                                             <tr>
                                                 <td></td>
-                                                <td><input name="Submit" type="submit" class="asdf" value="登陆"> </td>
+                                                <td><input name="Submit" type="submit" value="登陆" class="butt"> </td>
                                                 <td></td>
                                             </tr>
                                             </tbody>

@@ -16,7 +16,7 @@
 <div id="toppanel">
     <li>标题占位符</li>
 </div>
-<div class="container">
+<div id="container">
     <div id="leftpanel">
         <div id="functionselection">
 
@@ -51,7 +51,7 @@
 <div class="right" id="rightpanel">
     <table id="titletable">
         <tr>
-            <th>合作管理平台>>结算管理>>结算单管理</th>
+            <th><img src="img/title-form.png" id="title-form">合作管理平台>>结算管理>>结算单管理</th>
         </tr>
     </table>
     <div class="right-top" id="righttop">
@@ -66,14 +66,16 @@
             <table style="text-align: center" id="buttonpanel">
                 <tr>
                     <td>                </td>
-                    <td> <button type="button" onclick="this.form.submit()">查询</button> </td>
-                    <td> <button type="button" onclick="clearTable();">重置</button> </td>
+                    <td width="80px"> <button type="button" onclick="this.form.submit()" class="butt" >查询</button> </td>
+                    <td width="80px"> <button type="button" onclick="clearTable();" class="butt" >重置</button> </td>
+                    <td width="140px"> <button type="button"  class="butt" >导出Excel文件</button> </td>
+                    <td width="120px" id="extractele"><input class="extractinput">ᅳ<input  class ="extractinput">页</td>
                     <td>                </td>
                 </tr>
             </table>
         </form>
     </div>
-    <div class="right-botton">
+    <div id="right-botton">
     <table id="customers">
         <tr>
             <th>账期</th>

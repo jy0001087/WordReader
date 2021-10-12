@@ -14,10 +14,10 @@
     </resultMap>
 
     <select id="getIncentives" resultMap="incentives">
-        select * from incentives
+        select * from incentives order by payment_days desc
     </select>
 
     <select id="getIncentivesWithData" resultMap="incentives" parameterType="java.lang.String">
-        select * from incentives where payment_days like CONCAT(#{data},'%')
+        select * from incentives where payment_days like CONCAT(#{data},'%') order by payment_days desc
     </select>
 </mapper>
