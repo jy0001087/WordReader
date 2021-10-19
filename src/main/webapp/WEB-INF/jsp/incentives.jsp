@@ -66,7 +66,7 @@
             <table style="text-align: center" id="buttonpanel">
                 <tr>
                     <td>                </td>
-                    <td width="80px"> <button type="button" onclick="this.form.submit()" class="butt" >查询</button> </td>
+                    <td width="80px"> <button type="button" onclick="queryWithData();" class="butt" >查询</button> </td>
                     <td width="80px"> <button type="button" onclick="clearTable();" class="butt" >重置</button> </td>
                     <td width="140px"> <button type="button"  class="butt" >导出Excel文件</button> </td>
                     <td width="120px" id="extractele"><input class="extractinput">ᅳ<input  class ="extractinput">页</td>

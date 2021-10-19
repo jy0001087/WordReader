@@ -42,6 +42,10 @@ function clearTable(){
 
 function rightpaneljiazai(){
 
-    setTimeout("document.getElementById('rightpanel').style.display='block'",3000);
+    setTimeout("document.getElementById('rightpanel').style.display='block'",1000);
 
+}
+
+function queryWithData(){
+    document.getElementById("queryform").submit();
 }
