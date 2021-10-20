@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 @WebServlet(name = "incentiveProcessServlet", urlPatterns="/IncentivesProcess")
@@ -26,6 +28,7 @@ public class incentivesProcess extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String querydata = request.getParameter("querydata");
+        String ajaxflag = request.getParameter("ajaxflag");
         ArrayList incentives = new ArrayList();
         if (querydata != null) {
             MengdianLogger.debug("querydata is not null it's :" + querydata);
@@ -36,8 +39,20 @@ public class incentivesProcess extends HttpServlet {
         }
         ObjectMapper mapper = new ObjectMapper();
         String incentivesforArray = mapper.writeValueAsString(incentives);
-        request.setAttribute("incentivesforArray", incentivesforArray);
-        request.getRequestDispatcher("/WEB-INF/jsp/incentives.jsp").forward(request, response);
+        if(ajaxflag == null) {
+            request.setAttribute("incentivesforArray", incentivesforArray);
+            MengdianLogger.debug("enter forward! to /WEB-INF/jsp/incentives.jsp and ajaxflag = "+ajaxflag);
+            request.getRequestDispatcher("/WEB-INF/jsp/incentives.jsp").forward(request, response);
+        }else if(ajaxflag.equals("ajax")){
+            PrintWriter out = null;
+            try{
+                response.setCharacterEncoding("UTF-8");
+                out = response.getWriter();
+                out.print(incentivesforArray);
+            }catch(Exception e){
+                MengdianLogger.error("get outwriter error: "+e.getStackTrace());
+            }
+        }
     }
     public ArrayList getIncentives() {
         DBTools db = new DBTools();

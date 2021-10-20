@@ -1,9 +1,9 @@
 window.onload = function() {
-    FillInForm();
+    FillInForm(incentivesformArray);
     document.getElementById("rightpanel").style.display="none";
 }
 
-function FillInForm(){
+function FillInForm(incentivesformArray){
     var i=0;
     for(const incentive of incentivesformArray) {
         i++;
@@ -24,9 +24,9 @@ function FillInForm(){
         var tdnode5 = document.createElement("td");
         tdnode5.innerText=insertStr(incentive.settle_amount.toString(),-2,".");
         trnode.appendChild(tdnode5);
-        if(i%2 == 0) {
-            trnode.setAttribute("class","alt");
-        }
+        //if(i%2 == 0) {
+            trnode.setAttribute("class","dynamic-row");
+        //}
         incentiveTable.appendChild(trnode);
     }
 }
@@ -47,5 +47,30 @@ function rightpaneljiazai(){
 }
 
 function queryWithData(){
-    document.getElementById("queryform").submit();
+    tableCleaner();
+    var querydata=document.getElementById("querydata").value;
+    req= new XMLHttpRequest();
+    req.onreadystatechange=function()
+    {
+        if (req.readyState==4 && req.status==200)
+        {
+            var queryformArray=req.responseText;
+            FillInForm(JSON.parse(queryformArray));
+        }
+    }
+    req.open("POST","IncentivesProcess",true);
+    req.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+    req.send("ajaxflag=ajax&querydata="+querydata);
+}
+var queryformArray="";
+
+function tableCleaner(){
+    var table = document.getElementById("customers");
+    var trCollection = table.getElementsByClassName("dynamic-row");
+    console.log(trCollection)
+    while(trCollection.length>0)
+    {
+        var tr=trCollection.item(0);
+        tr.remove();
+    }
 }

@@ -11,6 +11,7 @@
     <title>业绩查询</title>
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/incentives.js"></script>
     <link href="<%=request.getContextPath()%>/css/incentives.css" rel="stylesheet" type="text/css"/>
+    <meta name="content-type" content="text/html; charset=UTF-8">
 </head>
 <body>
 <div id="toppanel">
