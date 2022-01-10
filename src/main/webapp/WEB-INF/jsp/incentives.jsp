@@ -76,7 +76,7 @@
             </table>
         </form>
     </div>
-    <div id="right-botton">
+    <div id="right-botton" ondblclick="tableAlter()">
     <table id="customers">
         <tr>
             <th>账期</th>

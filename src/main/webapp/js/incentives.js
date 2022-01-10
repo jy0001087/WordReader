@@ -74,3 +74,46 @@ function tableCleaner(){
         tr.remove();
     }
 }
+
+//添加 增加一行 按钮
+function tableAlter(){
+    if(document.getElementById("cloumn_adder_button")){
+        null;
+    }else {
+        alert("进入编辑状态，，点击‘增加一行’来新增记录");
+        var cloumn_adder_button = document.createElement("button");
+        cloumn_adder_button.textContent = "增加一行";
+        cloumn_adder_button.id = "cloumn_adder_button";
+        cloumn_adder_button.addEventListener("click",addCloumn);
+
+        var right_botton_div = document.getElementById("right-botton");
+        right_botton_div.append(cloumn_adder_button);
+    }
+}
+
+//绑定增加一行 按钮
+function addCloumn(){
+    var trnode = document.createElement("tr");
+    var tdnode1 = document.createElement("td");
+    tdnode1.innerText=" ";
+    tdnode1.contentEditable="true";
+    trnode.appendChild(tdnode1);
+    var tdnode2 = document.createElement("td");
+    tdnode2.innerText="699396";
+    trnode.appendChild(tdnode2);
+    var tdnode3 = document.createElement("td");
+    tdnode3.innerText="四川萌点科技有限公司";
+    trnode.appendChild(tdnode3);
+    var tdnode4 = document.createElement("td");
+    tdnode4.innerText="0.50";
+    trnode.appendChild(tdnode4);
+    var tdnode5 = document.createElement("td");
+    tdnode5.innerText="  ";
+    tdnode1.contentEditable="true";
+    //if(i%2 == 0) {
+    trnode.setAttribute("class","dynamic-row");
+    //}
+
+    var table_customers = document.getElementById("customers");
+    table_customers.appendChild(trnode);
+}
