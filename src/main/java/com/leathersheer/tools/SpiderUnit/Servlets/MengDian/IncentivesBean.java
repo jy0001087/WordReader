@@ -6,4 +6,5 @@ public class IncentivesBean {
     public String CP_name;
     public String settle_rate;
     public Integer settle_amount;
+    public Integer id;
 }

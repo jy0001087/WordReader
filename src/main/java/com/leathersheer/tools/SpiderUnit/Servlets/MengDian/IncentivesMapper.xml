@@ -11,6 +11,7 @@
         <result column="CP_name" property="CP_name" />
         <result column="settle_rate" property="settle_rate" />
         <result column="settle_amount" property="settle_amount" />
+        <result column="id" property="id" />
     </resultMap>
 
     <select id="getIncentives" resultMap="incentives">
