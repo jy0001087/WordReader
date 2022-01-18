@@ -75,20 +75,25 @@ function tableCleaner(){
     }
 }
 
-//添加 增加一行 按钮
+//添加 ”增加一行“以及“提交” 按钮
 function tableAlter(){
     if(document.getElementById("cloumn_adder_button")){
         null;
     }else {
-        alert("进入编辑状态，，点击‘增加一行’来新增记录");
-        var cloumn_adder_button = document.createElement("button");
-        cloumn_adder_button.textContent = "增加一行";
-        cloumn_adder_button.id = "cloumn_adder_button";
-        cloumn_adder_button.addEventListener("click",addCloumn);
-
-        var right_botton_div = document.getElementById("right-botton");
-        right_botton_div.append(cloumn_adder_button);
+        alert("进入编辑状态，点击‘增加一行’来新增记录，点击‘提交修改’保存至数据库");
+        addButton("新增一行","cloumn_adder_button",addCloumn,"right-botton");
+        addButton("提交修改","cloum_adder_commit_button",commitCloumn,"right-botton");
     }
+}
+
+//增加按钮
+function addButton(text,buttonId,clickFunction,parentNodeId){
+    var adder_button = document.createElement("button");
+    adder_button.textContent = text;
+    adder_button.id = buttonId;
+    adder_button.addEventListener("click",clickFunction);
+    var right_botton_div = document.getElementById(parentNodeId);
+    right_botton_div.append(adder_button);
 }
 
 //绑定增加一行 按钮
@@ -109,11 +114,42 @@ function addCloumn(){
     trnode.appendChild(tdnode4);
     var tdnode5 = document.createElement("td");
     tdnode5.innerText="  ";
-    tdnode1.contentEditable="true";
+    tdnode5.contentEditable="true";
+    trnode.appendChild(tdnode5);
     //if(i%2 == 0) {
     trnode.setAttribute("class","dynamic-row");
     //}
 
     var table_customers = document.getElementById("customers");
     table_customers.appendChild(trnode);
+}
+
+function commitCloumn(){
+    //获取最后一行数据
+    var table=document.getElementById("customers");
+    var insertData=[];
+    var x=0;
+    for(var i=0,rows=lastRowIndex=table.rows.length;i<rows;i++){
+        if(table.rows[i].cells[0].contentEditable=="true"){  //判断是否为新增行
+           for(var j=0,cells=table.rows[i].cells.length;j<cells;j++){
+               if(!insertData[x]) {
+                   insertData[x] = new Array;
+               }
+               insertData[x][j]=encodeURIComponent(table.rows[i].cells[j].innerHTML);
+           }
+           x++;  //每当有一行新增，x记录一行
+        }
+    }
+
+
+    req= new XMLHttpRequest();
+    req.onreadystatechange=function()
+    {
+        if (req.readyState==4 && req.status==200) {
+            alert("ojbk");
+        }
+    }
+    req.open("POST","CloumnCommitProcess",true);
+    req.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=utf-8");
+    req.send("ajaxflag=ajax&insertdata="+insertData);
 }

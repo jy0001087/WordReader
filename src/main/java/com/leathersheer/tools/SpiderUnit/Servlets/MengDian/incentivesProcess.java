@@ -16,7 +16,7 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-@WebServlet(name = "incentiveProcessServlet", urlPatterns="/IncentivesProcess")
+@WebServlet(name = "IncentiveProcessServlet", urlPatterns="/IncentivesProcess")
 public class incentivesProcess extends HttpServlet {
     public static final Logger MengdianLogger = LogManager.getLogger();
 
