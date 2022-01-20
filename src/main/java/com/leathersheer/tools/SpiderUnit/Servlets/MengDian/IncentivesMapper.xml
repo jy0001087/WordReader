@@ -21,4 +21,8 @@
     <select id="getIncentivesWithData" resultMap="incentives" parameterType="java.lang.String">
         select * from incentives where payment_days like CONCAT(#{data},'%') order by payment_days desc
     </select>
+
+    <insert id="commitColumn" parameterType="com.leathersheer.tools.SpiderUnit.Servlets.MengDian.IncentivesBean">
+        insert into incentives(payment_days,CP_code,CP_name,settle_rate,settle_amount) values(#{payment_days},#{CP_code},#{CP_name},#{settle_rate},#{settle_amount})
+    </insert>
 </mapper>
