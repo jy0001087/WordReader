@@ -125,31 +125,49 @@ function addCloumn(){
 }
 
 function commitCloumn(){
+    //数据检查
     //获取最后一行数据
     var table=document.getElementById("customers");
     var insertData=[];
     var x=0;
     for(var i=0,rows=lastRowIndex=table.rows.length;i<rows;i++){
         if(table.rows[i].cells[0].contentEditable=="true"){  //判断是否为新增行
-           for(var j=0,cells=table.rows[i].cells.length;j<cells;j++){
-               if(!insertData[x]) {
+           for(var j=0,cells=table.rows[i].cells.length;j<cells;j++) {
+               if (!insertData[x]) {
                    insertData[x] = new Array;
                }
-               insertData[x][j]=encodeURIComponent(table.rows[i].cells[j].innerHTML);
+               var content = table.rows[i].cells[j].innerHTML;
+               if (j==0 || j==4) {
+                   content=content.replace(/[^0-9]/ig,"");
+               if (typeof content == "undefined" || content == null || content == "") {
+                   alert("检查检查 填好再提交 靴靴");
+                   return;
+               }
+           }
+               insertData[x][j]=encodeURIComponent(content);
            }
            x++;  //每当有一行新增，x记录一行
         }
     }
-
-
+    //数据库操作
     req= new XMLHttpRequest();
     req.onreadystatechange=function()
     {
         if (req.readyState==4 && req.status==200) {
             alert("ojbk");
+            rmElement("cloumn_adder_button");
+            rmElement("cloum_adder_commit_button");
+            queryWithData();
         }
     }
     req.open("POST","CloumnCommitProcess",true);
     req.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=utf-8");
     req.send("ajaxflag=ajax&insertdata="+insertData);
+}
+
+function rmElement(elementId){
+    var self = document.getElementById(elementId);
+    var parent = self.parentElement;
+    var removed = parent.removeChild(self);
+    removed === self;
 }

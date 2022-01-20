@@ -67,8 +67,10 @@ public class CloumnCommitProcess extends HttpServlet {
                     newIncentive.settle_amount = Integer.parseInt(q.replaceAll("").trim());
                     break;
             }
+            if(temp==4){
+                commitCloumnsArray.add(newIncentive);
+            }
         }
-        commitCloumnsArray.add(newIncentive);
         return commitCloumnsArray;
     }
 
@@ -92,6 +94,6 @@ public class CloumnCommitProcess extends HttpServlet {
     }
 
     public static void main(String[] args) {
-        System.out.println(Integer.parseInt("5656565656"));
+        System.out.println(4%5);
     }
 }
