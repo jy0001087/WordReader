@@ -1,6 +1,5 @@
-package com.leathersheer.tools.SpiderUnit.Servlets.MengDian;
+package com.leathersheer.tools.SpiderUnit.MengDianUnits.MengDianDBProcess;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public interface IncentivesMapper {

@@ -1,9 +1,6 @@
-package com.leathersheer.tools.SpiderUnit.Servlets;
+package com.leathersheer.tools.SpiderUnit.LianJiaUnits.LianJiaDBProcess;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.leathersheer.tools.SpiderUnit.DBUnits.DBTools;
 import com.leathersheer.tools.SpiderUnit.PubToolUnit.GaoDeUnit;
-import com.leathersheer.tools.SpiderUnit.SpiderBeans.HouseBean;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.logging.log4j.LogManager;

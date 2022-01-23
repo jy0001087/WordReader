@@ -21,10 +21,14 @@
   </environments>
 
   <mappers>
-    <mapper resource="com/leathersheer/tools/SpiderUnit/LianjiaUnits/LianjiaMapper.xml"/>
     <mapper resource="com/leathersheer/tools/SpiderUnit/DBUnits/DBUnitsMapper.xml"/>
-    <mapper resource="com/leathersheer/tools/SpiderUnit/Servlets/HouseMapper.xml"/>
+    <!--
+    //TODO 修复sqlsession建立时会出现找不到以下注释掉文件的问题，否则链家爬虫无法工作。
+    <mapper resource="com/leathersheer/tools/SpiderUnit/LianJiaUnits/LianJiaDBProcess/LianjiaMapper.xml"/>
+
+    <mapper resource="com/leathersheer/tools/SpiderUnit/LianJiaUnits/LianJiaDBProcess/HouseMapper.xml"/>
+    -->
     <!-- 萌点页面 -->
-    <mapper resource="com/leathersheer/tools/SpiderUnit/Servlets/MengDian/IncentivesMapper.xml"/>
+    <mapper resource="com/leathersheer/tools/SpiderUnit/MengDianUnits/MengDianDBProcess/IncentivesMapper.xml"/>
   </mappers>
 </configuration>

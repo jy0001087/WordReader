@@ -1,6 +1,6 @@
 package com.leathersheer.tools.SpiderUnit.Servlets;
 
-import com.leathersheer.tools.SpiderUnit.LianjiaUnits.LianJiaSpider;
+import com.leathersheer.tools.SpiderUnit.LianJiaUnits.LianJiaSpider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

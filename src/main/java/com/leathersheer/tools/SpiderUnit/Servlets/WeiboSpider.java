@@ -1,5 +1,6 @@
-package com.leathersheer.tools.SpiderUnit;
+package com.leathersheer.tools.SpiderUnit.Servlets;
 
+import com.leathersheer.tools.SpiderUnit.Spider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.nodes.Document;

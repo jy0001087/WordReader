@@ -1,4 +1,4 @@
-package com.leathersheer.tools.SpiderUnit.LianjiaUnits;
+package com.leathersheer.tools.SpiderUnit.LianJiaUnits;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -7,9 +7,10 @@ import java.util.regex.Matcher;
 
 import com.leathersheer.tools.SpiderUnit.*;
 import com.leathersheer.tools.SpiderUnit.DBUnits.DBTools;
+import com.leathersheer.tools.SpiderUnit.LianJiaUnits.LianJiaDBProcess.LianjiaMapper;
 import com.leathersheer.tools.SpiderUnit.PubToolUnit.DataConversion;
 import com.leathersheer.tools.SpiderUnit.PubToolUnit.GaoDeUnit;
-import com.leathersheer.tools.SpiderUnit.SpiderBeans.HouseBean;
+import com.leathersheer.tools.SpiderUnit.LianJiaUnits.LianJiaDBProcess.HouseBean;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.logging.log4j.LogManager;
