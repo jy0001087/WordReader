@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @WebServlet(name="AmenityServlet",urlPatterns = "/Amenity")
 public class AmenityServlet extends HttpServlet {
@@ -28,6 +29,10 @@ public class AmenityServlet extends HttpServlet {
         Spider amenitySpider = new Spider();
         String url = req.getAttribute("url").toString();
         Document doc=amenitySpider.getContent(url,Document.class);
+        ArrayList captureString = new ArrayList();
+        //captureString.add("__NEXT_DATA__");
+        captureString.add("__NEXT_DATA__");
+        ArrayList captureList= AmenityProcessing.elementCapture(doc,captureString);
         req.getRequestDispatcher("/WEB_INF/jsp/amenity.jsp").forward(req,resp);
     }
 }
