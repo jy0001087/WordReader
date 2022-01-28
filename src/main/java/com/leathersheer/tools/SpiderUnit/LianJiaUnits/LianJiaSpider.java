@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-import com.leathersheer.tools.SpiderUnit.*;
 import com.leathersheer.tools.SpiderUnit.DBUnits.DBTools;
 import com.leathersheer.tools.SpiderUnit.LianJiaUnits.LianJiaDBProcess.LianjiaMapper;
 import com.leathersheer.tools.SpiderUnit.PubToolUnit.DataConversion;
 import com.leathersheer.tools.SpiderUnit.PubToolUnit.GaoDeUnit;
 import com.leathersheer.tools.SpiderUnit.LianJiaUnits.LianJiaDBProcess.HouseBean;
 
+import com.leathersheer.tools.SpiderUnit.SpiderServer.Spider;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

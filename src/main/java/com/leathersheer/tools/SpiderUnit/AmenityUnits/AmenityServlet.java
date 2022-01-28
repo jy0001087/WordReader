@@ -1,4 +1,9 @@
-package com.leathersheer.tools.SpiderUnit.Servlets;
+package com.leathersheer.tools.SpiderUnit.AmenityUnits;
+
+import com.leathersheer.tools.SpiderUnit.SpiderServer.Spider;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jsoup.nodes.Document;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,16 +14,20 @@ import java.io.IOException;
 
 @WebServlet(name="AmenityServlet",urlPatterns = "/Amenity")
 public class AmenityServlet extends HttpServlet {
+    public static final Logger amenityLogger = LogManager.getLogger();
+
     //get方法仅用于实现jsp页面的访问
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/WEB-INF/jsp/amenity.jsp").forward(req,resp);
     }
     // 业务逻辑写在post方法里，再返回给amenity页面
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // TODO  在这里实现爬虫爬取数据的功能
-
+        Spider amenitySpider = new Spider();
+        String url = req.getAttribute("url").toString();
+        Document doc=amenitySpider.getContent(url,Document.class);
         req.getRequestDispatcher("/WEB_INF/jsp/amenity.jsp").forward(req,resp);
     }
 }
