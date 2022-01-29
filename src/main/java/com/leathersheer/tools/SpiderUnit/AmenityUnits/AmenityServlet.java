@@ -3,7 +3,9 @@ package com.leathersheer.tools.SpiderUnit.AmenityUnits;
 import com.leathersheer.tools.SpiderUnit.SpiderServer.Spider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONObject;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,14 +27,18 @@ public class AmenityServlet extends HttpServlet {
     // 业务逻辑写在post方法里，再返回给amenity页面
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // TODO  在这里实现爬虫爬取数据的功能
         Spider amenitySpider = new Spider();
         String url = req.getAttribute("url").toString();
         Document doc=amenitySpider.getContent(url,Document.class);
         ArrayList captureString = new ArrayList();
-        //captureString.add("__NEXT_DATA__");
         captureString.add("__NEXT_DATA__");
-        ArrayList captureList= AmenityProcessing.elementCapture(doc,captureString);
+        ArrayList<Element> captureList= AmenityProcessing.elementCapture(doc,captureString);
+        //TODO 先实现功能，后期优化json解析逻辑
+        JSONObject json = new JSONObject(captureList.get(0).data());
+        JSONObject json1 = (JSONObject) json.get("query");
+        JSONObject json2 = (JSONObject)json1.get("GlobalSearchCriteria");
+        String id = json2.getString("transactionID");
+        
         req.getRequestDispatcher("/WEB_INF/jsp/amenity.jsp").forward(req,resp);
     }
 }

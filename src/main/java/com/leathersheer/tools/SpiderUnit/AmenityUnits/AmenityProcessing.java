@@ -12,18 +12,17 @@ import java.util.ArrayList;
 public class AmenityProcessing {
     public static final Logger amenityProcessingLogger = LogManager.getLogger();
 
-    public static ArrayList elementCapture(Document doc,ArrayList<String> targetlist){
+    public static ArrayList<Element> elementCapture(Document doc,ArrayList<String> targetlist){
         ArrayList<Element> captureResult = new ArrayList<Element>();
         for(String targetname : targetlist) {
             Element element = doc.getElementById(targetname);
             if (element == null) {
-                //找不到targetname的元素，则new Element，element=<CanNotFind id="CanNotFind">targetname</CanNotFind>,避免找不到后面直接抛异常
+                //找不到id为targetname的元素，则new Element element=<CanNotFind id="CanNotFind">targetname</CanNotFind>,避免找不到后面直接抛异常
                 Document emptydoc= Jsoup.parse("<CanNotFind id=\"CanNotFind\"></CanNotFind>");
                 element = emptydoc.getElementById("CanNotFind").text(targetname);
             }
                 captureResult.add(element);
         }
-
         for(Element element:captureResult){
             amenityProcessingLogger.debug(element.data());
         }
