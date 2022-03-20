@@ -30,5 +30,6 @@
     -->
     <!-- 萌点页面 -->
     <mapper resource="com/leathersheer/tools/SpiderUnit/MengDianUnits/MengDianDBProcess/IncentivesMapper.xml"/>
+    <mapper resource="com/leathersheer/tools/SpiderUnit/AI/DBUnits/ChengDuHouseMapper.xml"/>
   </mappers>
 </configuration>
