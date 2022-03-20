@@ -5,6 +5,8 @@ import com.leathersheer.tools.SpiderUnit.AI.DBUnits.ChengDuHouseMapper;
 import com.leathersheer.tools.SpiderUnit.DBUnits.DBTools;
 import com.leathersheer.tools.SpiderUnit.SpiderServer.Spider;
 import org.apache.ibatis.session.SqlSession;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.nodes.Document;
 
 import javax.servlet.annotation.WebServlet;
@@ -17,6 +19,8 @@ import java.util.Date;
 
 @WebServlet(name="ChengDuRealEstateStatement",urlPatterns = "/ChengDuRealEstateStatement")
 public class ChengDuHouseStatement extends HttpServlet {
+    public static final Logger CDLogger = LogManager.getLogger();
+
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse rep){
         //TODO 暂时不知道写什么功能 空着
@@ -24,7 +28,7 @@ public class ChengDuHouseStatement extends HttpServlet {
     }
 
     @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse rep){
+    public void doPost(HttpServletRequest req, HttpServletResponse resp){
         Spider spider = new Spider();
         String url = req.getAttribute("url").toString();
         Document doc=spider.getContent(url,Document.class);
