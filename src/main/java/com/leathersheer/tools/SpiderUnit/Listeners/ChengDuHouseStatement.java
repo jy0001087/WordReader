@@ -1,41 +1,52 @@
-package com.leathersheer.tools.SpiderUnit.AI;
+package com.leathersheer.tools.SpiderUnit.Listeners;
 
-import com.leathersheer.tools.SpiderUnit.AI.DBUnits.ChengDuHouseBean;
-import com.leathersheer.tools.SpiderUnit.AI.DBUnits.ChengDuHouseMapper;
+import com.leathersheer.tools.SpiderUnit.Exceptions.ArgumentNotFoundException;
+import com.leathersheer.tools.SpiderUnit.Listeners.DBUnits.ChengDuHouseBean;
+import com.leathersheer.tools.SpiderUnit.Listeners.DBUnits.ChengDuHouseMapper;
 import com.leathersheer.tools.SpiderUnit.DBUnits.DBTools;
 import com.leathersheer.tools.SpiderUnit.SpiderServer.Spider;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
-@WebServlet(name="ChengDuRealEstateStatement",urlPatterns = "/ChengDuRealEstateStatement")
-public class ChengDuHouseStatement extends HttpServlet {
+public class ChengDuHouseStatement  {
     public static final Logger CDLogger = LogManager.getLogger();
 
-    @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse rep){
-        //TODO 暂时不知道写什么功能 空着
-        return;
+    public void doGrab(String tarurl){
+        Spider spider = new Spider();
+        String url = tarurl;
+        Document doc=spider.getContent(url,Document.class);
+        //处理doc
+        ArrayList<ArrayList> captureList = this.tableToArray(doc);
+        insertClounm(captureList);
     }
 
-    @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse resp){
-        Spider spider = new Spider();
-        String url = req.getAttribute("url").toString();
-        Document doc=spider.getContent(url,Document.class);
-        ChengDuRealEstateStatementProcesser processer = new ChengDuRealEstateStatementProcesser();
-        //处理doc
-        ArrayList<ArrayList> captureList = processer.tableToArray(doc);
-        insertClounm(captureList);
+    public ArrayList<ArrayList> tableToArray(Document doc){
+        ArrayList<ArrayList> resultlist = new ArrayList<>();
+        Elements elements = doc.getElementsByClass("rightContent");//获取包含数据表格div
+        if (elements.size() != 1) {
+            CDLogger.error("rightContent not found! And elements size is  " + elements.size());
+            throw new ArgumentNotFoundException("rightContent not found! And elements size is  " + elements.size());
+        }
+        elements = elements.get(0).getElementsByTag("tbody"); //获取第二个表格内容
+        elements = elements.get(1).getElementsByTag("tr");  //获取tr节点
+        for(int i=2;i<elements.size();i++){
+            Elements innerElements = elements.get(i).getElementsByTag("td");
+            ArrayList<String> innerList = new ArrayList<>();
+            for(int j=0;j<innerElements.size();j++){
+                innerList.add(innerElements.get(j).text());
+            }
+            resultlist.add(innerList);
+        }
+        return resultlist;
     }
 
     public void insertClounm(ArrayList<ArrayList> list){

@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.leathersheer.tools.SpiderUnit.AI.DBUnits.ChengDuHouseMapper">
+<mapper namespace="com.leathersheer.tools.SpiderUnit.Listeners.DBUnits.ChengDuHouseMapper">
 
-    <resultMap id="incentives" type="com.leathersheer.tools.SpiderUnit.AI.DBUnits.ChengDuHouseBean">
+    <resultMap id="incentives" type="com.leathersheer.tools.SpiderUnit.Listeners.DBUnits.ChengDuHouseBean">
         <result column="area_name" property="area_name" />
         <result column="total_area_proportion" property="total_area_proportion" />
         <result column="residiential_house_num" property="residiential_house_num" />
@@ -14,7 +14,7 @@
         <result column="record_time" property="record_time" />
     </resultMap>
 
-    <insert id="insertColumn" parameterType="com.leathersheer.tools.SpiderUnit.AI.DBUnits.ChengDuHouseBean">
+    <insert id="insertColumn" parameterType="com.leathersheer.tools.SpiderUnit.Listeners.DBUnits.ChengDuHouseBean">
         insert into realestatestatement(area_name,total_area_proportion,residiential_house_num,residiential_house_proportion,not_residiential_house_proportion,city_name,record_time)
         values(#{area_name},#{total_area_proportion},#{residiential_house_num},#{residiential_house_proportion},#{not_residiential_house_proportion},#{city_name},#{record_time})
     </insert>
