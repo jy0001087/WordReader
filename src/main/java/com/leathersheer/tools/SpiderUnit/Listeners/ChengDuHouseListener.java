@@ -21,8 +21,8 @@ public class ChengDuHouseListener implements ServletContextListener {
 
         Calendar cal = Calendar.getInstance();
         // 每天定点执行
-        cal.set(Calendar.HOUR_OF_DAY, 17);
-        cal.set(Calendar.MINUTE, 54);
+        cal.set(Calendar.HOUR_OF_DAY, 21);
+        cal.set(Calendar.MINUTE, 30);
         cal.set(Calendar.SECOND, 15);
 
         Timer timer=new Timer();

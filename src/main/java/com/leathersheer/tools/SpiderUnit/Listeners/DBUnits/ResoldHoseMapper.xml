@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leathersheer.tools.SpiderUnit.Listeners.DBUnits.ResoldHouseMapper">
+
+    <resultMap id="resoldhouses" type="com.leathersheer.tools.SpiderUnit.Listeners.DBUnits.ResoldHouseBean">
+        <result column="houseid" property="houseid" />
+        <result column="proportion" property="proportion" />
+        <result column="totalPrice" property="totalPrice" />
+        <result column="unitPrice" property="unitPrice" />
+        <result column="houseType" property="houseType" />
+        <result column="mansion" property="mansion" />
+        <result column="floor" property="floor" />
+        <result column="orientation" property="orientation" />
+        <result column="isSold" property="isSold" />
+        <result column="houseUrl" property="houseUrl" />
+        <result column="age" property="age" />
+        <result column="grabTime" property="grabTime" />
+        <result column="source" property="source" />
+    </resultMap>
+
+    <insert id="insertColumn" parameterType="com.leathersheer.tools.SpiderUnit.Listeners.DBUnits.ResoldHouseBean">
+        insert into resoldhouses(houseid,proportion,totalPrice,unitPrice,houseType,mansion,floor,orientation,isSold,houseUrl,age,grabTime,source)
+        values(#{houseid},#{proportion},#{totalPrice},#{unitPrice},#{houseType},#{mansion},#{floor},#{orientation},#{isSold},#{houseUrl},#{age},#{grabTime},#{source})
+    </insert>
+
+</mapper>
