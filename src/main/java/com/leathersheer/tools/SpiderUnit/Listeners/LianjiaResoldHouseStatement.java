@@ -49,6 +49,7 @@ public class LianjiaResoldHouseStatement {
         JSONObject pagedata= new JSONObject(element.attr("page-data"));
         Integer totalPage = (Integer) pagedata.get("totalPage");
         for(int i=0;i<totalPage;i++){
+            //TODO: 这里要把中文要用URLEncoder.encode(中文, "UTF-8")转码;
             Pattern p=Pattern.compile("\\{page\\}");
             Matcher m=p.matcher(pageurl);
             String pagelist =url + m.replaceAll(i+1+"").trim();
