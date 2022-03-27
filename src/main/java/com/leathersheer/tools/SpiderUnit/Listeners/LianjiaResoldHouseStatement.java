@@ -12,9 +12,10 @@ import org.apache.logging.log4j.Logger;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
+import org.json.JSONObject;
 import javax.xml.crypto.Data;
 import java.lang.reflect.Array;
+import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,8 +28,33 @@ public class LianjiaResoldHouseStatement {
     public void doGrap(String url){
         Spider spider = new Spider();
         Document doc=spider.getContent(url,Document.class);
-        ArrayList<ResoldHouseBean> captureList = this.htmlToArray(doc);
-        insertClounm(captureList);
+        ArrayList<String> pagelist = flipOver("https://cd.lianjia.com",doc);
+        try {
+            for (int i = 0; i < pagelist.size(); i++) {
+                doc=spider.getContent(pagelist.get(i),Document.class);
+                ArrayList<ResoldHouseBean> captureList = this.htmlToArray(doc);
+                insertClounm(captureList);
+                //Thread.sleep(1000);
+            }
+        }catch(Exception e){
+            resoldHouseLogger.error("进程休眠异常！");
+        }
+    }
+
+    public ArrayList<String> flipOver(String url, Document doc){
+        ArrayList<String> pageList= new ArrayList<>();
+        Elements elements = doc.getElementsByClass("page-box house-lst-page-box");
+        Element element =elements.get(0);
+        String pageurl=element.attr("page-url");
+        JSONObject pagedata= new JSONObject(element.attr("page-data"));
+        Integer totalPage = (Integer) pagedata.get("totalPage");
+        for(int i=0;i<totalPage;i++){
+            Pattern p=Pattern.compile("\\{page\\}");
+            Matcher m=p.matcher(pageurl);
+            String pagelist =url + m.replaceAll(i+1+"").trim();
+            pageList.add(pagelist);
+        }
+        return pageList;
     }
 
     public ArrayList<ResoldHouseBean> htmlToArray(Document doc){
