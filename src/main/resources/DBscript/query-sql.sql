@@ -13,3 +13,8 @@ truncate table houseinfo;
 insert into resoldhouses(houseid,proportion,totalPrice,unitPrice,houseType,mansion,floor,orientation,isSold,houseUrl,age,grabTime,source) 
 values(106110637050, 74.66, 140.0, 18752.0, 2室1厅,  中楼层(共25层) , null,  东 , false,
 https://cd.lianjia.com/ershoufang/106110637050.html,  板塔结合, 2022-03-27 19:21:25.806, cd.lianjia.com);
+
+
+select * from realestatestatement;
+
+delete from realestatestatement;

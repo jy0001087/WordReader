@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="trace" strict="true" name="Log4JXMLConfig">
     <Properties>
-        <Property name="filename">logs/app.log</Property>
+        <Property name="filename">${sys:catalina.home}/logs/spider-app.log</Property>
     </Properties>
 
     <Appenders>

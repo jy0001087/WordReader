@@ -17,5 +17,7 @@ public class SpiderTester {
         String s= "https://cd.lianjia.com/ershoufang/106110540150.html";
         String[] res=s.split("/");
         spiderTesterLogger.debug( res);
+
+        new ChengDuHouseStatement().doGrab("https://www.cdzjryb.com/");
     }
 }
