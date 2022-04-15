@@ -49,7 +49,7 @@ public class TxtCleaner {
             while((textline=reader.readLine())!=null){
                 if((textline=this.cleaner(textline))!= null){
                     cleanerLogger.trace(textline);
-                    writer.write(textline);
+                    writer.write("  "+textline);  //段前空两格
                 }
             }
             reader.close();
