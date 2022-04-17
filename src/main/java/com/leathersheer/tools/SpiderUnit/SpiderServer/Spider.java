@@ -122,7 +122,7 @@ public class Spider {
      * @param <T>
      * @return
      */
-    public <T> T getContentwithCookies() {
+    public <T> T getContentwithCookies(Class<T> type) {
         T doc = null;
         CloseableHttpResponse response = null;
         HttpGet httpGet = new HttpGet(originUrl);
@@ -139,9 +139,11 @@ public class Spider {
                 e.printStackTrace();
             }
         }
-        return doc;
+        return (T) doc;
     };
 
+
+    //工具类
     public String getEncoding(String str) {
         String encode = "GB2312";
         try {
