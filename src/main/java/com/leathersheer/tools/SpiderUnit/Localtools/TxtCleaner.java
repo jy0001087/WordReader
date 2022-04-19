@@ -9,15 +9,20 @@ public class TxtCleaner {
     public static final Logger cleanerLogger = LogManager.getLogger();
 
     public static void main(String[] args){
-        String url = "D:\\MyFiles\\PersonalSync\\电子书\\非礼勿视的小说\\";
         TxtCleaner tcl =  new TxtCleaner();
-        File[] files=tcl.getFileList(url);
+        tcl.doText();
+    }
+
+    public void  doText(){
+        String url = "D:\\MyFiles\\PersonalSync\\电子书\\非礼勿视的小说\\";
+
+        File[] files=this.getFileList(url);
         if(files==null){
             cleanerLogger.error("文件夹读取异常或没有文件夹");
         }
-        int fileNum=tcl.getFileList(url).length;
+        int fileNum=this.getFileList(url).length;
         for (int i=0;i<fileNum;i++){
-            tcl.fileIO(url,files[i]);
+            this.fileIO(url,files[i],".txt");
         }
     }
 
@@ -30,10 +35,10 @@ public class TxtCleaner {
         return null;
     }
 
-    public void fileIO(String url,File file){
+    public void fileIO(String url,File file,String variety){
 
-        if(!(file.getName().endsWith(".txt"))||file.getName().startsWith("clean-")){
-            cleanerLogger.error("非txt文件或已转化");
+        if(!(file.getName().endsWith(variety))||file.getName().startsWith("clean-")){
+            cleanerLogger.error("非"+variety+"txt文件或已转化");
             return;
         }
         try{
@@ -71,4 +76,6 @@ public class TxtCleaner {
         }
         return procString+"\n";
     }
+
+
 }

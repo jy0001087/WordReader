@@ -3,22 +3,88 @@ package com.leathersheer.tools.SpiderUnitTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.leathersheer.tools.SpiderUnit.Listeners.ChengDuHouseStatement;
+import com.leathersheer.tools.SpiderUnit.Shuaigay.Beans.SMArticleBean;
+import com.leathersheer.tools.SpiderUnit.Shuaigay.Beans.SMArticlePostBean;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.safety.Whitelist;
+import org.jsoup.select.Elements;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SpiderTester {
-    public static final Logger spiderTesterLogger= LogManager.getLogger();
+    public static final Logger spiderTesterLogger = LogManager.getLogger();
 
-    public static void main(String[] args) throws JsonProcessingException {
+    public static void main(String[] args) throws Exception {
+        new SpiderTester().doGrab();
+    }
 
-        String str = "找粗口语音视频";
-        System.out.println(str.contains("粗口"));
+    public void doGrab() throws Exception{
+        String entrenceUrl = "https://www.shuaigay6.com/thread-1486373-1-1.html";
+        SMArticleBean smArticle= new SMArticleBean();
+        ArrayList<SMArticlePostBean> postList = new ArrayList<>();
+        Document doc = getDoc("D:\\TEMP\\article.html");
+        postList.addAll(convertSinglePage(doc,smArticle));
+        for(int currentPage=2;currentPage<smArticle.totalNumOfPages;currentPage++){
+            String nextUrl = entrenceUrl.replace("-1-1","-"+currentPage+"-1");
+            postList.addAll(convertSinglePage(doc,smArticle));
+        }
+    }
+
+    public Document getDoc(String url) throws Exception{
+        File infile = new File(url);
+        Document doc = null;
+        if (infile.isFile() && infile.exists()) { // 判断文件是否存在
+            // 进行body元素提取
+            doc = Jsoup.parse(infile, "UTF-8");
+        }
+        return doc;
+    }
+
+    public ArrayList<SMArticlePostBean> convertSinglePage(Document doc,SMArticleBean smArticle){
+        ArrayList<SMArticlePostBean> postList = new ArrayList<>();
+        //开始处理文档内容
+        Elements elements = doc.select("div[id=pt] a[href*=thread]");
+        //文章标题、总页数、链接获取
+        smArticle.title = elements.get(0).text();
+        smArticle.href = elements.get(0).attr("href");
+        elements = doc.select("div[id=pgt] a[class=last]");
+        String totalNumOfPages = elements.get(0).text();
+        String regEx="[^0-9]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(totalNumOfPages);
+        smArticle.totalNumOfPages=Integer.valueOf(m.replaceAll("").trim());
+
+        //获取贴子内容的post
+        elements = doc.select("div[id~=^post_[0-9]+]"); //获取所有贴子post结构
+        for(Element element : elements){
+            SMArticlePostBean post = new SMArticlePostBean();
+            post.floor=element.select("div[class=pi] strong em").text(); //获取贴子所在楼层
+            Element contentelement=element.select("td[class=t_f]").get(0);  //获取贴子内容 start
+            contentelement.select("font,span").remove();  //移除文章中乱码
+            contentelement.select("br").append("\\n    \t ");
+            post.content=contentelement.html().replaceAll("\\\\n", "\n ");
+            post.content=Jsoup.clean(post.content, "", Whitelist.none(), new Document.OutputSettings().prettyPrint(false));
+            //以下获取本层作者
+            post.author=element.select("div[class=i y] strong a").text();
+            //以一楼作者作为全文作者
+            if(post.floor.equals("1")){
+                smArticle.author= post.author;
+            }
+            postList.add(post);
+        }
+        return postList;
     }
 }

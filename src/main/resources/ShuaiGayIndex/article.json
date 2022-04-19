@@ -1,0 +1,4 @@
+{
+    "Title":{"div[id=pt] a[href*=thread]":"text"},
+    "TotalNumOfPages":{"div[id=pgt] a[class=last]":"text"}
+}
