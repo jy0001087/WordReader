@@ -193,11 +193,12 @@ public class ShuaigayFetcher {
             doc=this.doFetch(nextUrl,spider,"fetch");
             postList.addAll(convertSinglePage(doc,smArticle));
             try{
-                Thread.sleep(5000);
+                Thread.sleep(2000);
             }catch(Exception e){
                 shuaigayLogger.error("线程休眠异常",e);
             }
         }
+        System.out.println(postList);
         return;
     }
 
@@ -205,16 +206,17 @@ public class ShuaigayFetcher {
         ArrayList<SMArticlePostBean> postList = new ArrayList<>();
         //开始处理文档内容
         Elements elements = doc.select("div[id=pt] a[href*=thread]");
-        //文章标题、总页数、链接获取
-        smArticle.title = elements.get(0).text();
-        smArticle.href = elements.get(0).attr("href");
-        elements = doc.select("div[id=pgt] a[class=last]");
-        String totalNumOfPages = elements.get(0).text();
-        String regEx="[^0-9]";
-        Pattern p = Pattern.compile(regEx);
-        Matcher m = p.matcher(totalNumOfPages);
-        smArticle.totalNumOfPages=Integer.valueOf(m.replaceAll("").trim());
-
+        if(smArticle.totalNumOfPages==null || smArticle.totalNumOfPages.equals("")) {
+            //文章标题、总页数、链接获取
+            smArticle.title = elements.get(0).text();
+            smArticle.href = elements.get(0).attr("href");
+            elements = doc.select("div[id=pgt] a[class=last]");
+            String totalNumOfPages = elements.get(0).text();
+            String regEx = "[^0-9]";
+            Pattern p = Pattern.compile(regEx);
+            Matcher m = p.matcher(totalNumOfPages);
+            smArticle.totalNumOfPages = Integer.valueOf(m.replaceAll("").trim());
+        }
         //获取贴子内容的post
         elements = doc.select("div[id~=^post_[0-9]+]"); //获取所有贴子post结构
         for(Element element : elements){
