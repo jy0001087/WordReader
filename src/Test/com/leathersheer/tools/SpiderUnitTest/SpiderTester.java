@@ -88,7 +88,13 @@ public class SpiderTester {
         smArticle.title = elements.get(0).text();
         smArticle.href = elements.get(0).attr("href");
         elements = doc.select("div[id=pgt] a[class=last]");
-        String totalNumOfPages = elements.get(0).text();
+        String totalNumOfPages = "1";
+        if(elements.size()==1){
+            totalNumOfPages = elements.get(0).text();
+        }else{
+            elements = doc.select("div[id=pgt] div[class=pg] span");
+            totalNumOfPages= elements.get(0).text();
+        }
         String regEx="[^0-9]";
         Pattern p = Pattern.compile(regEx);
         Matcher m = p.matcher(totalNumOfPages);
