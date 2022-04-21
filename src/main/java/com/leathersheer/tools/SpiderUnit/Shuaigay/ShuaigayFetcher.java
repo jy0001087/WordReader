@@ -18,7 +18,11 @@ import org.jsoup.nodes.Element;
 import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -176,15 +180,15 @@ public class ShuaigayFetcher {
         }
     }
 
-    public void doArticleGrab(){
+    public void doArticleGrab(String entrenceUrl){
         Spider spider= new Spider();
         String url = "https://www.shuaigay6.com/member.php?mod=logging&action=login&loginsubmit=yes&loginhash=LhLvE&inajax=1";
         this.doFetch(url,spider,"login");
 
         SMArticleBean smArticle= new SMArticleBean();
-        ArrayList<SMArticlePostBean> postList = new ArrayList<>();
-        String entrenceUrl = "https://www.shuaigay6.com/thread-1486373-1-1.html";
 
+        ArrayList<SMArticlePostBean> postList = new ArrayList<>();
+        smArticle.postId= (entrenceUrl.split("-"))[1];
         Document doc=this.doFetch(entrenceUrl,spider,"fetch");
 
         postList.addAll(convertSinglePage(doc,smArticle));
@@ -193,12 +197,15 @@ public class ShuaigayFetcher {
             doc=this.doFetch(nextUrl,spider,"fetch");
             postList.addAll(convertSinglePage(doc,smArticle));
             try{
-                Thread.sleep(2000);
+                Thread.sleep(1000);
             }catch(Exception e){
                 shuaigayLogger.error("线程休眠异常",e);
             }
+            shuaigayLogger.info("-----已处理至页码："+currentPage);
         }
-        System.out.println(postList);
+        smArticle.totalNumofPosts=postList.size()+"";
+        //写文件
+        compose("D:/TEMP/",postList,smArticle);
         return;
     }
 
@@ -238,12 +245,40 @@ public class ShuaigayFetcher {
         return postList;
     }
 
+    public void  compose(String url,ArrayList<SMArticlePostBean> articlePostBeanList,SMArticleBean smArticle){
+        SimpleDateFormat format = new SimpleDateFormat("YYYYMMdd");
+        String date = format.format(new Date());
+        File file = new File(url+smArticle.title+"-已至"+smArticle.totalNumofPosts+"-threadId_"+smArticle.postId+"-Date_"+date+".txt");
+        try{
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            for(SMArticlePostBean beans:articlePostBeanList){
+                if(beans.author.equals(smArticle.author)){
+                    smArticle.content = smArticle.content +"\n 第" + beans.floor + "楼\n   " +
+                            beans.content;
+                }else{
+                    smArticle.comment=smArticle.comment+beans.floor+"楼"+beans.author+" : "+beans.content+"\n   ";
+                }
+            }
+            smArticle.content = smArticle.content.replaceAll("  \\n","").replaceAll(" \\n","").replaceAll("\\n\\n","")
+                    .replaceAll("白[色]*[棉]袜[子]*","军绿色及膝丝袜").replaceAll("黑[色]*[棉]*袜[子]*","黑色丝袜").replaceAll("棉袜[子]*","加了袜带固定的绅士黑丝袜")
+                    .replaceAll("[黑,白]*[色]*精英袜[子]*","酒红色过膝锦纶透明丝袜");//xp替换
+            writer.write(smArticle.content );
+            writer.write("\n评论区域>>>>>>>>>>\n");
+            smArticle.comment = smArticle.comment.replaceAll("  \\n","").replaceAll(" \\n","").replaceAll("\\n\\n","");
+            writer.write(smArticle.comment.replace("  \\n",""));
+            writer.close();
+        }catch(Exception e){
+            System.out.println("写入文件异常：---"+e.getMessage());
+        }
+
+    }
+
     /**
      * 测试模块
      * @param args
      */
     public static void main(String[] args){
-        new ShuaigayFetcher().doArticleGrab();
+        new ShuaigayFetcher().doArticleGrab("https://www.shuaigay6.com/thread-1748443-1-1.html");
     }
 
 }

@@ -16,10 +16,8 @@ import org.jsoup.select.Elements;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,9 +29,36 @@ public class SpiderTester {
         new SpiderTester().doGrab();
     }
 
+    public void  compose(String url,ArrayList<SMArticlePostBean> articlePostBeanList,SMArticleBean smArticle){
+        SimpleDateFormat format = new SimpleDateFormat("YYYYMMdd");
+        String date = format.format(new Date());
+        File file = new File(url+smArticle.title+"-已至"+smArticle.totalNumofPosts+"-threadId_"+smArticle.postId+"-Date_"+date+".txt");
+        try{
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            for(SMArticlePostBean beans:articlePostBeanList){
+                if(beans.author.equals(smArticle.author)){
+                    smArticle.content = smArticle.content +"\n 第" + beans.floor + "楼\n   " +
+                            beans.content;
+                }else{
+                    smArticle.comment=smArticle.comment+beans.floor+"楼"+beans.author+" : "+beans.content+"\n   ";
+                }
+            }
+            smArticle.content = smArticle.content.replaceAll("  \\n","").replaceAll(" \\n","").replaceAll("\\n\\n","");
+            writer.write(smArticle.content );
+            writer.write("\n评论区域>>>>>>>>>>\n");
+            smArticle.comment = smArticle.comment.replaceAll("  \\n","").replaceAll(" \\n","").replaceAll("\\n\\n","");
+            writer.write(smArticle.comment.replace("  \\n",""));
+            writer.close();
+        }catch(Exception e){
+            System.out.println("写入文件异常：---"+e.getMessage());
+        }
+
+    }
+
     public void doGrab() throws Exception{
         String entrenceUrl = "https://www.shuaigay6.com/thread-1486373-1-1.html";
         SMArticleBean smArticle= new SMArticleBean();
+        smArticle.postId= (entrenceUrl.split("-"))[1];
         ArrayList<SMArticlePostBean> postList = new ArrayList<>();
         Document doc = getDoc("D:\\TEMP\\article.html");
         postList.addAll(convertSinglePage(doc,smArticle));
@@ -41,6 +66,8 @@ public class SpiderTester {
             String nextUrl = entrenceUrl.replace("-1-1","-"+currentPage+"-1");
             postList.addAll(convertSinglePage(doc,smArticle));
         }
+        smArticle.totalNumofPosts=postList.size()+"";
+        compose("D:/TEMP/",postList,smArticle);
     }
 
     public Document getDoc(String url) throws Exception{

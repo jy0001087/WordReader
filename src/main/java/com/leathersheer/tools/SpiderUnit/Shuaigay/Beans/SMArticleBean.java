@@ -8,4 +8,5 @@ public class SMArticleBean {
     public String comment;
     public String href;
     public Integer totalNumOfPages;
+    public String totalNumofPosts;
 }
