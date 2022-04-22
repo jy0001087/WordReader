@@ -182,6 +182,7 @@ public class ShuaigayFetcher {
 
     public void doArticleGrab(String entrenceUrl){
         Spider spider= new Spider();
+        entrenceUrl="https://www.shuaigay6.com/thread-"+entrenceUrl+"-1-1.html"; //拼接url
         String url = "https://www.shuaigay6.com/member.php?mod=logging&action=login&loginsubmit=yes&loginhash=LhLvE&inajax=1";
         this.doFetch(url,spider,"login");
 
@@ -205,7 +206,9 @@ public class ShuaigayFetcher {
         }
         smArticle.totalNumofPosts=postList.size()+"";
         //写文件
-        compose("D:/TEMP/",postList,smArticle);
+        File dir = new File("NovelDir");
+        dir.mkdir();
+        compose("NovelDir/",postList,smArticle);
         return;
     }
 
@@ -266,8 +269,8 @@ public class ShuaigayFetcher {
                 }
             }
             smArticle.content = smArticle.content.replaceAll("  \\n","").replaceAll(" \\n","").replaceAll("\\n\\n","")
-                    .replaceAll("白[色]*[棉]袜[子]*","军绿色及膝丝袜").replaceAll("黑[色]*[棉]*袜[子]*","黑色丝袜").replaceAll("棉袜[子]*","加了袜带固定的绅士黑丝袜")
-                    .replaceAll("[黑,白]*[色]*精英袜[子]*","酒红色过膝锦纶透明丝袜");//xp替换
+                    .replaceAll("白[色]*[的]*[棉]*袜[子]*","军绿色及膝丝袜").replaceAll("黑[色]*[的]*[棉]*袜[子]*","黑色透明绅士丝袜").replaceAll("棉[的]*袜[子]*","戴了袜带固定的绅士黑丝袜")
+                    .replaceAll("[黑,白]*[色]*精英袜[子]*","酒红色过膝锦纶透明丝袜").replaceAll("臭袜子","透明尿味臭丝袜");//xp替换
             writer.write(smArticle.content );
             writer.write("\n评论区域>>>>>>>>>>\n");
             smArticle.comment = smArticle.comment.replaceAll("  \\n","").replaceAll(" \\n","").replaceAll("\\n\\n","");
@@ -284,7 +287,7 @@ public class ShuaigayFetcher {
      * @param args
      */
     public static void main(String[] args){
-        new ShuaigayFetcher().doArticleGrab("https://www.shuaigay6.com/thread-1098340-1-1.html");
+        new ShuaigayFetcher().doArticleGrab("1098340");
     }
 
 }
