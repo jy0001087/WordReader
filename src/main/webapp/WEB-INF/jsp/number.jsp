@@ -1,5 +1,6 @@
 <%@ page contentType="image/jpeg" language="java" import="java.util.*,java.awt.*,java.awt.image.*,javax.imageio.*" pageEncoding="utf-8"%>
 
+<!-- 用于生成随机访问码 -->
 <%!
     Color getRandColor(int fc,int bc){
         Random random = new Random();

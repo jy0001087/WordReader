@@ -16,8 +16,10 @@ public class ShuaiGayServlet extends HttpServlet {
     public static final  Logger shuaigayfetcherServletLogger = LogManager.getLogger();
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        shuaigayfetcherServletLogger.info("ShuaiGayFetcher have been started with para:"+req.getAttribute("threadId"));
+        shuaigayfetcherServletLogger.info("ShuaiGayFetcher have been started with para:"+req.getParameter("threadId"));
         ShuaigayFetcher fetcher = new ShuaigayFetcher();
-        fetcher.doArticleGrab(req.getAttribute("threadId").toString());
+        fetcher.doArticleGrab(req.getParameter("threadId").toString());
+        req.setAttribute("Article","ok了");
+        req.getRequestDispatcher("/WEB_INF/jsp/amenity.jsp").forward(req,resp);
     }
 }

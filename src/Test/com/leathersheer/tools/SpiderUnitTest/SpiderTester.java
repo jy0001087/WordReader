@@ -60,7 +60,7 @@ public class SpiderTester {
         SMArticleBean smArticle= new SMArticleBean();
         smArticle.postId= (entrenceUrl.split("-"))[1];
         ArrayList<SMArticlePostBean> postList = new ArrayList<>();
-        Document doc = getDoc("D:\\TEMP\\article.html");
+        Document doc = getDoc("D:\\TEMP\\Untitled-1.html");
         postList.addAll(convertSinglePage(doc,smArticle));
         for(int currentPage=2;currentPage<smArticle.totalNumOfPages;currentPage++){
             String nextUrl = entrenceUrl.replace("-1-1","-"+currentPage+"-1");
@@ -93,7 +93,11 @@ public class SpiderTester {
             totalNumOfPages = elements.get(0).text();
         }else{
             elements = doc.select("div[id=pgt] div[class=pg] span");
-            totalNumOfPages= elements.get(0).text();
+            if(elements.size()==0) {
+                totalNumOfPages = "1";
+            }else{
+                totalNumOfPages = elements.get(0).text();
+            }
         }
         String regEx="[^0-9]";
         Pattern p = Pattern.compile(regEx);
@@ -106,7 +110,7 @@ public class SpiderTester {
             SMArticlePostBean post = new SMArticlePostBean();
             post.floor=element.select("div[class=pi] strong em").text(); //获取贴子所在楼层
             Element contentelement=element.select("td[class=t_f]").get(0);  //获取贴子内容 start
-            contentelement.select("font,span").remove();  //移除文章中乱码
+            contentelement.select("font[class=jammer],span[style~=^displ]").remove();  //移除文章中乱码
             contentelement.select("br").append("\\n    \t ");
             post.content=contentelement.html().replaceAll("\\\\n", "\n ");
             post.content=Jsoup.clean(post.content, "", Whitelist.none(), new Document.OutputSettings().prettyPrint(false));

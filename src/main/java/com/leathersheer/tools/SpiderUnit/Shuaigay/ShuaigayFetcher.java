@@ -226,7 +226,11 @@ public class ShuaigayFetcher {
                 totalNumOfPages = elements.get(0).text();
             }else{
                 elements = doc.select("div[id=pgt] div[class=pg] span");
-                totalNumOfPages= elements.get(0).text();
+                if(elements.size()==0) {
+                    totalNumOfPages = "1";
+                }else{
+                    totalNumOfPages = elements.get(0).text();
+                }
             }
             String regEx = "[^0-9]";
             Pattern p = Pattern.compile(regEx);
@@ -239,7 +243,7 @@ public class ShuaigayFetcher {
             SMArticlePostBean post = new SMArticlePostBean();
             post.floor=element.select("div[class=pi] strong em").text(); //获取贴子所在楼层
             Element contentelement=element.select("td[class=t_f]").get(0);  //获取贴子内容 start
-            contentelement.select("font,span").remove();  //移除文章中乱码
+            contentelement.select("font[class=jammer],span[style~=^displ]").remove();  //移除文章中乱码
             contentelement.select("br").append("\\n    \t ");
             post.content=contentelement.html().replaceAll("\\\\n", "\n ");
             post.content= Jsoup.clean(post.content, "", Whitelist.none(), new Document.OutputSettings().prettyPrint(false));
@@ -269,7 +273,7 @@ public class ShuaigayFetcher {
                 }
             }
             smArticle.content = smArticle.content.replaceAll("  \\n","").replaceAll(" \\n","").replaceAll("\\n\\n","")
-                    .replaceAll("白[色]*[的]*[棉]*袜[子]*","军绿色及膝丝袜").replaceAll("黑[色]*[的]*[棉]*袜[子]*","黑色透明绅士丝袜").replaceAll("棉[的]*袜[子]*","戴了袜带固定的绅士黑丝袜")
+                    .replaceAll("白[色]*[的]*[棉]*袜[子]*","军绿色丝袜").replaceAll("黑[色]*[的]*[棉]*袜[子]*","黑色透明绅士丝袜").replaceAll("棉[的]*袜[子]*","戴了袜带固定的绅士黑丝袜")
                     .replaceAll("[黑,白]*[色]*精英袜[子]*","酒红色过膝锦纶透明丝袜").replaceAll("臭袜子","透明尿味臭丝袜");//xp替换
             writer.write(smArticle.content );
             writer.write("\n评论区域>>>>>>>>>>\n");
@@ -287,7 +291,7 @@ public class ShuaigayFetcher {
      * @param args
      */
     public static void main(String[] args){
-        new ShuaigayFetcher().doArticleGrab("1098340");
+        new ShuaigayFetcher().doArticleGrab("1785981");
     }
 
 }
