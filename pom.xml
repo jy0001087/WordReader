@@ -6,6 +6,24 @@
     <groupId>com.leathersheer.tools</groupId>
     <artifactId>Spider</artifactId>
     <version>0.1-SNAPSHOT</version>
+
+    <profiles>
+        <profile>
+            <!-- 本地开发环境 -->
+            <id>local</id>
+            <properties>
+                <package.environment>local</package.environment>
+            </properties>
+        </profile>
+        <profile>
+            <!-- 生产环境 -->
+            <id>remote</id>
+            <properties>
+                <package.environment>remote</package.environment>
+            </properties>
+        </profile>
+    </profiles>
+
     <!-- Junit5插件start -->
     <build>
         <plugins>
@@ -30,6 +48,15 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.3.1</version>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <directory>src/main/resources/config/${package.environment}</directory>
+                            <targetPath>WEB-INF/classes/</targetPath>
+                            <filtering>true</filtering>
+                        </resource>
+                    </webResources>
+                </configuration>
             </plugin>
         </plugins>
 
@@ -46,7 +73,8 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <includes>
-                    <include>**/*</include>
+                    <include>*</include>
+                    <include>ShuaiGayIndex/*</include>
                 </includes>
                 <filtering>true</filtering>
             </resource>

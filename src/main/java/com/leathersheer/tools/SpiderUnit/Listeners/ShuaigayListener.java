@@ -27,7 +27,7 @@ public class ShuaigayListener implements ServletContextListener {
         Timer timer=new Timer();
         timer.schedule(new TimerTask(){
             public void run(){
-                SGlogger.info("Timer Start");
+                SGlogger.info("ShuaiG-15-Timer Start");
                 new ShuaigayFetcher().doSocialGameGrab();
             }
         },cal.getTime(),24 * 60 * 60 * 1000);
@@ -38,12 +38,17 @@ public class ShuaigayListener implements ServletContextListener {
         ca2.set(Calendar.MINUTE, 00);
         ca2.set(Calendar.SECOND, 00);
 
-        Timer timer2=new Timer();
-        timer2.schedule(new TimerTask(){
+        timer.schedule(new TimerTask(){
             public void run(){
-                SGlogger.info("Timer Start");
+                SGlogger.info("ShuaiG-22-Timer Start");
                 new ShuaigayFetcher().doSocialGameGrab();
             }
         },ca2.getTime(),24 * 60 * 60 * 1000);
+
+        timer.schedule(new TimerTask(){
+            public void run(){
+                SGlogger.info("ShuaiG is alive!");
+            }
+        },60*1000,60*60*1000);
     }
 }

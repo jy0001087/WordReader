@@ -28,9 +28,15 @@ public class ChengDuHouseListener implements ServletContextListener {
         Timer timer=new Timer();
         timer.schedule(new TimerTask(){
             public void run(){
-                CDListnerLogger.info("Timer Start");
+                CDListnerLogger.info("CDHouse-Timer Start");
                 new ChengDuHouseStatement().doGrab("https://www.cdzjryb.com/");
             }
         },cal.getTime(),24 * 60 * 60 * 1000);
+
+        timer.schedule(new TimerTask(){
+            public void run(){
+                CDListnerLogger.info("CDHouse-Timer is alive!");
+            }
+        },60*1000,60*60*1000);
     }
 }
