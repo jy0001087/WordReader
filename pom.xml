@@ -64,6 +64,7 @@
                 <version>3.0.0</version>
                 <configuration>
                     <mainClass>com.leathersheer.tools.SpiderUnit.Shuaigay.ShuaigayFetcher</mainClass>
+                    <mainClass>com.leathersheer.tools.SpiderUnit.Listeners.ChengDuHouseStatement</mainClass>
                 </configuration>
             </plugin>
 

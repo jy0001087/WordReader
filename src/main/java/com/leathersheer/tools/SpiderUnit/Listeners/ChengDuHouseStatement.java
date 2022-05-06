@@ -23,6 +23,7 @@ public class ChengDuHouseStatement  {
     public void doGrab(String tarurl){
         Spider spider = new Spider();
         String url = tarurl;
+        spider.setHttpClient();
         Document doc=spider.getContent(url,Document.class);
         //处理doc
         ArrayList<ArrayList> captureList = this.tableToArray(doc);
@@ -77,5 +78,9 @@ public class ChengDuHouseStatement  {
                 }
                 sqlsession.commit();
             }
+        }
+
+        public static void main(String[] args){
+            new ChengDuHouseStatement().doGrab("https://www.cdzjryb.com/");
         }
 }
