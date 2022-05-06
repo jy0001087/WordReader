@@ -292,7 +292,7 @@ public class ShuaigayFetcher {
      * @param args
      */
     public static void main(String[] args){
-        new ShuaigayFetcher().doArticleGrab("1786776");
+        new ShuaigayFetcher().doArticleGrab("1673700");
     }
 
 }
