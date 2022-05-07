@@ -22,6 +22,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.Array;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -104,7 +105,7 @@ public class ShuaigayFetcher {
         Document doc=sf.doFetch(url,spider,"fetch");
         Map<String,ArrayList<String>> keywordMap = new HashMap<>();
         ArrayList<String> kewordList = new ArrayList<String>() {{
-            add("北京");add("1m");add("锁");add("粗口");add("sub");add("dom");add("羞辱");add("丝袜");add("控制");add("乳胶");    }};
+            add("北京");add("1m");add("锁");add("粗口");add("sub");add("dom");add("羞辱");add("丝袜");add("控制");add("乳胶");add("绿");    }};
         keywordMap.put("postTitle",kewordList);
         JSONObject tarJsobj = new JSONObject("{\"uid\":{\"tbody[id~=^normalthread]\":\"id\"},\"url\":{\"tbody[id~=^normalthread] a[class=s xst]\":\"href\"},\"postTitle\":{\"tbody[id~=^normalthread] a[class=s xst]\":\"text\"}}"
         );
@@ -130,6 +131,7 @@ public class ShuaigayFetcher {
         for(Element element : uidElements){
             int addFlag = 0 ;
             SociaGameBean bean = new SociaGameBean();
+            bean.record_time=new Timestamp(new Date().getTime());
             for(Map<String,String> jsonMap:paraList) {
                 Elements finalElements = element.select(jsonMap.get("beanParaLocation"));
                 Element finalElement = finalElements.get(0);
@@ -273,13 +275,13 @@ public class ShuaigayFetcher {
                 }
             }
             smArticle.content = smArticle.content.replaceAll("  \\n","").replaceAll(" \\n","").replaceAll("\\n\\n","")
-                    .replace("&nbsp;","")
-                    .replaceAll("白[色]*[的]*[厚]*[棉]*袜[子]*","军绿色丝袜").replaceAll("黑[色]*[的]*[厚]*[棉]*袜[子]*","黑色透明绅士丝袜").replaceAll("[厚]*棉[的]*袜[子]*","戴了袜带固定的绅士黑丝袜")
+                    .replace("&nbsp;","").replaceAll("[ ]+","\n  ")
+                    .replaceAll("白[色]*[的]*[厚]*[棉]*袜[子]*","军绿色丝袜").replaceAll("黑[色]*[的]*[厚]*[棉]*袜[子]*","黑色透明绅士丝袜").replaceAll("[厚]*棉[的]*袜[子]*","条纹黑丝袜")
                     .replaceAll("[黑,白]*[色]*[厚]*精英袜[子]*","酒红色过膝锦纶透明丝袜").replaceAll("臭袜子","透明尿味臭丝袜");//xp替换
             writer.write(smArticle.content );
             writer.write("\n评论区域>>>>>>>>>>\n");
-            smArticle.comment = smArticle.comment.replaceAll("  \\n","").replaceAll(" \\n","").replaceAll("\\n\\n","");
-            writer.write(smArticle.comment.replace("  \\n",""));
+            smArticle.comment = smArticle.comment.replaceAll("  \\n","").replaceAll(" \\n","").replaceAll("\\n\\n","").replaceAll("  \\n","");
+            writer.write(smArticle.comment);
             writer.close();
         }catch(Exception e){
             System.out.println("写入文件异常：---"+e.getMessage());
@@ -292,7 +294,8 @@ public class ShuaigayFetcher {
      * @param args
      */
     public static void main(String[] args){
-        new ShuaigayFetcher().doArticleGrab("1673700");
+        new ShuaigayFetcher().doArticleGrab("1748443");
+        //new ShuaigayFetcher().doSocialGameGrab();
     }
 
 }

@@ -11,8 +11,8 @@
     </resultMap>
 
     <insert id="insertColumn" parameterType="com.leathersheer.tools.SpiderUnit.Shuaigay.Beans.SociaGameBean">
-        insert into socialgame(uid,url,postTitle)
-        values(#{uid},#{url},#{postTitle})
+        insert into socialgame(uid,url,postTitle,record_time)
+        values(#{uid},#{url},#{postTitle},#{record_time})
         on conflict do nothing
     </insert>
 

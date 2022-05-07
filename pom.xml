@@ -58,26 +58,21 @@
                     </webResources>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.0.0</version>
-                <configuration>
-                    <mainClass>com.leathersheer.tools.SpiderUnit.Shuaigay.ShuaigayFetcher</mainClass>
-                    <mainClass>com.leathersheer.tools.SpiderUnit.Listeners.ChengDuHouseStatement</mainClass>
-                </configuration>
-            </plugin>
-
         </plugins>
 
         <resources>
             <!-- 编译之后包含xml -->
             <resource>
+                <directory>src/main/resources/config/${package.environment}</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
                 <directory>src/main/java</directory>
                 <includes>
                     <include>**/*.xml</include>
                 </includes>
-                <filtering>true</filtering>
             </resource>
             <!-- 编译之后包含xml和properties -->
             <resource>
