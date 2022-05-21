@@ -4,6 +4,7 @@ import com.leathersheer.tools.SpiderUnit.Shuaigay.ShuaigayFetcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,8 +19,9 @@ public class ShuaiGayServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         shuaigayfetcherServletLogger.info("ShuaiGayFetcher have been started with para:"+req.getParameter("threadId"));
         ShuaigayFetcher fetcher = new ShuaigayFetcher();
-        fetcher.doArticleGrab(req.getParameter("threadId").toString());
+        ServletConfig config=this.getServletConfig();
+        fetcher.doArticleGrab(req.getParameter("threadId").toString(),config.getServletContext().getRealPath("/"));
         req.setAttribute("Article","ok了");
-        req.getRequestDispatcher("/WEB_INF/jsp/amenity.jsp").forward(req,resp);
+        req.getRequestDispatcher("/Amenity").forward(req,resp);
     }
 }

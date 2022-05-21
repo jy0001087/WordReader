@@ -7,11 +7,14 @@ import org.json.JSONObject;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import javax.servlet.Servlet;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -22,6 +25,7 @@ public class AmenityServlet extends HttpServlet {
     //get方法仅用于实现jsp页面的访问
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        setNovelList();
         req.getRequestDispatcher("/WEB-INF/jsp/amenity.jsp").forward(req,resp);
     }
     // 业务逻辑写在post方法里，再返回给amenity页面
@@ -40,5 +44,21 @@ public class AmenityServlet extends HttpServlet {
         String id = json2.getString("transactionID");
         
         req.getRequestDispatcher("/WEB_INF/jsp/amenity.jsp").forward(req,resp);
+    }
+
+    public ArrayList<File> setNovelList(){
+        ServletConfig config = this.getServletConfig();
+        String path= config.getServletContext().getRealPath("/")+"NovelDir";
+        ArrayList<File> fileList = new ArrayList<>();
+        File file = new File(path);
+        File[] files= file.listFiles();
+        if(files.length==0){
+            fileList = null;
+            return fileList;
+        }
+        for(int i =0;i<files.length;i++){
+            fileList.add(files[i]);
+        }
+        return fileList;
     }
 }

@@ -182,7 +182,7 @@ public class ShuaigayFetcher {
         }
     }
 
-    public void doArticleGrab(String entrenceUrl){
+    public void doArticleGrab(String entrenceUrl,String path){
         Spider spider= new Spider();
         entrenceUrl="https://www.shuaigay6.com/thread-"+entrenceUrl+"-1-1.html"; //拼接url
         String url = "https://www.shuaigay6.com/member.php?mod=logging&action=login&loginsubmit=yes&loginhash=LhLvE&inajax=1";
@@ -208,9 +208,9 @@ public class ShuaigayFetcher {
         }
         smArticle.totalNumofPosts=postList.size()+"";
         //写文件
-        File dir = new File("NovelDir");
+        File dir = new File(path+"/NovelDir");
         dir.mkdir();
-        compose("NovelDir/",postList,smArticle);
+        compose(dir.getPath()+"\\",postList,smArticle);
         return;
     }
 
@@ -294,7 +294,7 @@ public class ShuaigayFetcher {
      * @param args
      */
     public static void main(String[] args){
-        new ShuaigayFetcher().doArticleGrab("1748443");
+        new ShuaigayFetcher().doArticleGrab("1784474","D:/Personal-Sync/电子书/非礼勿视的小说");
         //new ShuaigayFetcher().doSocialGameGrab();
     }
 
