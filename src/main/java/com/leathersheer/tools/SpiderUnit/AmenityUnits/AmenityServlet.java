@@ -25,7 +25,6 @@ public class AmenityServlet extends HttpServlet {
     //get方法仅用于实现jsp页面的访问
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        setNovelList();
         req.getRequestDispatcher("/WEB-INF/jsp/amenity.jsp").forward(req,resp);
     }
     // 业务逻辑写在post方法里，再返回给amenity页面
@@ -46,19 +45,4 @@ public class AmenityServlet extends HttpServlet {
         req.getRequestDispatcher("/WEB_INF/jsp/amenity.jsp").forward(req,resp);
     }
 
-    public ArrayList<File> setNovelList(){
-        ServletConfig config = this.getServletConfig();
-        String path= config.getServletContext().getRealPath("/")+"NovelDir";
-        ArrayList<File> fileList = new ArrayList<>();
-        File file = new File(path);
-        File[] files= file.listFiles();
-        if(files.length==0){
-            fileList = null;
-            return fileList;
-        }
-        for(int i =0;i<files.length;i++){
-            fileList.add(files[i]);
-        }
-        return fileList;
-    }
 }
