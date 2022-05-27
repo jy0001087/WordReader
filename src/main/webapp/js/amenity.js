@@ -52,14 +52,15 @@ function DownloadNovel(event){
     var button = event.target;
     var onclicktb = button.parentNode
     var urls =onclicktb.getAttribute("url").split("\\");
-    var params = "filename="+encodeURI(encodeURI(urls.pop()));
+    var filename= urls.pop();
+    var params = "filename="+encodeURI(encodeURI(filename));
     req.onreadystatechange=function()
     {
         if (req.readyState==4 && req.status==200)
         {
             var blob = new Blob([req.response], {type: 'text/xls'})
             var a = document.createElement("a");
-            a.download="1.txt"
+            a.download=filename
             a.href=URL.createObjectURL(blob);
             a.click();
         }
