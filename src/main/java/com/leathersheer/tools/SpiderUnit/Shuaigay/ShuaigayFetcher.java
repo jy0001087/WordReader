@@ -98,10 +98,10 @@ public class ShuaigayFetcher {
     public void doSocialGameGrab(){
         ShuaigayFetcher sf=new ShuaigayFetcher();
         Spider spider= new Spider();
-        String url = "https://www.shuaigay6.com/member.php?mod=logging&action=login&loginsubmit=yes&loginhash=LhLvE&inajax=1";
+        String url = "https://www.shuaigay7.com/member.php?mod=logging&action=login&loginsubmit=yes&loginhash=LhLvE&inajax=1";
         sf.doFetch(url,spider,"login");
-        //url = "https://www.shuaigay6.com/forum.php?mod=viewthread&tid=1536090";
-        url = "https://www.shuaigay6.com/forum-125-1.html";  // SocialGame-url
+        //url = "https://www.shuaigay7.com/forum.php?mod=viewthread&tid=1536090";
+        url = "https://www.shuaigay7.com/forum-125-1.html";  // SocialGame-url
         Document doc=sf.doFetch(url,spider,"fetch");
         Map<String,ArrayList<String>> keywordMap = new HashMap<>();
         ArrayList<String> kewordList = new ArrayList<String>() {{
@@ -184,8 +184,8 @@ public class ShuaigayFetcher {
 
     public void doArticleGrab(String entrenceUrl,String path){
         Spider spider= new Spider();
-        entrenceUrl="https://www.shuaigay6.com/thread-"+entrenceUrl+"-1-1.html"; //拼接url
-        String url = "https://www.shuaigay6.com/member.php?mod=logging&action=login&loginsubmit=yes&loginhash=LhLvE&inajax=1";
+        entrenceUrl="https://www.shuaigay7.com/thread-"+entrenceUrl+"-1-1.html"; //拼接url
+        String url = "https://www.shuaigay7.com/member.php?mod=logging&action=login&loginsubmit=yes&loginhash=LhLvE&inajax=1";
         this.doFetch(url,spider,"login");
 
         SMArticleBean smArticle= new SMArticleBean();
@@ -263,7 +263,7 @@ public class ShuaigayFetcher {
     public void  compose(String url,ArrayList<SMArticlePostBean> articlePostBeanList,SMArticleBean smArticle){
         SimpleDateFormat format = new SimpleDateFormat("YYYYMMdd");
         String date = format.format(new Date());
-        File file = new File(url+smArticle.title+"-已至"+smArticle.totalNumofPosts+"-threadId_"+smArticle.postId+"-Date_"+date+".txt");
+        File file = new File(url+smArticle.title.replaceAll("\\.","").replaceAll(":","").replaceAll("：","")+"-已至"+smArticle.totalNumofPosts+"-threadId_"+smArticle.postId+"-"+date+".txt");
         try{
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             for(SMArticlePostBean beans:articlePostBeanList){
@@ -294,7 +294,7 @@ public class ShuaigayFetcher {
      * @param args
      */
     public static void main(String[] args){
-        new ShuaigayFetcher().doArticleGrab("1784474","D:/Personal-Sync/电子书/非礼勿视的小说");
+        new ShuaigayFetcher().doArticleGrab("1585049","D:/Personal-Sync/电子书/非礼勿视的小说");
         //new ShuaigayFetcher().doSocialGameGrab();
     }
 

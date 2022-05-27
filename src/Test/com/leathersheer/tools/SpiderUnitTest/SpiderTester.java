@@ -26,8 +26,8 @@ public class SpiderTester {
     public static final Logger spiderTesterLogger = LogManager.getLogger();
 
     public static void main(String[] args) throws Exception {
-        String str = "快说！”  “小伙子真是太年轻";
-        str=str.replaceAll("[ ]{2,}","\n");
-        System.out.print(str);
+        String str = "快说！：...小伙子真是太年轻";
+        str=str.replaceAll("\\.","");
+        System.out.print("匹配后"+str);
     }
 }

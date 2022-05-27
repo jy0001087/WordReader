@@ -39,24 +39,32 @@ function FileList(resultArrayString){
 
         let appendedtd2 = document.createElement("td");
         appendedtd2.setAttribute("url",novel);
-        appendedtd2.innerHTML="<input type='button' value='下载' onclick='DownloadNovel();'>";
+        appendedtd2.innerHTML="<input type='button' value='下载' onclick='DownloadNovel(event);'>";
         appendedtr.appendChild(appendedtd2);
         table.appendChild(appendedtr);
     }
 
 }
 
-function DownloadNovel(){
+function DownloadNovel(event){
     req= new XMLHttpRequest();
+    req.responseType = 'blob';
+    var button = event.target;
+    var onclicktb = button.parentNode
+    var urls =onclicktb.getAttribute("url").split("\\");
+    var params = "filename="+encodeURI(encodeURI(urls.pop()));
     req.onreadystatechange=function()
     {
         if (req.readyState==4 && req.status==200)
         {
-            var resultArrayString=req.responseText;
-            alert(resultArrayString);
+            var blob = new Blob([req.response], {type: 'text/xls'})
+            var a = document.createElement("a");
+            a.download="1.txt"
+            a.href=URL.createObjectURL(blob);
+            a.click();
         }
     }
     req.open("POST","NovelDownload",true);
     req.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-    req.send();
+    req.send(params);
 }
