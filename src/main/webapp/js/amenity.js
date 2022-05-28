@@ -75,3 +75,18 @@ function DownloadNovel(event){
     req.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
     req.send(params);
 }
+
+function fetchCDJK(){
+    req= new XMLHttpRequest();
+    req.onreadystatechange=function()
+    {
+        if (req.readyState==4 && req.status==200)
+        {
+            var resultArrayString=req.responseText;
+            alert(JSON.parse(resultArrayString));
+        }
+    }
+    req.open("POST","LianJiaCDServlet",true);
+    req.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+    req.send();
+}

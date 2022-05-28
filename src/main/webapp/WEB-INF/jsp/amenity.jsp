@@ -14,6 +14,7 @@
     <input id="threadId" type="text" name="threadId">
     <input type="submit" value="找文章" onclick="">
     <input type="button" value="文章列表" onclick="fetchNovel();">
+    <input type="button" value="金科" onclick="fetchCDJK();">
 </form>
 </body>
 </html> 
