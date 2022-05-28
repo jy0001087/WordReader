@@ -31,6 +31,9 @@ function FileList(resultArrayString){
     let table = document.getElementById("novel-table");
     for(const novel of resultArrayString){
         let novelle=novel.split("\\");
+        if(novelle.length==1){
+            novelle=novel.split("/");
+        }
         title=novelle.pop();
         let appendedtr = document.createElement("tr");
         let appendedtd1 = document.createElement("td");
@@ -52,6 +55,9 @@ function DownloadNovel(event){
     var button = event.target;
     var onclicktb = button.parentNode
     var urls =onclicktb.getAttribute("url").split("\\");
+    if(urls.length==1){
+        urls=onclicktb.getAttribute("url").split("/");
+    }
     var filename= urls.pop();
     var params = "filename="+encodeURI(encodeURI(filename));
     req.onreadystatechange=function()

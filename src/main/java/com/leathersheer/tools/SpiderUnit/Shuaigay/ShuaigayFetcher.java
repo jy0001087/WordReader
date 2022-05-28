@@ -208,9 +208,9 @@ public class ShuaigayFetcher {
         }
         smArticle.totalNumofPosts=postList.size()+"";
         //写文件
-        File dir = new File(path+"/NovelDir");
+        File dir = new File(path+File.separator+"NovelDir");
         dir.mkdir();
-        compose(dir.getPath()+"\\",postList,smArticle);
+        compose(dir.getPath()+File.separator,postList,smArticle);
         return;
     }
 

@@ -32,7 +32,7 @@ public class NovelDownloader extends HttpServlet {
         String fileListArrayStringValue = mapper.writeValueAsString("File is not found");
 
         ServletConfig config = this.getServletConfig();
-        String path = config.getServletContext().getRealPath("/") + "NovelDir"+"\\"+ URLDecoder.decode(req.getParameter("filename"),"UTF-8");
+        String path = config.getServletContext().getRealPath("/") + "NovelDir"+File.separator+ URLDecoder.decode(req.getParameter("filename"),"UTF-8");
         novelDownloadLogger.debug("file path="+path);
         File file= new File(path);
         if(file.isFile()){
