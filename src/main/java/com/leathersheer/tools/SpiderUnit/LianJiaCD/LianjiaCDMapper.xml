@@ -7,8 +7,29 @@
     <insert id="insertColumn" parameterType="com.leathersheer.tools.SpiderUnit.LianJiaCD.LianjiaCDBean">
         insert into lianjiaCDhouse(houseid,title,housetype,proportion,orientation,decoration,floor,followinfo,taxfree,price,fetchdate,status,url)
         values(#{houseid},#{title},#{housetype},#{proportion},#{orientation},#{decoration},#{floor},#{followinfo},#{taxfree},#{price},#{fetchdate},#{status},#{url})
-            on conflict do nothing
     </insert>
 
+    <insert id="insertColumnHist" parameterType="com.leathersheer.tools.SpiderUnit.LianJiaCD.LianjiaCDBean">
+        insert into lianjiacdhousehist(houseid,title,housetype,proportion,orientation,decoration,floor,followinfo,taxfree,price,fetchdate,status,url)
+        values(#{houseid},#{title},#{housetype},#{proportion},#{orientation},#{decoration},#{floor},#{followinfo},#{taxfree},#{price},#{fetchdate},#{status},#{url})
+    </insert>
 
+    <update id="updateWithPriceAndFollowinfo" parameterType="com.leathersheer.tools.SpiderUnit.LianJiaCD.LianjiaCDBean">
+          update lianjiaCDhouse
+          set updatedate = #{fetchdate},price = #{price},followinfo = #{followinfo}
+          where houseid = #{houseid}
+    </update>
+
+    <update id="updateOnlyWithDate" parameterType="com.leathersheer.tools.SpiderUnit.LianJiaCD.LianjiaCDBean">
+        update lianjiaCDhouse
+        set updatedate= #{fetchdate}
+        where houseid = #{houseid}
+    </update>
+
+    <select id="selectHouseState" parameterType="com.leathersheer.tools.SpiderUnit.LianJiaCD.LianjiaCDBean"
+    resultType="com.leathersheer.tools.SpiderUnit.LianJiaCD.LianjiaCDBean">
+        SELECT *
+        FROM lianjiaCDhouse
+        WHERE houseid = #{houseid}
+    </select>
 </mapper>

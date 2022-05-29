@@ -17,4 +17,5 @@ public class LianjiaCDBean {
     public Timestamp fetchdate;
     public String status;
     public String url;
+    public String updateFlag;
 }

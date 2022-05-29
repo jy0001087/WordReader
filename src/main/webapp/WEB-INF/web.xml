@@ -16,6 +16,9 @@
     <listener>
         <listener-class>com.leathersheer.tools.SpiderUnit.Listeners.ShuaigayListener</listener-class>
     </listener>
+    <listener>
+        <listener-class>com.leathersheer.tools.SpiderUnit.LianJiaCD.LianJiaCDServletListener</listener-class>
+    </listener>
     <welcome-file-list>
         <welcome-file>/WEB-INF/jsp/loginmengdian.jsp</welcome-file>
     </welcome-file-list>
