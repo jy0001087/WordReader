@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leathersheer.tools.SpiderUnit.LianJiaCD.LianjiaCDMapper">
+
+    <insert id="insertColumn" parameterType="com.leathersheer.tools.SpiderUnit.LianJiaCD.LianjiaCDBean">
+        insert into lianjiaCDhouse(houseid,title,housetype,proportion,orientation,decoration,floor,followinfo,taxfree,price,fetchdate,status,url)
+        values(#{houseid},#{title},#{housetype},#{proportion},#{orientation},#{decoration},#{floor},#{followinfo},#{taxfree},#{price},#{fetchdate},#{status},#{url})
+            on conflict do nothing
+    </insert>
+
+
+</mapper>

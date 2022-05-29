@@ -1,7 +1,11 @@
 package com.leathersheer.tools.SpiderUnit.LianJiaCD;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.leathersheer.tools.SpiderUnit.DBUnits.DBTools;
+import com.leathersheer.tools.SpiderUnit.Shuaigay.Beans.ShuaigayMapper;
+import com.leathersheer.tools.SpiderUnit.Shuaigay.Beans.SociaGameBean;
 import com.leathersheer.tools.SpiderUnit.SpiderServer.Spider;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
@@ -21,6 +25,7 @@ import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @WebServlet(urlPatterns = "/LianJiaCDServlet",name = "LianJiaCDServlet")
@@ -29,12 +34,25 @@ public class LianJiaCDServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //
         String url = getInitiateUrl("urls.json","CDjinke","initiateurl");
         Spider spider = new Spider();
         spider.setHttpClient();
         Document doc = spider.getContent(url, Document.class);
-        ArrayList<LianjiaCDBean> houselist = this.getHouseInfoArray(doc);
-
+        LianjiaCDHTMLBean htmlBean = this.getHouseInfoArray(doc);
+        while(!(htmlBean.nextUrl.equals("NotExist"))){
+            Pattern pattern = Pattern.compile("https://[a-z]*\\.[a-z]*\\.[a-z]*/");
+            Matcher matcher = pattern.matcher(url);
+            String nextUrl="";
+            if(matcher.find()) {
+                nextUrl = matcher.group(0)+htmlBean.nextUrl;
+            }
+            doc = spider.getContent(nextUrl,Document.class);
+            LianjiaCDHTMLBean nextHtmlBean = this.getHouseInfoArray(doc);
+            htmlBean.houseList.addAll(nextHtmlBean.houseList);
+            htmlBean.nextUrl=nextHtmlBean.nextUrl;
+        }
+        this.saveToDB(htmlBean.houseList);
         PrintWriter out = null;
         out = resp.getWriter();
         ObjectMapper mapper = new ObjectMapper();
@@ -72,7 +90,7 @@ public class LianJiaCDServlet extends HttpServlet {
         return json;
     }
 
-    public ArrayList<LianjiaCDBean> getHouseInfoArray(Document doc){
+    public LianjiaCDHTMLBean getHouseInfoArray(Document doc){
         Elements elelemts = doc.select("li[class^=clear]");
         ArrayList<LianjiaCDBean> houseList = new ArrayList<>();
         for(Element element:elelemts){
@@ -86,7 +104,7 @@ public class LianJiaCDServlet extends HttpServlet {
                 if(Pattern.matches(".室.厅",segment)){
                     bean.housetype=segment;
                 }else if(Pattern.matches(".*平米",segment)){
-                    bean.proportion=segment.replaceAll("平米","");
+                    bean.proportion=Float.valueOf(segment.replaceAll("平米",""));
                 }else if(Pattern.matches("[东,西,南,北]",segment)){
                     bean.orientation=segment;
                 }else if(Pattern.matches(".*装.*",segment)){
@@ -98,11 +116,52 @@ public class LianJiaCDServlet extends HttpServlet {
             bean.followinfo=element.select("div[class=followInfo]").get(0).text();
             //bean.taxfree=element.select("div[class=tag] span[class=taxfree]").get(0).text();
             //TODO:税费信息有的条目没有，观察有必要再说。
-            bean.price=element.select("div[class=totalPrice totalPrice2] span").get(0).text();
-            bean.updatedate=new Timestamp(new Date().getTime());
+            bean.price=Float.valueOf(element.select("div[class=totalPrice totalPrice2] span").get(0).text());
+            bean.fetchdate=new Timestamp(new Date().getTime());
             bean.url=element.select("a[class=noresultRecommend img LOGCLICKDATA]").get(0).attr("href");
             houseList.add(bean);
         }
-        return houseList;
+        LianjiaCDHTMLBean htmlBean = new LianjiaCDHTMLBean();
+        htmlBean.houseList=houseList;
+        try {
+            Element nextPage = doc.select("div[class=page-box house-lst-page-box]").get(0);
+            String pageUrl = nextPage.attr("page-url");
+            String pageData= nextPage.attr("page-data");
+            JSONObject pageDatajson = new JSONObject(pageData);
+            int currentPageNumb = (Integer) pageDatajson.get("curPage");
+            int totalPageNumb = (Integer) pageDatajson.get("totalPage");
+            if(currentPageNumb < totalPageNumb){
+                int nextPageNumb= currentPageNumb+1;
+                String nextPageUrl=pageUrl.replace("{page}",String.valueOf(nextPageNumb));
+                htmlBean.nextUrl=nextPageUrl;
+            }else{
+                htmlBean.nextUrl="NotExist";
+            }
+        }catch(Exception e){
+            LJCDLogger.error("获取下一页数失败：",e);
+            htmlBean.nextUrl="NotExist";
+        }
+        return htmlBean;
+    }
+
+    /**
+     * 二手房数据存储
+     * @param beanList
+     */
+    public void saveToDB(ArrayList<LianjiaCDBean> beanList){
+        DBTools db = new DBTools();
+        try (SqlSession sqlsession = db.getSqlSession().openSession()) {
+            LianjiaCDMapper mapper = sqlsession.getMapper(LianjiaCDMapper.class);
+            try {
+                db.dblogger.info("开始插入数据");
+                for (LianjiaCDBean bean : beanList) {
+                    mapper.insertColumn(bean);
+                }
+            } catch (Exception e) {
+                db.dblogger.error("数据插入异常：");
+                db.dblogger.error(e.toString(), e);
+            }
+            sqlsession.commit();
+        }
     }
 }

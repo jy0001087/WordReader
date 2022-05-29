@@ -33,5 +33,6 @@
     <mapper resource="com/leathersheer/tools/SpiderUnit/Listeners/DBUnits/ChengDuHouseMapper.xml"/>
     <mapper resource="com/leathersheer/tools/SpiderUnit/Listeners/DBUnits/ResoldHoseMapper.xml"/>
     <mapper resource="com/leathersheer/tools/SpiderUnit/Shuaigay/Beans/ShuaigayMapper.xml"/>
+    <mapper resource="com/leathersheer/tools/SpiderUnit/LianJiaCD/LianjiaCDMapper.xml"/>
   </mappers>
 </configuration>
