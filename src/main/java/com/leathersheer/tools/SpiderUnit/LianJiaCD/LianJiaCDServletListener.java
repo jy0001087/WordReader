@@ -54,15 +54,12 @@ public class LianJiaCDServletListener extends HttpServlet implements ServletCont
             @Override
             public void run() {
                 LJCDLogger.info("LianjiaCD Listener is alive!");
-                SimpleDateFormat df = new SimpleDateFormat("HH:mm");
-                String executeTime="executeTime";
                 try {
-                    PropertiesReader pr=new PropertiesReader(context);
-                    ArrayList<String> path=new ArrayList<>();
-                    path.add("CDjinke|"+executeTime);
-                    HashMap<String,String> propertyMap=pr.getProperties("properties.json",path);
+                    PropertiesReader.Builder builder= new PropertiesReader.Builder(context,"properties.json");
+                    PropertiesReader pr = builder.setPropertyPath("CDjinke|executeTime").build();
+                    SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+                    Date targetDate = df.parse(pr.getProperty("executeTime"));
                     Date now = df.parse(df.format(new Date()));
-                    Date targetDate = df.parse(propertyMap.get(executeTime));
                     if(now.after(targetDate)){
                         Engine();}
                 }catch (ParseException e){
@@ -73,21 +70,17 @@ public class LianJiaCDServletListener extends HttpServlet implements ServletCont
     }
 
     public String Engine(){
-        if(context==null){
-            context = this.getServletContext();
-        }
-        PropertiesReader pr=new PropertiesReader(context);
-        ArrayList<String> path=new ArrayList<>();
-        String initiateurl = "initiateurl";
-        path.add("CDjinke|"+initiateurl);
-        HashMap<String,String> propertyMap=pr.getProperties("properties.json",path);
-        String url = propertyMap.get(initiateurl);
+        if(context==null){//servlet调用时，获取ServletContext
+            context = this.getServletContext();}
+        PropertiesReader.Builder builder= new PropertiesReader.Builder(context,"properties.json");
+        PropertiesReader pr = builder.setPropertyPath("CDjinke|initiateurl").build();
+        String url = pr.getProperty("initiateurl");
+
         Spider spider = new Spider();
-        spider.setHttpClient();
         Document doc = spider.getContent(url, Document.class);
         LianjiaCDHTMLBean htmlBean = this.getHouseInfoArray(doc);
         while (!(htmlBean.nextUrl.equals("NotExist"))) {
-            Pattern pattern = Pattern.compile("https://[a-z]*\\.[a-z]*\\.[a-z]*/");
+            Pattern pattern = Pattern.compile("https://[a-z]*\\.[a-z]*\\.[a-z]*/");//匹配网址最开始部份
             Matcher matcher = pattern.matcher(url);
             String nextUrl = "";
             if (matcher.find()) {

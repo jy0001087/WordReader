@@ -3,6 +3,7 @@ package com.leathersheer.tools.SpiderUnit.Shuaigay;
 import com.leathersheer.tools.SpiderUnit.DBUnits.DBTools;
 import com.leathersheer.tools.SpiderUnit.Listeners.DBUnits.ChengDuHouseBean;
 import com.leathersheer.tools.SpiderUnit.Listeners.DBUnits.ChengDuHouseMapper;
+import com.leathersheer.tools.SpiderUnit.PubToolUnit.PropertiesReader;
 import com.leathersheer.tools.SpiderUnit.Shuaigay.Beans.SMArticleBean;
 import com.leathersheer.tools.SpiderUnit.Shuaigay.Beans.SMArticlePostBean;
 import com.leathersheer.tools.SpiderUnit.Shuaigay.Beans.ShuaigayMapper;
@@ -18,6 +19,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 
+import javax.servlet.ServletContext;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -95,17 +97,29 @@ public class ShuaigayFetcher {
     /**
      * 另类交友抓取服务入口
      */
-    public void doSocialGameGrab(){
+    public void doSocialGameGrab(ServletContext context){
         ShuaigayFetcher sf=new ShuaigayFetcher();
         Spider spider= new Spider();
-        String url = "https://www.shuaigay7.com/member.php?mod=logging&action=login&loginsubmit=yes&loginhash=LhLvE&inajax=1";
+
+        PropertiesReader.Builder builder= new PropertiesReader.Builder(context,"properties.json");
+        PropertiesReader pr = builder.setPropertyPath("ShuaiGay|LoginUrl")
+                                     .setPropertyPath("ShuaiGay|SocialGameUrl")
+                                     .setPropertyPath("ShuaiGay|SocialGameKeyword")
+                                     .build();
+        //登录
+        String url = pr.getProperty("LoginUrl");
         sf.doFetch(url,spider,"login");
-        //url = "https://www.shuaigay7.com/forum.php?mod=viewthread&tid=1536090";
-        url = "https://www.shuaigay7.com/forum-125-1.html";  // SocialGame-url
+        //数据准备
+        url = pr.getProperty("SocialGameUrl");
+        String keyword=pr.getProperty("SocialGameKeyword");
+        // 开始爬取
         Document doc=sf.doFetch(url,spider,"fetch");
         Map<String,ArrayList<String>> keywordMap = new HashMap<>();
-        ArrayList<String> kewordList = new ArrayList<String>() {{
-            add("北京");add("1m");add("锁");add("粗口");add("sub");add("dom");add("羞辱");add("丝袜");add("控制");add("乳胶");add("绿");    }};
+        String[] keywords=keyword.split(",");
+        ArrayList<String> kewordList = new ArrayList<>();
+        for(int i =0;i < keywords.length;i++){
+            kewordList.add(keywords[i]);
+        }
         keywordMap.put("postTitle",kewordList);
         JSONObject tarJsobj = new JSONObject("{\"uid\":{\"tbody[id~=^normalthread]\":\"id\"},\"url\":{\"tbody[id~=^normalthread] a[class=s xst]\":\"href\"},\"postTitle\":{\"tbody[id~=^normalthread] a[class=s xst]\":\"text\"}}"
         );
@@ -182,6 +196,11 @@ public class ShuaigayFetcher {
         }
     }
 
+    /**
+     * 小说抓取模块
+     * @param entrenceUrl
+     * @param path
+     */
     public void doArticleGrab(String entrenceUrl,String path){
         Spider spider= new Spider();
         entrenceUrl="https://www.shuaigay7.com/thread-"+entrenceUrl+"-1-1.html"; //拼接url

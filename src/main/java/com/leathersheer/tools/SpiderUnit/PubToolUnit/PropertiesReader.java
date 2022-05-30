@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,34 +13,70 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PropertiesReader {
-    private ServletContext context;
+    private final ServletContext context;
     public static final Logger propertyReaderLogger = LogManager.getLogger();
+    private String filename;
+    private JSONObject json;
+    private ArrayList<String> propertiesPath;
+    private HashMap<String,String> resMap;
 
-    public PropertiesReader(ServletContext context){
-        this.context=context;
+    private PropertiesReader(Builder builder){
+        this.context=builder.context;
+        this.filename=builder.filename;
+        this.propertiesPath=builder.propertiesPath;
+
+        this.resMap=new HashMap<>();
+        this.json = getPropertiesJson();
+        this.getProperties();
     }
 
-    public HashMap<String,String> getProperties(String filename, ArrayList<String> propertiesPath){
-        HashMap<String,String> resMap= new HashMap<>();
-        JSONObject json = this.getPropertiesJson(filename);
+    public static class Builder{
+        private final ServletContext context;
+        private final String filename;
+        private  ArrayList<String> propertiesPath;
+
+        public Builder(ServletContext context,String filename){
+            this.context=context;
+            this.filename=filename;
+            this.propertiesPath=new ArrayList<>();
+        }
+
+        public Builder setPropertyPath(String path){
+            this.propertiesPath.add(path);
+            return this;
+        }
+
+        public PropertiesReader build(){
+            return new PropertiesReader(this);
+        }
+    }
+
+
+    public HashMap<String,String> getProperties(){
         for(String path:propertiesPath){
             String result="";
             String resultKey="";
+            JSONObject processJson = json;
             String[] paths=path.split("\\|");
             for(int i=0;i<paths.length;i++){
                 if(i+1==paths.length){
-                    result=json.getString(paths[i]);
+                    result=processJson.getString(paths[i]);
                     resultKey=paths[i];
                 }else{
-                    json=json.getJSONObject(paths[i]);
+                    processJson=processJson.getJSONObject(paths[i]);
                 }
             }
             resMap.put(resultKey,result);
         }
         return resMap;
     }
-    public JSONObject getPropertiesJson(String filename) {
-        JSONObject json = null;
+
+    public String getProperty(String propertyName){
+        String propertyValue=resMap.get(propertyName);
+        return propertyValue;
+    }
+
+    public JSONObject getPropertiesJson() {
         String path = context.getRealPath("/") + "WEB-INF" + File.separator + "classes" + File.separator + "properties" + File.separator + filename;
         File propertiesFile = new File(path);
         String jsonString = "";

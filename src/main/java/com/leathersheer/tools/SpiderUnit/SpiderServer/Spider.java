@@ -32,11 +32,11 @@ import java.util.Map;
 
 public class Spider {
     public static final Logger spiderLogger = LogManager.getLogger();
-    public String responseType = "";
-    public Map<String,String> para = new HashMap<>();
-    public String originUrl = "";
-    public CloseableHttpClient httpClient=null;
-    public HttpClientContext context = null;
+    public String responseType;
+    public Map<String,String> para;
+    public String originUrl;
+    public CloseableHttpClient httpClient;
+    public HttpClientContext context;
 
     public void setPara(Map<String,String> para){
         this.para = para;
@@ -55,6 +55,10 @@ public class Spider {
         // 创建一个HttpClient
         this.httpClient = HttpClients.custom().setDefaultRequestConfig(globalConfig)
                 .setDefaultCookieStore(cookieStore).build();
+    }
+
+    public Spider(){
+        this.setHttpClient();
     }
 
     /**
@@ -195,6 +199,9 @@ public class Spider {
                 spiderLogger.info("得到html类型返回");
             } else if (heads[i].toString().contains("html")){
                 responseType= "xml";
+                spiderLogger.info("得到xml类型返回");
+            } else if (heads[i].toString().contains("text/xml")){
+                responseType= "html";
                 spiderLogger.info("得到xml类型返回");
             }
         }
