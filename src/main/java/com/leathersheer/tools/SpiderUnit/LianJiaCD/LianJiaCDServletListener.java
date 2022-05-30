@@ -2,8 +2,7 @@ package com.leathersheer.tools.SpiderUnit.LianJiaCD;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.leathersheer.tools.SpiderUnit.DBUnits.DBTools;
-import com.leathersheer.tools.SpiderUnit.Shuaigay.Beans.ShuaigayMapper;
-import com.leathersheer.tools.SpiderUnit.Shuaigay.Beans.SociaGameBean;
+import com.leathersheer.tools.SpiderUnit.PubToolUnit.PropertiesReader;
 import com.leathersheer.tools.SpiderUnit.SpiderServer.Spider;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.logging.log4j.LogManager;
@@ -13,23 +12,18 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.ServletException;
+import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.lang.reflect.Array;
-import java.net.URLEncoder;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.HashMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -38,6 +32,7 @@ import java.util.regex.Pattern;
 @WebServlet(urlPatterns = "/LianJiaCDServlet", name = "LianJiaCDServlet")
 public class LianJiaCDServletListener extends HttpServlet implements ServletContextListener {
     public static final Logger LJCDLogger = LogManager.getLogger();
+    public ServletContext context=null;
 
     //手动更新
     @Override
@@ -54,16 +49,23 @@ public class LianJiaCDServletListener extends HttpServlet implements ServletCont
     public void contextInitialized(ServletContextEvent sce) {
         ServletContextListener.super.contextInitialized(sce);
         ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(3);
+        context=sce.getServletContext();
         executor.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
                 LJCDLogger.info("LianjiaCD Listener is alive!");
                 SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+                String executeTime="executeTime";
                 try {
+                    PropertiesReader pr=new PropertiesReader(context);
+                    ArrayList<String> path=new ArrayList<>();
+                    path.add("CDjinke|"+executeTime);
+                    HashMap<String,String> propertyMap=pr.getProperties("properties.json",path);
                     Date now = df.parse(df.format(new Date()));
-                    Date targetDate = df.parse("21:16");
-                    if(now.after(targetDate)){Engine();}
-                }catch (Exception e){
+                    Date targetDate = df.parse(propertyMap.get(executeTime));
+                    if(now.after(targetDate)){
+                        Engine();}
+                }catch (ParseException e){
                     LJCDLogger.error("转换时间出现异常：",e);
                 }
             }
@@ -71,7 +73,15 @@ public class LianJiaCDServletListener extends HttpServlet implements ServletCont
     }
 
     public String Engine(){
-        String url = getInitiateUrl("urls.json", "CDjinke", "initiateurl");
+        if(context==null){
+            context = this.getServletContext();
+        }
+        PropertiesReader pr=new PropertiesReader(context);
+        ArrayList<String> path=new ArrayList<>();
+        String initiateurl = "initiateurl";
+        path.add("CDjinke|"+initiateurl);
+        HashMap<String,String> propertyMap=pr.getProperties("properties.json",path);
+        String url = propertyMap.get(initiateurl);
         Spider spider = new Spider();
         spider.setHttpClient();
         Document doc = spider.getContent(url, Document.class);
@@ -90,36 +100,6 @@ public class LianJiaCDServletListener extends HttpServlet implements ServletCont
         }
         this.saveToDB(htmlBean.houseList);
         return "OK";
-    }
-
-    public String getInitiateUrl(String filename, String propertySubjson, String propertyName) {
-        String url = "";
-        JSONObject json = this.getPropertiesJson(filename);
-        JSONObject subJson = json.getJSONObject(propertySubjson);
-        url = subJson.getString(propertyName);
-        return url;
-    }
-
-    public JSONObject getPropertiesJson(String filename) {
-        JSONObject json = null;
-        ServletConfig config = this.getServletConfig();
-        String path = config.getServletContext().getRealPath("/") + "WEB-INF" + File.separator + "classes" + File.separator + "properties" + File.separator + filename;
-        File propertiesFile = new File(path);
-        String jsonString = "";
-        try {
-            if (propertiesFile.isFile()) {
-                FileInputStream filein = new FileInputStream(propertiesFile);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(filein));
-                String line = "";
-                while ((line = reader.readLine()) != null) {
-                    jsonString = jsonString + line;
-                }
-            }
-            json = new JSONObject(jsonString);
-        } catch (Exception e) {
-            LJCDLogger.error("File read error", e);
-        }
-        return json;
     }
 
     public LianjiaCDHTMLBean getHouseInfoArray(Document doc) {
