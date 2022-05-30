@@ -61,6 +61,7 @@ public class LianJiaCDServletListener extends HttpServlet implements ServletCont
                     Date targetDate = df.parse(pr.getProperty("executeTime"));
                     Date now = df.parse(df.format(new Date()));
                     if(now.after(targetDate)){
+                        LJCDLogger.info("LianjiaCD Listener is executed!");
                         Engine();}
                 }catch (ParseException e){
                     LJCDLogger.error("转换时间出现异常：",e);

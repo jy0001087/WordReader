@@ -1,5 +1,6 @@
 package com.leathersheer.tools.SpiderUnit.Listeners;
 
+import com.leathersheer.tools.SpiderUnit.PubToolUnit.PropertiesReader;
 import com.leathersheer.tools.SpiderUnit.Shuaigay.ShuaigayFetcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,9 +8,14 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class ShuaigayListener implements ServletContextListener {
 
@@ -19,39 +25,37 @@ public class ShuaigayListener implements ServletContextListener {
         ServletContextListener.super.contextInitialized(sce);
         ServletContext context=sce.getServletContext();
 
-        SGlogger.info("ShuaiGay Listener is started");
+        PropertiesReader.Builder builder= new PropertiesReader.Builder(context,"properties.json");
+        PropertiesReader pr1 = builder.setPropertyPath("ShuaiGay|interval")
+                .build();
+        int interval = Integer.valueOf(pr1.getProperty("interval"));
 
-        Calendar cal = Calendar.getInstance();
-        // 每天定点执行
-        cal.set(Calendar.HOUR_OF_DAY, 11);
-        cal.set(Calendar.MINUTE, 00);
-        cal.set(Calendar.SECOND, 00);
+        ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(3);
+        executor.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                SGlogger.info("ShuaiGaySocialGame Listener is alive!");
+                PropertiesReader.Builder builder= new PropertiesReader.Builder(context,"properties.json");
+                PropertiesReader pr = builder.setPropertyPath("ShuaiGay|interval")
+                        .setPropertyPath("ShuaiGay|SocialGameStartTime")
+                        .setPropertyPath("ShuaiGay|SocialGameExpireTime")
+                        .build();
 
-        Timer timer=new Timer();
-        timer.schedule(new TimerTask(){
-            public void run(){
-                SGlogger.info("ShuaiG-15-Timer Start");
-                new ShuaigayFetcher().doSocialGameGrab(context);
+                String startTime = pr.getProperty("SocialGameStartTime");
+                String expireTime = pr.getProperty("SocialGameExpireTime");
+                try {
+                    SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+                    Date startTimeDate = df.parse(startTime);
+                    Date expireTimeDate = df.parse(expireTime);
+                    Date now = df.parse(df.format(new Date()));
+                    if(now.after(startTimeDate) & now.before(expireTimeDate)){
+                        SGlogger.info("ShuaiGaySocialGame Listener is executed!");
+                        new ShuaigayFetcher().doSocialGameGrab(context);
+                    }
+                }catch (ParseException e){
+                    SGlogger.error("转换时间出现异常：",e);
+                }
             }
-        },cal.getTime(),24 * 60 * 60 * 1000);
-
-        Calendar ca2 = Calendar.getInstance();
-        // 每天定点执行
-        ca2.set(Calendar.HOUR_OF_DAY, 22);
-        ca2.set(Calendar.MINUTE, 00);
-        ca2.set(Calendar.SECOND, 00);
-
-        timer.schedule(new TimerTask(){
-            public void run(){
-                SGlogger.info("ShuaiG-22-Timer Start");
-                new ShuaigayFetcher().doSocialGameGrab(context);
-            }
-        },ca2.getTime(),24 * 60 * 60 * 1000);
-
-        timer.schedule(new TimerTask(){
-            public void run(){
-                SGlogger.info("ShuaiG is alive!");
-            }
-        },60*1000,60*60*1000);
+        },0,interval, TimeUnit.MINUTES);
     }
 }

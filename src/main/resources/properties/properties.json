@@ -6,9 +6,13 @@
   "ShuaiGay": {
     "LoginUrl": "https://www.shuaigay7.com/member.php?mod=logging&action=login&loginsubmit=yes&loginhash=LhLvE&inajax=1",
     "SocialGameUrl":"https://www.shuaigay7.com/forum-125-1.html",
-    "interval": "2",
+    "interval": "185",
     "SocialGameStartTime": "09:00",
     "SocialGameExpireTime": "23:00",
     "SocialGameKeyword": "北京,丝袜,锁,绿,粗口,控制,羞辱,乳胶,皮革,父子,儿子,sub,dom,d/s,DS"
-  }
+  },
+  "WholeCDHouseState": {
+  "initiateurl": "https://www.cdzjryb.com/",
+  "executeTime": "21:00"
+   }
 }
