@@ -20,7 +20,7 @@ public class ShuaiGayServlet extends HttpServlet {
         shuaigayfetcherServletLogger.info("ShuaiGayFetcher have been started with para:"+req.getParameter("threadId"));
         ShuaigayFetcher fetcher = new ShuaigayFetcher();
         ServletConfig config=this.getServletConfig();
-        fetcher.doArticleGrab(req.getParameter("threadId").toString(),config.getServletContext().getRealPath("/"));
+        fetcher.doArticleGrab(req.getParameter("threadId").toString(),this.getServletContext());
         req.setAttribute("Article","ok了");
         req.getRequestDispatcher("/Amenity").forward(req,resp);
     }

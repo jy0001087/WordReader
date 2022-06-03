@@ -198,13 +198,19 @@ public class ShuaigayFetcher {
 
     /**
      * 小说抓取模块
-     * @param entrenceUrl
-     * @param path
+     * @param threadID  小说的id
+     * @param context
      */
-    public void doArticleGrab(String entrenceUrl,String path){
+    public void doArticleGrab(String threadID,ServletContext context){
         Spider spider= new Spider();
-        entrenceUrl="https://www.shuaigay7.com/thread-"+entrenceUrl+"-1-1.html"; //拼接url
-        String url = "https://www.shuaigay7.com/member.php?mod=logging&action=login&loginsubmit=yes&loginhash=LhLvE&inajax=1";
+        String path = context.getRealPath("/");
+        PropertiesReader.Builder builder= new PropertiesReader.Builder(context,"properties.json");
+        PropertiesReader pr = builder.setPropertyPath("ShuaiGay|NovelTempletUrl")
+                .setPropertyPath("ShuaiGay|LoginUrl")
+                .build();
+
+        String entrenceUrl= pr.getProperty("NovelTempletUrl").replaceAll("\\{threadID\\}",threadID); //拼接url
+        String url = pr.getProperty("LoginUrl");
         this.doFetch(url,spider,"login");
 
         SMArticleBean smArticle= new SMArticleBean();
@@ -282,7 +288,7 @@ public class ShuaigayFetcher {
     public void  compose(String url,ArrayList<SMArticlePostBean> articlePostBeanList,SMArticleBean smArticle){
         SimpleDateFormat format = new SimpleDateFormat("YYYYMMdd");
         String date = format.format(new Date());
-        File file = new File(url+smArticle.title.replaceAll("\\.","").replaceAll(":","").replaceAll("：","")+"-已至"+smArticle.totalNumofPosts+"-threadId_"+smArticle.postId+"-"+date+".txt");
+        File file = new File(url+smArticle.title.replaceAll("\\.","").replaceAll(":","").replaceAll("：","").replaceAll("【原创】","").replaceAll("【原创首发】","")+"-已至"+smArticle.totalNumofPosts+"-Id"+smArticle.postId+"-"+date+".txt");
         try{
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             for(SMArticlePostBean beans:articlePostBeanList){
@@ -307,14 +313,4 @@ public class ShuaigayFetcher {
         }
 
     }
-
-    /**
-     * 测试模块
-     * @param args
-     */
-    public static void main(String[] args){
-        new ShuaigayFetcher().doArticleGrab("1585049","D:/Personal-Sync/电子书/非礼勿视的小说");
-        //new ShuaigayFetcher().doSocialGameGrab();
-    }
-
 }
