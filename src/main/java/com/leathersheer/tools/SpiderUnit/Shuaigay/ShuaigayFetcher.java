@@ -184,16 +184,18 @@ public class ShuaigayFetcher {
         try (SqlSession sqlsession = db.getSqlSession().openSession()) {
             ShuaigayMapper mapper = sqlsession.getMapper(ShuaigayMapper.class);
             try {
-                db.dblogger.info("开始插入数据");
+                db.dblogger.info("开始插入数据，共 "+beanList.size()+" 条数据。");
                 for (SociaGameBean bean : beanList) {
                     mapper.insertColumn(bean);
                 }
             } catch (Exception e) {
                 db.dblogger.error("数据插入异常：");
                 db.dblogger.error(e.toString(), e);
+                sqlsession.rollback();
             }
             sqlsession.commit();
         }
+        db.dblogger.info("本次批处理结束，共 "+beanList.size()+" 条数据。");
     }
 
     /**

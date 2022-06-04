@@ -159,14 +159,16 @@ public class LianJiaCDServletListener extends HttpServlet implements ServletCont
         DBTools db = new DBTools();
         try (SqlSession sqlsession = db.getSqlSession().openSession()) {
             LianjiaCDMapper mapper = sqlsession.getMapper(LianjiaCDMapper.class);
-
+            int i = 0;
             for (LianjiaCDBean bean : beanList) {
+                i=i+1;
                 try {
-                    db.dblogger.info("开始插入数据");
+                    db.dblogger.info("开始插入数据，目前id:" +bean.houseid+"第 "+i +" 条，共 "+ beanList.size()+" 条数据");
                     mapper.insertColumn(bean);
+                    sqlsession.commit();
                 } catch (Exception e) {
                     if (e.getMessage().contains("duplicate key")) {//更新已存在记录状态
-                        db.dblogger.debug("Record already exist");
+                        db.dblogger.info("Record already exist,to update updatedate filed");
                         bean.updateFlag="needToUpdate";
                         sqlsession.rollback();
                     }else {
@@ -178,10 +180,12 @@ public class LianJiaCDServletListener extends HttpServlet implements ServletCont
                     try {//价格未变化的，只更新updatedate，价格变了更新price和followinfo
                         formerBean = mapper.selectHouseState(bean);
                         if(formerBean.price!=bean.price){
+                            db.dblogger.info("Price updated ,The record will backup into histTable ,houseid = " + bean.houseid);
                             mapper.updateWithPriceAndFollowinfo(bean);
                             bean.updateFlag="needToBackUp";
                         }else {
-                            mapper.updateOnlyWithDate(bean);
+                            db.dblogger.info("Updating updatedate filed,houseid = " + bean.houseid);
+                             mapper.updateOnlyWithDate(bean);
                         }
                         sqlsession.commit();
                     } catch (Exception e) {
@@ -191,13 +195,17 @@ public class LianJiaCDServletListener extends HttpServlet implements ServletCont
                     //老数据写入lianjiacdhousehist表，hist表无主键
                     if(bean.updateFlag.equals("needToBackUp")) {
                         try {
+                            db.dblogger.info("Backup to histTable,houseid = " + bean.houseid);
                             mapper.insertColumnHist(formerBean);
+                            sqlsession.commit();
                         } catch (Exception e) {
                             db.dblogger.error("备份老数据出现异常",e);
+                            sqlsession.rollback();
                         }
                     }
                 }
             }
         }
+        db.dblogger.info("本次插入结束，共完成数据更新 " + beanList.size() +" 条。");
     }
 }
