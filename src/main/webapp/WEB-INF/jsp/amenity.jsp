@@ -16,5 +16,8 @@
     <input type="button" value="文章列表" onclick="fetchNovel();">
     <input type="button" value="金科" onclick="fetchCDJK();">
 </form>
+<div>
+    <input id="DataServlet" type="button" value="模拟安卓访问" onclick="fetchDataServlet();" >
+</div>
 </body>
 </html> 

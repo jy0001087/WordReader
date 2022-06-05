@@ -90,3 +90,18 @@ function fetchCDJK(){
     req.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
     req.send();
 }
+
+function fetchDataServlet(){
+    req= new XMLHttpRequest();
+    req.onreadystatechange=function()
+    {
+        if (req.readyState==4 && req.status==200)
+        {
+            var resultJsonString=req.responseText;
+            var resoutJson=JSON.parse(resultJsonString);
+        }
+    }
+    req.open("POST","DataServlet",true);
+    req.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+    req.send();
+}

@@ -34,5 +34,6 @@
     <mapper resource="com/leathersheer/tools/SpiderUnit/Listeners/DBUnits/ResoldHoseMapper.xml"/>
     <mapper resource="com/leathersheer/tools/SpiderUnit/Shuaigay/Beans/ShuaigayMapper.xml"/>
     <mapper resource="com/leathersheer/tools/SpiderUnit/LianJiaCD/LianjiaCDMapper.xml"/>
+    <mapper resource="com/leathersheer/tools/AndroidResponse/DataFragment/DataServletMapper.xml"/>
   </mappers>
 </configuration>
