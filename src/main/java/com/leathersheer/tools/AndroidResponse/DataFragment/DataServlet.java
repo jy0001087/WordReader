@@ -19,42 +19,48 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-@WebServlet(urlPatterns = "/DataServlet" ,name = "DataServlet")
+@WebServlet(urlPatterns = "/DataServlet", name = "DataServlet")
 public class DataServlet extends HttpServlet {
     public static final Logger DataLogger = LogManager.getLogger();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String para = req.getParameter("para");
+        JSONObject outJson ;
         resp.setContentType("application/json; charset=utf-8");
         resp.setCharacterEncoding("UTF-8");
 
         DataLogger.debug("DataServlet is started!");
-        try{
-            JSONObject outJson = getQyeryData("ok");
+        try {
+            outJson = getQyeryData(para);
             PrintWriter out = resp.getWriter();
             out.write(outJson.toString());
-        }catch(Exception e){
-            DataLogger.error("写入返回数据异常",e);
+        } catch (Exception e) {
+            DataLogger.error("写入返回数据异常", e);
         }
     }
 
-    private JSONObject getQyeryData(String queryType){
-        JSONObject json=new JSONObject();
+    private JSONObject getQyeryData(String para) {
+        JSONObject json = new JSONObject();
         DBTools db = new DBTools();
+        List<LianjiaCDBean> list ;
         try (SqlSession sqlsession = db.getSqlSession().openSession()) {
             DataServletMapper mapper = sqlsession.getMapper(DataServletMapper.class);
-            List<LianjiaCDBean> list = mapper.getHouseInfoAll();
+            if (para.equals("hist")) {
+                list = mapper.getHouseHist();
+            } else {
+                list = mapper.getHouseInfoAll();
+            }
             ObjectMapper jsonHelper = new ObjectMapper();
-            Map<String,String> jsonMap = new HashMap<>();
-            for(LianjiaCDBean bean:list){
-                jsonMap.put(bean.houseid,jsonHelper.writeValueAsString(bean));
+            Map<String, String> jsonMap = new HashMap<>();
+            for (LianjiaCDBean bean : list) {
+                jsonMap.put(bean.houseid, jsonHelper.writeValueAsString(bean));
             }
             json = new JSONObject(jsonMap);
-            DataLogger.info("查询结束，获取 "+list.size()+" 条数据");
-        }catch(Exception e){
-            DataLogger.error("QyeryError",e);
+            DataLogger.info("DataServlet/para="+para+"查询结束，获取 " + list.size() + " 条数据");
+        } catch (Exception e) {
+            DataLogger.error("DataServlet/para="+para+"QyeryError", e);
         }
         return json;
     }

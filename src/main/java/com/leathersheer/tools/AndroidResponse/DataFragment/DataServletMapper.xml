@@ -18,9 +18,17 @@
         <result property="fetchdate" column="fetchdate"/>
         <result property="status" column="status"/>
         <result property="url" column="url"/>
+        <result property="originalPrice" column="originalPrice"/>
+        <result property="originalFetchdate" column="originalFetchdate"/>
     </resultMap>
 
     <select id="getHouseInfoAll" resultMap="LianjiaCDMapper">
         select * from lianjiacdhouse order by price;
+    </select>
+
+    <select id="getHouseHist" resultMap="LianjiaCDMapper">
+        SELECT a.*,b.price as originalPrice,b.fetchdate as originalFetchdate
+        FROM lianjiaCDhouse a,lianjiacdhousehist b
+        WHERE a.houseid = b.houseid
     </select>
 </mapper>

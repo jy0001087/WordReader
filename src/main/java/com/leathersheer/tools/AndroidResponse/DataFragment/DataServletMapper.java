@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface DataServletMapper {
     public List<LianjiaCDBean> getHouseInfoAll();
+
+    public List<LianjiaCDBean> getHouseHist();
 }

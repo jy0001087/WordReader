@@ -92,6 +92,9 @@ function fetchCDJK(){
 }
 
 function fetchDataServlet(){
+    var para = "";
+    para=document.getElementById("threadId").value;
+
     req= new XMLHttpRequest();
     req.onreadystatechange=function()
     {
@@ -103,5 +106,5 @@ function fetchDataServlet(){
     }
     req.open("POST","DataServlet",true);
     req.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-    req.send();
+    req.send("para="+para);
 }
