@@ -154,7 +154,7 @@ function commitCloumn(){
     req.onreadystatechange=function()
     {
         if (req.readyState==4 && req.status==200) {
-            alert("ojbk");
+            alert("ok");
             rmElement("cloumn_adder_button");
             rmElement("cloum_adder_commit_button");
             queryWithData();
