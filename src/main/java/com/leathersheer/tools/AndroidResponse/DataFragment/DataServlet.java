@@ -26,7 +26,11 @@ public class DataServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String para = req.getParameter("para");
+         String para = req.getParameter("para");
+        if(para == null){
+            DataLogger.debug("para is null :\n");
+            para = "nohist";
+        }
         JSONObject outJson ;
         resp.setContentType("application/json; charset=utf-8");
         resp.setCharacterEncoding("UTF-8");
@@ -58,9 +62,9 @@ public class DataServlet extends HttpServlet {
                 jsonMap.put(bean.houseid, jsonHelper.writeValueAsString(bean));
             }
             json = new JSONObject(jsonMap);
-            DataLogger.info("DataServlet/para="+para+"查询结束，获取 " + list.size() + " 条数据");
+            DataLogger.info("DataServlet/para="+para+", 查询结束，获取 " + list.size() + " 条数据");
         } catch (Exception e) {
-            DataLogger.error("DataServlet/para="+para+"QyeryError", e);
+            DataLogger.error("DataServlet/para="+para+", QyeryError \n", e);
         }
         return json;
     }
