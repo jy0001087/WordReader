@@ -10,8 +10,8 @@
     </insert>
 
     <insert id="insertColumnHist" parameterType="com.leathersheer.tools.SpiderUnit.LianJiaCD.LianjiaCDBean">
-        insert into lianjiacdhousehist(houseid,title,housetype,proportion,orientation,decoration,floor,followinfo,taxfree,price,fetchdate,status,url)
-        values(#{houseid},#{title},#{housetype},#{proportion},#{orientation},#{decoration},#{floor},#{followinfo},#{taxfree},#{price},#{fetchdate},#{status},#{url})
+        insert into lianjiacdhousehist(houseid,title,housetype,proportion,orientation,decoration,floor,followinfo,taxfree,price,fetchdate,status,url,updatedate)
+        values(#{houseid},#{title},#{housetype},#{proportion},#{orientation},#{decoration},#{floor},#{followinfo},#{taxfree},#{price},#{fetchdate},#{status},#{url},#{updatedate})
     </insert>
 
     <update id="updateWithPriceAndFollowinfo" parameterType="com.leathersheer.tools.SpiderUnit.LianJiaCD.LianjiaCDBean">

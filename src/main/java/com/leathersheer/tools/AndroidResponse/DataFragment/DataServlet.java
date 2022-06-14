@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,12 +50,15 @@ public class DataServlet extends HttpServlet {
         JSONObject json = new JSONObject();
         DBTools db = new DBTools();
         List<LianjiaCDBean> list ;
+        List<LianjiaCDBean> listhist = new ArrayList<>();
         try (SqlSession sqlsession = db.getSqlSession().openSession()) {
             DataServletMapper mapper = sqlsession.getMapper(DataServletMapper.class);
             if (para.equals("hist")) {
                 list = mapper.getHouseHist();
             } else {
+                listhist = mapper.getHouseHist();
                 list = mapper.getHouseInfoAll();
+                list = mergeHist(listhist,list);
             }
             ObjectMapper jsonHelper = new ObjectMapper();
             Map<String, String> jsonMap = new HashMap<>();
@@ -67,5 +71,39 @@ public class DataServlet extends HttpServlet {
             DataLogger.error("DataServlet/para="+para+", QyeryError \n", e);
         }
         return json;
+    }
+
+    private List<LianjiaCDBean> mergeHist(List<LianjiaCDBean> hist, List<LianjiaCDBean> list){
+        //hist表数据清理，选择update时间最近的,每个houseid保留一条
+        HashMap<String,LianjiaCDBean> histMap= new HashMap<>();
+        for(int i =0;i<hist.size();i++){
+            LianjiaCDBean tempBean = hist.get(i);
+            if(tempBean.updatedate == null){
+                tempBean.updatedate = tempBean.fetchdate;
+            }
+            if(histMap.containsKey(tempBean.houseid)){
+                if(tempBean.updatedate.after(histMap.get(tempBean.houseid).updatedate)){
+                    histMap.put(tempBean.houseid,tempBean);
+                }
+            }else{
+                histMap.put(tempBean.houseid,tempBean);
+            }
+        }
+
+        //将hist数据融入list表数据，更该status为降价、涨价等。
+        for(Map.Entry<String,LianjiaCDBean> entry:histMap.entrySet()){
+            for(int j =0;j< list.size();j++){
+                if(entry.getKey().equals(list.get(j).houseid)){
+                    list.get(j).originalFetchdate=entry.getValue().originalFetchdate;
+                    list.get(j).originalPrice=entry.getValue().originalPrice;
+                }
+                if(list.get(j).price > list.get(j).originalPrice){
+                    list.get(j).status = "inflation";
+                }else{
+                    list.get(j).status = "depreciate";
+                }
+            }
+        }
+        return list;
     }
 }
