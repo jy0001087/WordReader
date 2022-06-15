@@ -49,25 +49,30 @@ public class LianJiaCDServletListener extends HttpServlet implements ServletCont
     public void contextInitialized(ServletContextEvent sce) {
         ServletContextListener.super.contextInitialized(sce);
         ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(3);
-        context=sce.getServletContext();
-        executor.scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                LJCDLogger.info("LianjiaCD Listener is alive!");
-                try {
-                    PropertiesReader.Builder builder= new PropertiesReader.Builder(context,"properties.json");
-                    PropertiesReader pr = builder.setPropertyPath("CDjinke|executeTime").build();
-                    SimpleDateFormat df = new SimpleDateFormat("HH:mm");
-                    Date targetDate = df.parse(pr.getProperty("executeTime"));
-                    Date now = df.parse(df.format(new Date()));
-                    if(now.after(targetDate)){
-                        LJCDLogger.info("LianjiaCD Listener is executed!");
-                        Engine();}
-                }catch (ParseException e){
-                    LJCDLogger.error("转换时间出现异常：",e);
+        context = sce.getServletContext();
+        try {
+            executor.scheduleAtFixedRate(new Runnable() {
+                @Override
+                public void run() {
+                    LJCDLogger.info("LianjiaCD Listener is alive!");
+                    try {
+                        PropertiesReader.Builder builder = new PropertiesReader.Builder(context, "properties.json");
+                        PropertiesReader pr = builder.setPropertyPath("CDjinke|executeTime").build();
+                        SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+                        Date targetDate = df.parse(pr.getProperty("executeTime"));
+                        Date now = df.parse(df.format(new Date()));
+                        if (now.after(targetDate)) {
+                            LJCDLogger.info("LianjiaCD Listener is executed!");
+                            Engine();
+                        }
+                    } catch (ParseException e) {
+                        LJCDLogger.error("转换时间出现异常：", e);
+                    }
                 }
-            }
-        },0,1, TimeUnit.HOURS);
+            }, 0, 1, TimeUnit.HOURS);
+        }catch(Exception e){
+            LJCDLogger.error("LianJiaCD 定时任务执行遇到异常：\n",e);
+        }
     }
 
     public String Engine(){

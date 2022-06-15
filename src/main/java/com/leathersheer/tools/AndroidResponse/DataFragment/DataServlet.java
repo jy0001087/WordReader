@@ -79,7 +79,7 @@ public class DataServlet extends HttpServlet {
         for(int i =0;i<hist.size();i++){
             LianjiaCDBean tempBean = hist.get(i);
             if(tempBean.updatedate == null){
-                tempBean.updatedate = tempBean.fetchdate;
+                tempBean.updatedate = tempBean.fetchdate; //修整部份hist表数据updatedate数据为空的问题
             }
             if(histMap.containsKey(tempBean.houseid)){
                 if(tempBean.updatedate.after(histMap.get(tempBean.houseid).updatedate)){
@@ -97,10 +97,12 @@ public class DataServlet extends HttpServlet {
                     list.get(j).originalFetchdate=entry.getValue().originalFetchdate;
                     list.get(j).originalPrice=entry.getValue().originalPrice;
                 }
-                if(list.get(j).price > list.get(j).originalPrice){
-                    list.get(j).status = "inflation";
+                if(list.get(j).originalFetchdate == null ){
+                    list.get(j).status = "Equability";
+                }else if (list.get(j).price > list.get(j).originalPrice ){
+                    list.get(j).status = "Inflation";
                 }else{
-                    list.get(j).status = "depreciate";
+                    list.get(j).status = "Depreciate";
                 }
             }
         }
