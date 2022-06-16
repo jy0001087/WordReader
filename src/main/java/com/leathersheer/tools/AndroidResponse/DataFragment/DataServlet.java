@@ -60,6 +60,7 @@ public class DataServlet extends HttpServlet {
                 list = mapper.getHouseInfoAll();
                 list = mergeHist(listhist,list);
             }
+            sqlsession.close();
             ObjectMapper jsonHelper = new ObjectMapper();
             Map<String, String> jsonMap = new HashMap<>();
             for (LianjiaCDBean bean : list) {

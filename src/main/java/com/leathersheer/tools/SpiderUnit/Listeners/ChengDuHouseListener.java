@@ -26,7 +26,7 @@ public class ChengDuHouseListener implements ServletContextListener {
         ServletContextListener.super.contextInitialized(sce);
         ServletContext context=sce.getServletContext();
 
-        ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(3);
+        ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(2);
         executor.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {

@@ -210,6 +210,7 @@ public class LianJiaCDServletListener extends HttpServlet implements ServletCont
                     }
                 }
             }
+            sqlsession.close();
         }
         db.dblogger.info("本次插入结束，共完成数据更新 " + beanList.size() +" 条。");
     }

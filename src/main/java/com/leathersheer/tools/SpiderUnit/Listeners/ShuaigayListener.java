@@ -30,7 +30,7 @@ public class ShuaigayListener implements ServletContextListener {
                 .build();
         int interval = Integer.valueOf(pr1.getProperty("interval"));
 
-        ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(3);
+        ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(2);
         executor.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
