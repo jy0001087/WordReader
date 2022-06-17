@@ -50,7 +50,6 @@ public class LianJiaCDServletListener extends HttpServlet implements ServletCont
         ServletContextListener.super.contextInitialized(sce);
         ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(3);
         context = sce.getServletContext();
-        try {
             executor.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
@@ -70,9 +69,6 @@ public class LianJiaCDServletListener extends HttpServlet implements ServletCont
                     }
                 }
             }, 0, 1, TimeUnit.HOURS);
-        }catch(Exception e){
-            LJCDLogger.error("LianJiaCD 定时任务执行遇到异常：\n",e);
-        }
     }
 
     public String Engine(){
