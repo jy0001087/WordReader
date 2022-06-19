@@ -106,10 +106,10 @@ function fetchDataServlet(){
     }
     req.open("POST","DataServlet",true);
     req.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-    if(para == "hist"){
-        req.send("para="+para);
-    }else{
+    if(para == ""){
         req.send();
+    }else{
+        req.send("para="+para);
     }
 
 }

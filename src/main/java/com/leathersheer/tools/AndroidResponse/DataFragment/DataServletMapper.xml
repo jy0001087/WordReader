@@ -31,4 +31,21 @@
         FROM lianjiaCDhouse a,lianjiacdhousehist b
         WHERE a.houseid = b.houseid
     </select>
+
+
+    <resultMap id="RealEstateInfo" type="com.leathersheer.tools.SpiderUnit.Listeners.DBUnits.ChengDuHouseBean">
+    <result column="area_name" property="area_name" />
+    <result column="total_area_proportion" property="total_area_proportion" />
+    <result column="residiential_house_num" property="residiential_house_num" />
+    <result column="residiential_house_proportion" property="residiential_house_proportion" />
+    <result column="not_residiential_house_proportion" property="not_residiential_house_proportion" />
+    <result column="city_name" property="city_name" />
+    <result column="record_time" property="record_time" />
+        <result column="record_date" property="record_date" />
+    </resultMap>
+
+    <select id="getRealEstateInfo" resultMap="RealEstateInfo">
+        SELECT *,cast(record_time as date) as record_date FROM realestatestatement
+        ORDER BY record_time DESC;
+    </select>
 </mapper>
