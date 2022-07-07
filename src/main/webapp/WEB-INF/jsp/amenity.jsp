@@ -15,6 +15,7 @@
     <input type="submit" value="找文章" onclick="">
     <input type="button" value="文章列表" onclick="fetchNovel();">
     <input type="button" value="金科" onclick="fetchCDJK();">
+    <input type="button" value="贝壳" onclick="fetchShellRental();">
 </form>
 <div>
     <input id="DataServlet" type="button" value="模拟安卓访问" onclick="fetchDataServlet();" >

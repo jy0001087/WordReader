@@ -15,5 +15,12 @@
   "WholeCDHouseState": {
   "initiateurl": "https://www.cdzjryb.com/",
   "executeTime": "20:00"
-   }
+   },
+  "ShellRental": {
+    "initiateurl": {
+      "nationalLibrary":"https://bj.zu.ke.com/ditiezufang/li656s43137685/rt200600000001/",
+      "zoom":"https://bj.zu.ke.com/ditiezufang/li656s43137684/rt200600000001/"
+    },
+    "executeTime": "12:00"
+  }
 }

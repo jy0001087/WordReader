@@ -113,3 +113,26 @@ function fetchDataServlet(){
     }
 
 }
+
+function fetchShellRental(){
+    var para = "";
+    para=document.getElementById("threadId").value;
+
+    req= new XMLHttpRequest();
+    req.onreadystatechange=function()
+    {
+        if (req.readyState==4 && req.status==200)
+        {
+            var resultJsonString=req.responseText;
+            var resoutJson=JSON.parse(resultJsonString);
+        }
+    }
+    req.open("POST","ShellRental",true);
+    req.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+    if(para == ""){
+        req.send();
+    }else{
+        req.send("para="+para);
+    }
+
+}

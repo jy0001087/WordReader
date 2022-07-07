@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class PropertiesReader {
     private final ServletContext context;
@@ -19,6 +20,7 @@ public class PropertiesReader {
     private JSONObject json;
     private ArrayList<String> propertiesPath;
     private HashMap<String,String> resMap;
+    private PropertiesObj propertiesObj;
 
     private PropertiesReader(Builder builder){
         this.context=builder.context;
@@ -27,7 +29,12 @@ public class PropertiesReader {
 
         this.resMap=new HashMap<>();
         this.json = getPropertiesJson();
-        this.getProperties();
+
+        try{
+            this.getProperties();
+        }catch(Exception e){
+            propertiesObj = this.processPropertiesObj();
+        }
     }
 
     public static class Builder{
@@ -103,5 +110,31 @@ public class PropertiesReader {
             }
         }
         return json;
+    }
+
+    public PropertiesObj processPropertiesObj(){
+        PropertiesObj obj = new PropertiesObj();
+        for(String path:propertiesPath){
+            JSONObject processJson = json;
+            String[] paths=path.split("\\|");
+            for(int i=0;i<paths.length;i++){
+                if(i+1==paths.length){
+                    JSONObject properties =processJson.getJSONObject(paths[i]);
+                    Iterator<String> it= properties.keys();
+                    while(it.hasNext()){
+                        String key = it.next();
+                        obj.propertiesMap.put(key,properties.getString(key));
+                    }
+                    obj.propertyName=paths[i];
+                }else{
+                    processJson=processJson.getJSONObject(paths[i]);
+                }
+            }
+        }
+     return obj;
+    }
+
+    public PropertiesObj getPropertiesObj(){
+        return this.propertiesObj;
     }
 }

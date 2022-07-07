@@ -65,7 +65,9 @@ public class LianJiaCDServletListener extends HttpServlet implements ServletCont
                             Engine();
                         }
                     } catch (ParseException e) {
-                        LJCDLogger.error("转换时间出现异常：", e);
+                        LJCDLogger.error("转换时间出现异常：\n", e);
+                    } catch (Throwable e){
+                        LJCDLogger.error("线程执行异常 \n",e);
                     }
                 }
             }, 0, 1, TimeUnit.HOURS);
