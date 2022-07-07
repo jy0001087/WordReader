@@ -1,8 +1,12 @@
 package com.leathersheer.tools.SpiderUnit.ShellRental;
 
+import com.leathersheer.tools.SpiderUnit.DBUnits.DBTools;
+import com.leathersheer.tools.SpiderUnit.LianJiaCD.LianjiaCDBean;
+import com.leathersheer.tools.SpiderUnit.LianJiaCD.LianjiaCDMapper;
 import com.leathersheer.tools.SpiderUnit.PubToolUnit.PropertiesObj;
 import com.leathersheer.tools.SpiderUnit.PubToolUnit.PropertiesReader;
 import com.leathersheer.tools.SpiderUnit.SpiderServer.Spider;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.nodes.Document;
@@ -65,6 +69,8 @@ public class ShellRentalServletListener extends HttpServlet implements ServletCo
                 nextUrl = getRentalHouseList(doc,landmark);
             }
         }
+
+        saveToDB(mHouseList);
         SRSLogger.debug("pause");
     }
 
@@ -98,5 +104,67 @@ public class ShellRentalServletListener extends HttpServlet implements ServletCo
             nextUrl = "NotExist";
         }
         return nextUrl;
+    }
+
+    /**
+     * 租房数据存储
+     *
+     * @param beanList
+     */
+    public void saveToDB(ArrayList<ShellHouseBean> beanList) {
+        DBTools db = new DBTools();
+        try (SqlSession sqlsession = db.getSqlSession().openSession()) {
+            ShellRentalMapper mapper = sqlsession.getMapper(ShellRentalMapper.class);
+            int i = 0;
+            for (ShellHouseBean bean : beanList) {
+                i=i+1;
+                try {
+                    db.dblogger.info("开始插入数据，目前id:" +bean.houseid+"第 "+i +" 条，共 "+ beanList.size()+" 条数据");
+                    mapper.insertAll(bean);
+                    sqlsession.commit();
+                } catch (Exception e) {
+                    if (e.getMessage().contains("duplicate key")) {//更新已存在记录状态
+                        db.dblogger.info("Record already exist,to update updatedate filed");
+                        bean.updateFlag="needToUpdate";
+                        sqlsession.rollback();
+                    }else {
+                        db.dblogger.error("数据插入异常：", e);
+                    }
+                }
+                /*
+                if(bean.updateFlag.equals("needToUpdate")) {
+                    LianjiaCDBean formerBean = new LianjiaCDBean();
+                    try {//价格未变化的，只更新updatedate，价格变了更新price和followinfo
+                        formerBean = mapper.selectHouseState(bean);
+                        if(formerBean.price!=bean.price){
+                            db.dblogger.info("Price updated ,The record will backup into histTable ,houseid = " + bean.houseid);
+                            mapper.updateWithPriceAndFollowinfo(bean);
+                            bean.updateFlag="needToBackUp";
+                        }else {
+                            db.dblogger.info("Updating updatedate filed,houseid = " + bean.houseid);
+                            mapper.updateOnlyWithDate(bean);
+                        }
+                        sqlsession.commit();
+                    } catch (Exception e) {
+                        db.dblogger.error("update error", e);
+                        sqlsession.rollback();
+                    }
+                    //老数据写入lianjiacdhousehist表，hist表无主键
+                    if(bean.updateFlag.equals("needToBackUp")) {
+                        try {
+                            db.dblogger.info("Backup to histTable,houseid = " + bean.houseid);
+                            mapper.insertColumnHist(formerBean);
+                            sqlsession.commit();
+                        } catch (Exception e) {
+                            db.dblogger.error("备份老数据出现异常",e);
+                            sqlsession.rollback();
+                        }
+                    }
+                }
+                 */
+            }
+            sqlsession.close();
+        }
+        db.dblogger.info("本次插入结束，共完成数据更新 " + beanList.size() +" 条。");
     }
 }

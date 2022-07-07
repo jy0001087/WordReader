@@ -70,3 +70,20 @@ CREATE TABLE IF NOT EXISTS public.lianjiacdhousehist
     taxfree character varying(50) COLLATE pg_catalog."default",
     floor character varying(50) COLLATE pg_catalog."default"
     )
+	
+	
+	
+-- Table: public.shellrentalhouseinfo
+
+-- DROP TABLE IF EXISTS public.shellrentalhouseinfo;
+	
+CREATE TABLE IF NOT EXISTS public.shellrentalhouseinfo
+(
+	    houseid character varying(50) COLLATE pg_catalog."default" NOT NULL,
+	    proportion numeric(20,3),
+	    price numeric(10,3),
+	    address character varying(200) ,
+		landmark character varying(50) ,
+		url character varying(500) 
+	);
+	
