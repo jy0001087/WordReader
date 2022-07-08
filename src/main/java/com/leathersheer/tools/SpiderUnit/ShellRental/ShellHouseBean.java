@@ -9,5 +9,6 @@ public class ShellHouseBean {
     public String landmark;
     public float proportion;
     public String housetype;
+    public String floor;
     public String updateFlag;
 }

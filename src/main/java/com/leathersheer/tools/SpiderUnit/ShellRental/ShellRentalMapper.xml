@@ -5,8 +5,8 @@
 <mapper namespace="com.leathersheer.tools.SpiderUnit.ShellRental.ShellRentalMapper">
 
     <insert id="insertAll" parameterType="com.leathersheer.tools.SpiderUnit.ShellRental.ShellHouseBean">
-        Insert into shellrentalhouseinfo(houseid,address,price,url,landmark,proportion,housetype)
-        values (#{houseid},#{address},#{price},#{url},#{landmark},#{proportion},#{housetype})
+        Insert into shellrentalhouseinfo(houseid,address,price,url,landmark,proportion,housetype,floor)
+        values (#{houseid},#{address},#{price},#{url},#{landmark},#{proportion},#{housetype},#{floor})
         on conflict do nothing
     </insert>
 

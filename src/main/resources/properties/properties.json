@@ -18,8 +18,12 @@
    },
   "ShellRental": {
     "initiateurl": {
-      "nationalLibrary":"https://bj.zu.ke.com/ditiezufang/li656s43137685/rt200600000001/",
-      "zoom":"https://bj.zu.ke.com/ditiezufang/li656s43137684/rt200600000001/"
+      "NationalLibrary":"https://bj.zu.ke.com/ditiezufang/li656s43137685/rt200600000001/",
+      "Zoom":"https://bj.zu.ke.com/ditiezufang/li656s43137684/rt200600000001/",
+      "Garden":"https://bj.zu.ke.com/ditiezufang/li46107350s46107232/rt200600000001/",
+      "WhiteRockBridge": "https://bj.zu.ke.com/ditiezufang/li46107350s46107231/rt200600000001/",
+      "CheGongZhuangXi": "https://bj.zu.ke.com/ditiezufang/li46107350s46107230/rt200600000001/",
+      "CheGongZhuang": "https://bj.zu.ke.com/ditiezufang/li46107350s20595/rt200600000001/"
     },
     "executeTime": "12:00"
   }

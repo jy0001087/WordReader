@@ -78,13 +78,30 @@ public class ShellRentalServletListener extends HttpServlet implements ServletCo
         Elements elements = doc.select("div[class=content__list]").get(0).select("div[class=content__list--item]");
         String nextUrl = "NotExist";
         for(Element element:elements){
-            ShellHouseBean mbean = new ShellHouseBean();
-            mbean.houseid= element.attr("data-house_code");
-            mbean.url = element.select("a[class=twoline]").get(0).attr("href");
-            mbean.address = element.select("p[class=content__list--item--des]").get(0).text();
-            mbean.price = Integer.valueOf(element.select("em").get(0).text());
-            mbean.landmark=landmark;
-            mHouseList.add(mbean);
+            try {
+                ShellHouseBean mbean = new ShellHouseBean();
+                mbean.houseid = element.attr("data-house_code");
+                mbean.url = element.select("a[class=content__list--item--aside]").get(0).attr("href");
+                mbean.address = element.select("p[class=content__list--item--des]").get(0).text();
+                mbean.price = Integer.valueOf(element.select("em").get(0).text());
+                mbean.landmark = landmark;
+                String[] paths=mbean.address.split("/");
+                for (int i = 0; i < paths.length; i++) {
+                    String segment = paths[i].replaceAll(" ", "");
+                    if (Pattern.matches(".室.厅.卫", segment)) {
+                        mbean.housetype = segment;
+                    } else if (Pattern.matches(".*㎡", segment)) {
+                        mbean.proportion = Float.valueOf(segment.replaceAll("㎡", ""));
+                    }  else if (Pattern.matches(".+-.+-.+", segment)) {
+                        mbean.address = segment;
+                    } else if (Pattern.matches(".+层.?", segment)){
+                        mbean.floor=segment;
+                    }
+                }
+                mHouseList.add(mbean);
+            }catch(Exception e){
+                SRSLogger.error("房屋异常： href = " + element+"\n", e);
+            }
         }
         //获取下一页
         try {
