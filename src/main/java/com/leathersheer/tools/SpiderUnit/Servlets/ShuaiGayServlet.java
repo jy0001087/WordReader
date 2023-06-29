@@ -22,6 +22,6 @@ public class ShuaiGayServlet extends HttpServlet {
         ServletConfig config=this.getServletConfig();
         fetcher.doArticleGrab(req.getParameter("threadId").toString(),this.getServletContext());
         req.setAttribute("Article","ok了");
-        req.getRequestDispatcher("/Amenity").forward(req,resp);
+        req.getRequestDispatcher("AmenityServlet").forward(req,resp);
     }
 }

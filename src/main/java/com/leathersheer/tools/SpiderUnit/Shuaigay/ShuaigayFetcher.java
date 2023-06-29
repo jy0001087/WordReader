@@ -227,7 +227,7 @@ public class ShuaigayFetcher {
             doc=this.doFetch(nextUrl,spider,"fetch");
             postList.addAll(convertSinglePage(doc,smArticle));
             try{
-                Thread.sleep(1000);
+                Thread.sleep(200);
             }catch(Exception e){
                 shuaigayLogger.error("线程休眠异常",e);
             }
@@ -290,7 +290,9 @@ public class ShuaigayFetcher {
     public void  compose(String url,ArrayList<SMArticlePostBean> articlePostBeanList,SMArticleBean smArticle){
         SimpleDateFormat format = new SimpleDateFormat("YYYYMMdd");
         String date = format.format(new Date());
-        File file = new File(url+smArticle.title.replaceAll("\\.","").replaceAll(":","").replaceAll("：","").replaceAll("【原创】","").replaceAll("【原创首发】","")+"-已至"+smArticle.totalNumofPosts+"-Id"+smArticle.postId+"-"+date+".txt");
+        File file = new File(url+smArticle.title.replaceAll("\\.","").replaceAll(":","").replaceAll("：","").replaceAll("【原创】","").replaceAll("【原创首发】","")
+                .replaceAll("[/\\\\:*?|]", ".").replaceAll(" +","-").replaceAll("[\"<>]", "'")
+                +"-已至"+smArticle.totalNumofPosts+"-Id"+smArticle.postId+"-"+date+".txt");
         try{
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             for(SMArticlePostBean beans:articlePostBeanList){
@@ -303,8 +305,8 @@ public class ShuaigayFetcher {
             }
             smArticle.content = smArticle.content.replaceAll("  \\n","").replaceAll(" \\n","").replaceAll("\\n\\n","")
                     .replace("&nbsp;","").replaceAll("[ ]+","\n  ")
-                    .replaceAll("白[色]*[的]*[厚]*[棉]*袜[子]*","军绿色丝袜").replaceAll("黑[色]*[的]*[厚]*[棉]*袜[子]*","黑色透明绅士丝袜").replaceAll("[厚]*棉[的]*袜[子]*","条纹黑丝袜")
-                    .replaceAll("[黑,白]*[色]*[厚]*精英袜[子]*","酒红色过膝锦纶透明丝袜").replaceAll("臭袜子","透明尿味臭丝袜");//xp替换
+                    .replaceAll("白[色]*[的]*[厚]*[棉]*袜[子]*","军绿色丝袜").replaceAll("黑[色]*[的]*[厚]*[棉]*袜[子]*","黑色绅士丝袜").replaceAll("[厚]*棉[的]*袜[子]*","条纹黑丝袜")
+                    .replaceAll("[黑,白]*[色]*[厚]*精英袜[子]*","酒红色过膝锦纶丝袜").replaceAll("臭袜子","尿味臭丝袜");//xp替换
             writer.write(smArticle.content );
             writer.write("\n评论区域>>>>>>>>>>\n");
             smArticle.comment = smArticle.comment.replaceAll("  \\n","").replaceAll(" \\n","").replaceAll("\\n\\n","").replaceAll("  \\n","");
