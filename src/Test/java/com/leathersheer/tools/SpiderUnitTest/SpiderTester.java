@@ -27,19 +27,11 @@ public class SpiderTester {
     public static final Logger spiderTesterLogger = LogManager.getLogger();
 
     public static void main(String[] args) throws Exception {
-        String path="海淀-甘家口-西三环北路86号院 / 49.00㎡ /西北 / 2室1厅1卫 / 地下室 （7层）";
-        String[] paths=path.split("/");
-        ShellHouseBean mbean = new ShellHouseBean();
-        for (int i = 0; i < paths.length; i++) {
-            String segment = paths[i].replaceAll(" ", "");
-            if (Pattern.matches(".室.厅.卫", segment)) {
-                mbean.housetype = segment;
-            } else if (Pattern.matches(".*㎡", segment)) {
-                mbean.proportion = Float.valueOf(segment.replaceAll("㎡", ""));
-            }  else if (Pattern.matches(".+-.+-.+", segment)) {
-                mbean.address = segment;
-            }
+        String url = "https://www.shuaitong7.xyz/forum.php?mod=viewthread&tid=1632775&highlight=%C2%CC&mobile=2"
+        Pattern p = Pattern.compile("tid=\\d+");
+        Matcher m = p.matcher(url);
+        while(m.find()){
+            System.out.println(m.group());
         }
-        System.out.println("测试");
     }
 }
