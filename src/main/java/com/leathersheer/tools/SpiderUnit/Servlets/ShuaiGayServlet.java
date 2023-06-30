@@ -24,7 +24,7 @@ public class ShuaiGayServlet extends HttpServlet {
         ShuaigayFetcher fetcher = new ShuaigayFetcher();
         fetcher.doArticleGrab(getThreadId(url),this.getServletContext());
         req.setAttribute("Article","ok了");
-        req.getRequestDispatcher("Amenity").forward(req,resp);
+        req.getRequestDispatcher("amenity.jsp").forward(req,resp);
     }
 
     public String getThreadId(String url){
