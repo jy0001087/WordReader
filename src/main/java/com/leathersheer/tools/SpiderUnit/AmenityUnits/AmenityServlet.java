@@ -18,7 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet(name="AmenityServlet",urlPatterns = "/Amenity")
+@WebServlet("/Amenity")
 public class AmenityServlet extends HttpServlet {
     public static final Logger amenityLogger = LogManager.getLogger();
 
