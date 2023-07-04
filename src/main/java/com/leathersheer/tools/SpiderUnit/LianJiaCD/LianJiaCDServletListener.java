@@ -61,7 +61,7 @@ public class LianJiaCDServletListener extends HttpServlet implements ServletCont
                         Date targetDate = df.parse(pr.getProperty("executeTime"));
                         Date now = df.parse(df.format(new Date()));
                         if (now.after(targetDate)) {
-                            LJCDLogger.info("LianjiaCD Listener is executed!");
+                            LJCDLogger.info("LianjiaCD Listener is executing!");
                             Engine();
                         }
                     } catch (ParseException e) {
@@ -127,6 +127,7 @@ public class LianJiaCDServletListener extends HttpServlet implements ServletCont
             //TODO:税费信息有的条目没有，观察有必要再说。
             bean.price = Float.valueOf(element.select("div[class=totalPrice totalPrice2] span").get(0).text());
             bean.fetchdate = new Timestamp(new Date().getTime());
+            bean.updatedate = bean.fetchdate; // 解决使用updatedate排序有空值的问题。
             bean.url = element.select("a[class=noresultRecommend img LOGCLICKDATA]").get(0).attr("href");
             houseList.add(bean);
         }
