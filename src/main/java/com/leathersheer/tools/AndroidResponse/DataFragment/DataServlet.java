@@ -97,7 +97,7 @@ public class DataServlet extends HttpServlet {
             }
             if (histMap.containsKey(tempBean.houseid)) {
                 if (tempBean.updatedate.after(histMap.get(tempBean.houseid).updatedate)) {
-                    histMap.put(tempBean.houseid, tempBean);
+                    histMap.put(tempBean.houseid, tempBean); //如果当前数据更新日期晚于histMap中存在的记录，则替换同HistMap中ID数据为当前数据
                 }
             } else {
                 histMap.put(tempBean.houseid, tempBean);
