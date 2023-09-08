@@ -128,6 +128,7 @@ public class LianJiaCDServletListener extends HttpServlet implements ServletCont
             bean.price = Float.valueOf(element.select("div[class=totalPrice totalPrice2] span").get(0).text());
             bean.fetchdate = new Timestamp(new Date().getTime());
             bean.updatedate = bean.fetchdate; // 解决使用updatedate排序有空值的问题。
+            bean.updateFlag="initial";  // 解决新增房屋updateFlag为空的问题
             bean.url = element.select("a[class=noresultRecommend img LOGCLICKDATA]").get(0).attr("href");
             houseList.add(bean);
         }
